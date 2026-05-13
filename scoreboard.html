@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 PGA Championship — Scoreboard</title>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0a0e14;
+    --surface: #111720;
+    --surface2: #182030;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --gold: #d4a853;
+    --gold2: #f0c870;
+    --text: #e8ecf0;
+    --muted: #6b7a90;
+    --green: #22c55e;
+    --red: #ef4444;
+  }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+  #root { min-height: 100vh; }
+
+  .header { background: linear-gradient(180deg, #0f1a2e 0%, var(--bg) 100%); border-bottom: 1px solid var(--border); padding: 0 2rem; }
+  .header-inner { max-width: 1400px; margin: 0 auto; display: flex; align-items: flex-start; justify-content: space-between; padding: 1.25rem 0; }
+  .header-title { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 3px; color: var(--gold); line-height: 1; }
+  .header-sub { font-size: 0.72rem; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 2px; }
+
+  .pot-pills { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+  .pot-pill { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 0.6rem 1.1rem; text-align: center; min-width: 110px; }
+  .pot-pill .pv { font-size: 1.3rem; font-weight: 600; font-family: 'Bebas Neue', sans-serif; letter-spacing: 1px; }
+  .pot-pill .pl { font-size: 0.62rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 1px; }
+
+  .layout { max-width: 1400px; margin: 0 auto; padding: 1.5rem 2rem; display: grid; grid-template-columns: 1fr 320px; gap: 1.5rem; }
+
+  .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 1.5rem; }
+  .panel-head { padding: 0.9rem 1.25rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: var(--surface2); }
+  .panel-head h2 { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); font-weight: 500; }
+
+  /* Leaderboard podium */
+  .podium { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; padding: 1.25rem; }
+  .podium-card { border-radius: 10px; padding: 1rem 1.25rem; border: 1px solid var(--border); position: relative; overflow: hidden; }
+  .podium-card.first { border-color: rgba(212,168,83,0.5); background: rgba(212,168,83,0.07); }
+  .podium-card.second { border-color: rgba(180,180,200,0.3); background: rgba(180,180,200,0.04); }
+  .podium-card.third { border-color: rgba(180,120,60,0.3); background: rgba(180,120,60,0.04); }
+  .podium-rank { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; color: rgba(255,255,255,0.06); position: absolute; top: 0; right: 12px; line-height: 1; }
+  .podium-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 2px; margin-bottom: 4px; }
+  .podium-score { font-size: 2rem; font-weight: 600; font-family: 'Bebas Neue', sans-serif; letter-spacing: 1px; }
+  .podium-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 8px; }
+  .podium-payout { font-size: 0.75rem; margin-top: 8px; padding: 3px 8px; border-radius: 5px; display: inline-block; font-weight: 500; }
+
+  /* Full standings table */
+  .standings-table { width: 100%; border-collapse: collapse; }
+  .standings-table th { padding: 0.6rem 1rem; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); font-weight: 500; text-align: left; border-bottom: 1px solid var(--border); background: var(--surface2); }
+  .standings-table th.right, .standings-table td.right { text-align: right; }
+  .standings-table td { padding: 0.65rem 1rem; font-size: 0.875rem; border-bottom: 1px solid var(--border); }
+  .standings-table tbody tr:last-child td { border-bottom: none; }
+  .standings-table tbody tr { transition: background 0.1s; }
+  .standings-table tbody tr:hover { background: rgba(255,255,255,0.02); }
+
+  .rank-badge { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; font-size: 0.72rem; font-weight: 600; }
+  .rank-1 { background: rgba(212,168,83,0.2); color: #f0c870; }
+  .rank-2 { background: rgba(180,180,200,0.15); color: #c0c0d0; }
+  .rank-3 { background: rgba(180,120,60,0.2); color: #cd8a4a; }
+  .rank-other { background: rgba(255,255,255,0.06); color: var(--muted); }
+
+  .score-val { font-family: 'Bebas Neue', sans-serif; font-size: 1.05rem; letter-spacing: 0.5px; }
+  .score-neg { color: #22c55e; }
+  .score-pos { color: #ef4444; }
+  .score-e { color: var(--muted); }
+  .score-na { color: var(--muted); font-size: 0.8rem; font-family: inherit; }
+
+  /* Player rows inside team breakdown */
+  .team-breakdown { padding: 0.5rem; }
+  .player-score-row { display: flex; align-items: center; justify-content: space-between; padding: 0.35rem 0.6rem; border-radius: 6px; font-size: 0.82rem; margin-bottom: 2px; }
+  .player-score-row.counts { background: rgba(255,255,255,0.04); }
+  .player-score-row.missed-cut { opacity: 0.45; }
+  .counting-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); margin-right: 6px; flex-shrink: 0; }
+  .non-counting-dot { width: 6px; height: 6px; border-radius: 50%; background: transparent; margin-right: 6px; flex-shrink: 0; }
+
+  /* Rules card */
+  .rules-list { padding: 1rem 1.25rem; }
+  .rule-row { display: flex; align-items: flex-start; gap: 10px; padding: 0.6rem 0; border-bottom: 1px solid var(--border); font-size: 0.83rem; line-height: 1.5; color: var(--text); }
+  .rule-row:last-child { border-bottom: none; }
+  .rule-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+  .rule-amount { font-family: 'Bebas Neue', sans-serif; font-size: 1rem; color: var(--gold); letter-spacing: 0.5px; margin-right: 4px; }
+
+  /* Payout tracker */
+  .payout-row { display: flex; align-items: center; justify-content: space-between; padding: 0.6rem 1rem; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+  .payout-row:last-child { border-bottom: none; }
+  .payout-label { color: var(--muted); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; }
+  .payout-winner { font-weight: 600; }
+  .payout-amount { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; color: var(--gold); letter-spacing: 0.5px; }
+
+  /* Edit score modal */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 100; display: flex; align-items: center; justify-content: center; }
+  .modal { background: #182030; border: 1px solid rgba(255,255,255,0.15); border-radius: 14px; padding: 1.5rem; min-width: 300px; max-width: 380px; }
+
+  .score-input { background: var(--bg); border: 1px solid var(--border2); border-radius: 8px; padding: 0.5rem 0.75rem; color: var(--text); font-family: inherit; font-size: 1rem; width: 100%; outline: none; }
+  .score-input:focus { border-color: var(--gold); }
+
+  .btn { padding: 0.5rem 1.1rem; border-radius: 8px; border: 1px solid var(--border2); background: none; color: var(--text); font-family: inherit; font-size: 0.85rem; cursor: pointer; transition: all 0.15s; }
+  .btn-gold { border-color: rgba(212,168,83,0.5); color: var(--gold); }
+  .btn-gold:hover { background: rgba(212,168,83,0.12); }
+  .btn-muted { color: var(--muted); }
+  .btn-muted:hover { color: var(--text); }
+
+  .tab-row { display: flex; gap: 4px; padding: 0.75rem 1rem 0; }
+  .tab { padding: 0.4rem 0.9rem; border-radius: 6px; border: 1px solid transparent; font-size: 0.75rem; font-weight: 500; cursor: pointer; color: var(--muted); background: none; font-family: inherit; transition: all 0.15s; }
+  .tab.active { background: var(--surface2); border-color: var(--border2); color: var(--text); }
+
+  .section-divider { height: 1px; background: var(--border); margin: 0 1rem; }
+
+  .champion-banner { padding: 0.75rem 1.25rem; display: flex; align-items: center; gap: 1rem; background: rgba(212,168,83,0.08); border-bottom: 1px solid rgba(212,168,83,0.2); }
+  .champion-trophy { font-size: 1.5rem; }
+  .champion-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); opacity: 0.7; }
+  .champion-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; letter-spacing: 2px; color: var(--gold2); }
+
+  .refresh-btn { display: flex; align-items: center; gap: 5px; padding: 0.3rem 0.7rem; border-radius: 6px; border: 1px solid var(--border2); background: none; color: var(--muted); font-family: inherit; font-size: 0.72rem; cursor: pointer; transition: all 0.15s; }
+  .refresh-btn:hover { color: var(--text); border-color: var(--border); }
+
+  .status-pill { font-size: 0.65rem; padding: 2px 7px; border-radius: 4px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+  .status-active { background: rgba(34,197,94,0.15); color: #86efac; }
+  .status-cut { background: rgba(239,68,68,0.12); color: #fca5a5; }
+  .status-pending { background: rgba(107,122,144,0.15); color: var(--muted); }
+
+  .scroll-table { max-height: 520px; overflow-y: auto; }
+  .scroll-table::-webkit-scrollbar { width: 4px; }
+  .scroll-table::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  @media (max-width: 768px) {
+    /* Header */
+    .header { padding: 0 1rem; }
+    .header-inner { flex-direction: column; align-items: flex-start; gap: 0.75rem; padding: 1rem 0; }
+    .header-title { font-size: 1.5rem; letter-spacing: 2px; }
+    .header-sub { font-size: 0.65rem; }
+    .pot-pills { gap: 0.5rem; width: 100%; }
+    .pot-pill { flex: 1; min-width: 60px; padding: 0.4rem 0.5rem; }
+    .pot-pill .pv { font-size: 1rem; }
+    .pot-pill .pl { font-size: 0.55rem; letter-spacing: 0.5px; }
+
+    /* Layout — single column */
+    .layout { grid-template-columns: 1fr; padding: 0.75rem; gap: 0.75rem; }
+
+    /* Podium — single column stacked */
+    .podium { grid-template-columns: 1fr; gap: 0.6rem; padding: 0.75rem; }
+    .podium-name { font-size: 1.1rem; }
+    .podium-score { font-size: 1.5rem; }
+    .podium-rank { font-size: 2rem; }
+
+    /* Champion banner */
+    .champion-banner { flex-wrap: wrap; padding: 0.6rem 1rem; gap: 0.6rem; }
+
+    /* Tabs */
+    .tab-row { overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; padding: 0.6rem 0.75rem 0; gap: 4px; }
+    .tab { flex-shrink: 0; font-size: 0.72rem; padding: 0.35rem 0.75rem; }
+
+    /* Standings table — simplify on mobile */
+    .standings-table th, .standings-table td { padding: 0.5rem 0.6rem; font-size: 0.78rem; }
+    .standings-table .hide-mobile { display: none; }
+
+    /* Team breakdown grid — 1 col */
+    .team-breakdown-grid { grid-template-columns: 1fr !important; }
+
+    /* Scroll table */
+    .scroll-table { max-height: 60vh; }
+
+    /* Modal — slide up from bottom */
+    .modal { border-radius: 14px 14px 0 0 !important; max-width: 100% !important;
+      min-width: 100% !important; position: fixed !important; bottom: 0 !important;
+      left: 0 !important; right: 0 !important; margin: 0 !important; }
+
+    /* Panel */
+    .panel { border-radius: 10px; margin-bottom: 0.75rem; }
+    .panel-head { padding: 0.7rem 1rem; }
+
+    /* Payout rows */
+    .payout-row { padding: 0.5rem 0.75rem; font-size: 0.8rem; }
+
+    /* Quick score sidebar — hide on mobile (use leaderboard tab instead) */
+    .sidebar-hide-mobile { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useMemo, useEffect, useCallback } = React;
+
+// ── Team & pick data (keep in sync with draft board) ──────────────────────────
+const TEAM_NAMES = ["Minges","Curry","Tracy","Shumate","Hobie","Creelman"];
+
+const TEAM_COLORS = [
+  {bg:"rgba(212,168,83,0.15)",  text:"#f0c870", border:"rgba(212,168,83,0.4)"},
+  {bg:"rgba(59,130,246,0.15)",  text:"#93c5fd", border:"rgba(59,130,246,0.4)"},
+  {bg:"rgba(34,197,94,0.15)",   text:"#86efac", border:"rgba(34,197,94,0.4)"},
+  {bg:"rgba(239,68,68,0.15)",   text:"#fca5a5", border:"rgba(239,68,68,0.4)"},
+  {bg:"rgba(168,85,247,0.15)",  text:"#d8b4fe", border:"rgba(168,85,247,0.4)"},
+  {bg:"rgba(249,115,22,0.15)",  text:"#fdba74", border:"rgba(249,115,22,0.4)"},
+];
+
+const ENTRY_FEE = 50;
+const NUM_TEAMS = 6;
+const TOTAL_POT = ENTRY_FEE * NUM_TEAMS; // $300
+
+// Default picks — loaded from localStorage if available (shared with draft board)
+const DEFAULT_PICKS = {
+  "Minges":   ["Scottie Scheffler","Collin Morikawa","Russell Henley","Rickie Fowler","Akshay Bhatia"],
+  "Curry":    ["Rory McIlroy","Brooks Koepka","Justin Rose","Maverick McNealy","Shane Lowry"],
+  "Tracy":    ["Cameron Young","Viktor Hovland","Patrick Cantlay","Tyrrell Hatton","Min Woo Lee"],
+  "Shumate":  ["Bryson DeChambeau","Tommy Fleetwood","Jordan Spieth","Sam Burns"],
+  "Hobie":    ["Xander Schauffele","Matt Fitzpatrick","Justin Thomas","Chris Gotterup"],
+  "Creelman": ["Ludvig Åberg","Jon Rahm","Si Woo Kim","Hideki Matsuyama"],
+};
+
+// ── Scoring rules ─────────────────────────────────────────────────────────────
+// Score at Cut: top 4 per team count
+// Cumulative Score: top 3 per team count
+// Champion: team holding the winner gets 25%
+
+function loadTeamsFromStorage() {
+  try {
+    const saved = localStorage.getItem('pga2026_teams');
+    if (saved) {
+      const teams = JSON.parse(saved);
+      const map = {};
+      teams.forEach(t => { map[t.name] = t.picks || []; });
+      return map;
+    }
+  } catch(e) {}
+  return DEFAULT_PICKS;
+}
+
+function loadScoresFromStorage() {
+  try {
+    const saved = localStorage.getItem('pga2026_scores');
+    if (saved) return JSON.parse(saved);
+  } catch(e) {}
+  return {};
+}
+
+// Fetch picks.json from same directory
+async function fetchPicksJson() {
+  try {
+    const res = await fetch('./picks.json?cb=' + Date.now());
+    if (!res.ok) return null;
+    return await res.json();
+  } catch(e) { return null; }
+}
+
+// Fetch scores.json from same directory (used on GitHub Pages)
+async function fetchScoresJson() {
+  try {
+    const res = await fetch('./scores.json?cb=' + Date.now());
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data;
+  } catch(e) {
+    return null;
+  }
+}
+
+function saveScoresToStorage(scores) {
+  try {
+    localStorage.setItem('pga2026_scores', JSON.stringify(scores));
+    localStorage.setItem('pga2026_scores_ts', new Date().toISOString());
+  } catch(e) {}
+}
+
+function loadChampionFromStorage() {
+  try {
+    const saved = localStorage.getItem('pga2026_champion');
+    if (saved) return saved;
+  } catch(e) {}
+  return "";
+}
+
+function saveChampionToStorage(name) {
+  try { localStorage.setItem('pga2026_champion', name); } catch(e) {}
+}
+
+// ── Score display helper ───────────────────────────────────────────────────────
+function ScoreDisplay({ val, size = "normal" }) {
+  if (val === null || val === undefined || val === "") {
+    return <span className="score-na">—</span>;
+  }
+  const n = Number(val);
+  if (isNaN(n)) return <span className="score-na">—</span>;
+  const cls = n < 0 ? "score-neg" : n > 0 ? "score-pos" : "score-e";
+  const label = n === 0 ? "E" : n > 0 ? `+${n}` : `${n}`;
+  return <span className={`score-val ${cls}`}>{label}</span>;
+}
+
+function rankSuffix(n) {
+  if(n===1) return "st"; if(n===2) return "nd"; if(n===3) return "rd"; return "th";
+}
+
+// ── Main App ──────────────────────────────────────────────────────────────────
+const IS_LOCAL = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+
+function App() {
+  const [picks, setPicks] = useState(() => IS_LOCAL ? loadTeamsFromStorage() : {});
+  const [picksLoading, setPicksLoading] = useState(!IS_LOCAL);
+  const [scores, setScores] = useState(loadScoresFromStorage);
+  const [champion, setChampion] = useState(loadChampionFromStorage);
+  const [editingPlayer, setEditingPlayer] = useState(null);
+  const [editScore, setEditScore] = useState("");
+  const [editStatus, setEditStatus] = useState("active"); // active | cut
+  const [activeTab, setActiveTab] = useState("leaderboard"); // leaderboard | players | rules
+  const [lastUpdated, setLastUpdated] = useState(null);
+  const [championInput, setChampionInput] = useState(champion);
+  const [editingChampion, setEditingChampion] = useState(false);
+  const [fetching, setFetching] = useState(false);
+  const [fetchLog, setFetchLog] = useState(""); // status message from last fetch
+
+  // Load picks — on GitHub Pages always use picks.json (source of truth)
+  // On localhost poll localStorage so scoreboard stays in sync with draft board
+  useEffect(() => {
+    if (!IS_LOCAL) {
+      fetchPicksJson().then(data => {
+        if (data && data.teams) {
+          const m = {};
+          data.teams.forEach(t => { m[t.name] = t.picks || []; });
+          setPicks(m);
+        }
+        setPicksLoading(false);
+      }).catch(() => setPicksLoading(false));
+    } else {
+      setPicksLoading(false);
+      const interval = setInterval(() => {
+        const fresh = loadTeamsFromStorage();
+        setPicks(fresh);
+      }, 5000);
+      return () => clearInterval(interval);
+    }
+  }, []);
+
+  // On mount: load scores.json
+  // GitHub Pages: always trust the file (source of truth for viewers)
+  // Localhost: only use if localStorage is empty (drafter may have fresher data)
+  useEffect(() => {
+    fetchScoresJson().then(data => {
+      if (!data) return;
+      const fileScores = data.scores || {};
+      const fileChampion = data.champion || "";
+      const ts = data.exportedAt ? new Date(data.exportedAt) : null;
+
+      if (!IS_LOCAL) {
+        // GitHub Pages — always use the file
+        setScores(fileScores);
+        if (fileChampion) { setChampion(fileChampion); setChampionInput(fileChampion); }
+        if (ts) { setLastUpdated(ts); setFetchLog(`✓ Loaded from scores.json · ${ts.toLocaleTimeString()}`); }
+      } else {
+        // Localhost — only use if localStorage has nothing
+        const localSaved = localStorage.getItem('pga2026_scores');
+        if (!localSaved) {
+          setScores(fileScores);
+          saveScoresToStorage(fileScores);
+          if (fileChampion) { setChampion(fileChampion); setChampionInput(fileChampion); saveChampionToStorage(fileChampion); }
+          if (ts) { setLastUpdated(ts); setFetchLog(`✓ Loaded from scores.json · ${ts.toLocaleTimeString()}`); }
+        }
+      }
+    });
+  }, []);
+
+  // All players across all teams (deduplicated)
+  const allPlayers = useMemo(() => {
+    const seen = new Set();
+    const list = [];
+    TEAM_NAMES.forEach(t => {
+      (picks[t] || []).forEach(p => {
+        if (!seen.has(p)) { seen.add(p); list.push(p); }
+      });
+    });
+    return list;
+  }, [picks]);
+
+  function getScore(player) {
+    const s = scores[player];
+    if (!s) return { score: null, status: "active" };
+    return s;
+  }
+
+  function openEdit(player) {
+    const s = getScore(player);
+    setEditingPlayer(player);
+    setEditScore(s.score !== null && s.score !== undefined ? String(s.score) : "");
+    setEditStatus(s.status || "active");
+  }
+
+  function saveEdit() {
+    const val = editScore.trim();
+    const parsed = val === "" ? null : val === "E" || val === "e" ? 0 : parseInt(val, 10);
+    const updated = {
+      ...scores,
+      [editingPlayer]: { score: isNaN(parsed) ? null : parsed, status: editStatus }
+    };
+    setScores(updated);
+    saveScoresToStorage(updated);
+    setLastUpdated(new Date());
+    setEditingPlayer(null);
+  }
+
+  function saveChampion(name) {
+    setChampion(name);
+    saveChampionToStorage(name);
+    setEditingChampion(false);
+    setChampionInput(name);
+  }
+
+  // ── Export scores.json for GitHub Pages ─────────────────────────────────────
+  function exportScoresJson() {
+    const data = {
+      scores,
+      champion,
+      exportedAt: new Date().toISOString(),
+      note: "Auto-generated by PGA Pool scoreboard. Upload to your GitHub repo root."
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "scores.json";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  // ── ESPN score fetch via Anthropic API ───────────────────────────────────────
+  async function fetchESPNScores() {
+    setFetching(true);
+    setFetchLog("Searching ESPN for live scores…");
+    try {
+      // Build the list of all drafted players to look up
+      const playerList = [];
+      const seen = new Set();
+      TEAM_NAMES.forEach(t => {
+        (picks[t]||[]).forEach(p => { if(!seen.has(p)){ seen.add(p); playerList.push(p); } });
+      });
+
+      const prompt = `Search ESPN for the current 2026 PGA Championship leaderboard AND the list of players who missed the cut.
+
+I need scores for each of these players: ${playerList.join(", ")}.
+
+Step 1: Search the ESPN leaderboard for current scores.
+Step 2: Search specifically for the 2026 PGA Championship cut list / missed cut players to identify which of my players did not make it to the weekend.
+
+Return ONLY a valid JSON object — no markdown, no explanation, no extra text:
+{
+  "players": [
+    {"name": "Scottie Scheffler", "score": -8, "status": "active"},
+    {"name": "Rory McIlroy", "score": -5, "status": "active"},
+    {"name": "Tiger Woods", "score": 4, "status": "cut"}
+  ],
+  "tournament_status": "round3",
+  "leader": "Scottie Scheffler"
+}
+
+Rules:
+- score: integer, negative = under par, positive = over par, 0 = even. Use their score AT THE CUT (end of round 2) for players who missed the cut. null only if they haven't teed off yet.
+- status: "active" if still playing, "cut" if they missed the cut or withdrew. Be thorough — check the missed cut list explicitly, do not guess.
+- Include EVERY player from my list, no exceptions.
+- tournament_status: "pre" (not started), "round1", "round2", "cut" (cut being made), "round3", "round4", "final"
+- leader: current overall tournament leader's name`;
+
+      const res = await fetch(PROXY_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" }, // API key handled by proxy
+        body: JSON.stringify({
+          model: "claude-sonnet-4-20250514",
+          max_tokens: 2000,
+          tools: [{ type: "web_search_20250305", name: "web_search" }],
+          messages: [{ role: "user", content: prompt }]
+        })
+      });
+
+      const data = await res.json();
+      if(data.error) throw new Error(data.error.message);
+
+      // Extract text blocks from response
+      const texts = (data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("");
+      const match = texts.match(/\{[\s\S]*\}/);
+      if(!match) throw new Error("No JSON found in response");
+
+      const parsed = JSON.parse(match[0]);
+      const players = parsed.players || [];
+
+      if(players.length === 0) throw new Error("No player data returned");
+
+      // Merge into existing scores (ESPN data wins, but keep manual overrides for players not found)
+      const updated = { ...scores };
+      let updatedCount = 0;
+      players.forEach(p => {
+        if(p.name) {
+          updated[p.name] = { score: p.score, status: p.status || "active" };
+          updatedCount++;
+        }
+      });
+
+      // Handle champion if tournament is final or leader provided
+      if(parsed.tournament_status === "final" && parsed.leader) {
+        saveChampionToStorage(parsed.leader);
+        setChampion(parsed.leader);
+        setChampionInput(parsed.leader);
+      }
+
+      setScores(updated);
+      saveScoresToStorage(updated);
+      const now = new Date();
+      setLastUpdated(now);
+      setFetchLog(`✓ Updated ${updatedCount} players · ${parsed.tournament_status || "live"} · ${now.toLocaleTimeString()} — push scores.json to GitHub`);
+
+      // Auto-download scores.json so you can push to GitHub immediately
+      const exportData = {
+        scores: updated,
+        champion: parsed.tournament_status === "final" && parsed.leader ? parsed.leader : champion,
+        exportedAt: now.toISOString(),
+        note: "Auto-generated by PGA Pool scoreboard. Upload to your GitHub repo root."
+      };
+      const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "scores.json";
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch(err) {
+      console.error("ESPN fetch error:", err);
+      setFetchLog(`⚠ ${err.message} — scores unchanged`);
+    }
+    setFetching(false);
+  }
+
+  // ── Team scoring calculations ─────────────────────────────────────────────
+  const teamStats = useMemo(() => {
+    return TEAM_NAMES.map((name, idx) => {
+      const teamPicks = picks[name] || [];
+      const playerData = teamPicks.map(p => {
+        const s = getScore(p);
+        return { name: p, score: s.score, status: s.status };
+      });
+
+      // Sort by score (nulls last, cut players last)
+      const sorted = [...playerData].sort((a, b) => {
+        if (a.status === "cut" && b.status !== "cut") return 1;
+        if (b.status === "cut" && a.status !== "cut") return -1;
+        if (a.score === null && b.score === null) return 0;
+        if (a.score === null) return 1;
+        if (b.score === null) return -1;
+        return a.score - b.score;
+      });
+
+      const activeSorted = sorted.filter(p => p.status !== "cut");
+      const cutPlayers = sorted.filter(p => p.status === "cut");
+
+      // Score at cut: top 4 active scores
+      const cutCounters = activeSorted.slice(0, 4);
+      const cutScore = cutCounters.every(p => p.score !== null)
+        ? cutCounters.reduce((s, p) => s + p.score, 0)
+        : null;
+
+      // Cumulative: top 3 active scores
+      const cumCounters = activeSorted.slice(0, 3);
+      const cumScore = cumCounters.every(p => p.score !== null)
+        ? cumCounters.reduce((s, p) => s + p.score, 0)
+        : null;
+
+      const hasChampion = champion && teamPicks.includes(champion);
+
+      return {
+        name, idx,
+        color: TEAM_COLORS[idx],
+        players: sorted,
+        cutCounters: new Set(cutCounters.map(p => p.name)),
+        cumCounters: new Set(cumCounters.map(p => p.name)),
+        cutScore,
+        cumScore,
+        hasChampion,
+        totalPicks: teamPicks.length,
+      };
+    });
+  }, [picks, scores, champion]);
+
+  // Rankings
+  const cutRanked = useMemo(() => {
+    const withScore = teamStats.filter(t => t.cutScore !== null);
+    const without = teamStats.filter(t => t.cutScore === null);
+    const sorted = [...withScore].sort((a,b) => a.cutScore - b.cutScore);
+    return [...sorted, ...without];
+  }, [teamStats]);
+
+  const cumRanked = useMemo(() => {
+    const withScore = teamStats.filter(t => t.cumScore !== null);
+    const without = teamStats.filter(t => t.cumScore === null);
+    const sorted = [...withScore].sort((a,b) => a.cumScore - b.cumScore);
+    return [...sorted, ...without];
+  }, [teamStats]);
+
+  // Payout logic
+  const cutLeader = cutRanked[0];
+  const cumLeader = cumRanked[0];
+  const championTeam = champion ? teamStats.find(t => t.hasChampion) : null;
+  const championPayout = TOTAL_POT * 0.25;
+  const cutPayout = TOTAL_POT * 0.25;
+  const cumPayout = TOTAL_POT * 0.50;
+
+  // If no team has champion, champion payout goes to cum leader
+  const effectiveChampionWinner = championTeam ? championTeam.name : (cumLeader ? `${cumLeader.name} (best Cumulative)` : "TBD");
+
+  // All players list for score entry
+  const allPlayersSorted = useMemo(() => {
+    return [...allPlayers].sort((a,b) => {
+      const sa = getScore(a), sb = getScore(b);
+      if(sa.status==="cut" && sb.status!=="cut") return 1;
+      if(sb.status==="cut" && sa.status!=="cut") return -1;
+      if(sa.score===null && sb.score===null) return 0;
+      if(sa.score===null) return 1;
+      if(sb.score===null) return -1;
+      return sa.score - sb.score;
+    });
+  }, [allPlayers, scores]);
+
+  const teamOf = useMemo(() => {
+    const m = {};
+    TEAM_NAMES.forEach((t,i) => {
+      (picks[t]||[]).forEach(p => { m[p] = { name: t, idx: i }; });
+    });
+    return m;
+  }, [picks]);
+
+  if (picksLoading) return (
+    <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:"1rem"}}>
+      <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"2rem",letterSpacing:"3px",color:"var(--gold)"}}>2026 PGA Championship</div>
+      <div style={{color:"var(--muted)",fontSize:"0.85rem",animation:"pulse 1.5s infinite"}}>Loading scoreboard…</div>
+    </div>
+  );
+
+  return (
+    <div>
+      {/* Edit score modal */}
+      {editingPlayer && (
+        <div className="modal-overlay" style={{alignItems:"flex-end"}} onClick={()=>setEditingPlayer(null)}>
+          <div className="modal" onClick={e=>e.stopPropagation()}>
+            <div style={{width:36,height:4,background:"rgba(255,255,255,0.15)",borderRadius:2,margin:"0 auto 1rem"}} />
+            <div style={{fontSize:"0.65rem",textTransform:"uppercase",letterSpacing:"2px",color:"var(--muted)",marginBottom:"0.4rem"}}>Update Score</div>
+            <div style={{fontSize:"1.05rem",fontWeight:600,marginBottom:"1.25rem"}}>{editingPlayer}</div>
+
+            <div style={{marginBottom:"1rem"}}>
+              <label style={{fontSize:"0.72rem",color:"var(--muted)",display:"block",marginBottom:"6px",textTransform:"uppercase",letterSpacing:"1px"}}>Score to Par</label>
+              <input className="score-input" type="text" placeholder="e.g. -8, +3, E, 0"
+                value={editScore} onChange={e=>setEditScore(e.target.value)}
+                onKeyDown={e=>e.key==="Enter"&&saveEdit()} autoFocus />
+              <div style={{fontSize:"0.7rem",color:"var(--muted)",marginTop:4}}>Use negative for under par (−8), positive for over (+3), or E/0 for even</div>
+            </div>
+
+            <div style={{marginBottom:"1.25rem"}}>
+              <label style={{fontSize:"0.72rem",color:"var(--muted)",display:"block",marginBottom:"6px",textTransform:"uppercase",letterSpacing:"1px"}}>Status</label>
+              <div style={{display:"flex",gap:8}}>
+                {["active","cut"].map(s => (
+                  <button key={s} onClick={()=>setEditStatus(s)}
+                    style={{flex:1,padding:"0.5rem",borderRadius:7,border:`1px solid ${editStatus===s?"rgba(212,168,83,0.5)":"rgba(255,255,255,0.1)"}`,
+                      background:editStatus===s?"rgba(212,168,83,0.12)":"transparent",
+                      color:editStatus===s?"var(--gold)":"var(--muted)",fontFamily:"inherit",fontSize:"0.85rem",cursor:"pointer",fontWeight:editStatus===s?600:400}}>
+                    {s==="active"?"✅ Active":"✂️ Missed Cut"}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div style={{display:"flex",gap:8}}>
+              <button className="btn btn-gold" style={{flex:1}} onClick={saveEdit}>Save</button>
+              <button className="btn btn-muted" onClick={()=>setEditingPlayer(null)}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Header */}
+      <header className="header">
+        <div className="header-inner">
+          <div>
+            <div className="header-title">2026 PGA Championship</div>
+            <div className="header-sub">Aronimink Golf Club · Newtown Square, PA · May 14–17, 2026</div>
+            <div style={{marginTop:"8px",display:"flex",gap:"8px"}}>
+              <a href="index.html" style={{fontSize:"0.7rem",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:5,padding:"3px 10px",color:"#6b7a90",textDecoration:"none",fontWeight:500}}>📋 Draft Board</a>
+              <span style={{fontSize:"0.7rem",background:"rgba(212,168,83,0.15)",border:"1px solid rgba(212,168,83,0.4)",borderRadius:5,padding:"3px 10px",color:"#d4a853",fontWeight:600}}>🏆 Scoreboard</span>
+              <a href="admin.html" style={{fontSize:"0.7rem",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:5,padding:"3px 10px",color:"#6b7a90",textDecoration:"none",fontWeight:500}}>⚙️ Admin</a>
+            </div>
+          </div>
+          <div className="pot-pills">
+            <div className="pot-pill">
+              <div className="pv" style={{color:"var(--gold)"}}>${TOTAL_POT}</div>
+              <div className="pl">Total Pot</div>
+            </div>
+            <div className="pot-pill">
+              <div className="pv" style={{color:"#93c5fd"}}>${cutPayout}</div>
+              <div className="pl">Score at Cut</div>
+            </div>
+            <div className="pot-pill">
+              <div className="pv" style={{color:"#86efac"}}>${cumPayout}</div>
+              <div className="pl">Cumulative</div>
+            </div>
+            <div className="pot-pill">
+              <div className="pv" style={{color:"#fdba74"}}>${championPayout}</div>
+              <div className="pl">Champion Pick</div>
+            </div>
+
+          </div>
+        </div>
+      </header>
+
+      {/* Champion banner */}
+      {champion && (
+        <div className="champion-banner">
+          <span className="champion-trophy">🏆</span>
+          <div>
+            <div className="champion-label">Tournament Champion</div>
+            <div className="champion-name">{champion}</div>
+          </div>
+          {championTeam && (
+            <div style={{marginLeft:"1rem",padding:"3px 10px",borderRadius:6,background:championTeam.color.bg,border:`1px solid ${championTeam.color.border}`,color:championTeam.color.text,fontSize:"0.82rem",fontWeight:600}}>
+              {championTeam.name} wins ${championPayout}
+            </div>
+          )}
+          {!championTeam && (
+            <div style={{marginLeft:"1rem",fontSize:"0.75rem",color:"var(--muted)"}}>Not drafted — payout goes to Cumulative leader</div>
+          )}
+          <button style={{marginLeft:"auto",background:"none",border:"1px solid var(--border2)",borderRadius:6,color:"var(--muted)",fontFamily:"inherit",fontSize:"0.72rem",padding:"3px 8px",cursor:"pointer"}}
+            onClick={()=>{setEditingChampion(true);setChampionInput(champion);}}>Edit</button>
+        </div>
+      )}
+
+      {/* Set champion if not set */}
+      {editingChampion && (
+        <div className="modal-overlay" onClick={()=>setEditingChampion(false)}>
+          <div className="modal" onClick={e=>e.stopPropagation()}>
+            <div style={{fontSize:"0.65rem",textTransform:"uppercase",letterSpacing:"2px",color:"var(--muted)",marginBottom:"0.4rem"}}>Set Tournament Champion</div>
+            <input className="score-input" style={{marginBottom:"1rem"}} type="text" placeholder="Player name…"
+              value={championInput} onChange={e=>setChampionInput(e.target.value)}
+              onKeyDown={e=>e.key==="Enter"&&saveChampion(championInput)} autoFocus />
+            <div style={{display:"flex",gap:8}}>
+              <button className="btn btn-gold" style={{flex:1}} onClick={()=>saveChampion(championInput)}>Set Champion</button>
+              <button className="btn" onClick={()=>saveChampion("")} style={{color:"#fca5a5",borderColor:"rgba(239,68,68,0.3)"}}>Clear</button>
+              <button className="btn btn-muted" onClick={()=>setEditingChampion(false)}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className="layout">
+        {/* Main content */}
+        <div>
+          {/* Tabs */}
+          <div className="panel" style={{marginBottom:"1.5rem"}}>
+            <div className="tab-row">
+              {[["leaderboard","🏅 Leaderboard"],["players","⛳ All Players"],["payouts","💰 Payouts"]].map(([id,label]) => (
+                <button key={id} className={`tab${activeTab===id?" active":""}`} onClick={()=>setActiveTab(id)}>{label}</button>
+              ))}
+              {!champion && (
+                <button className="tab" style={{marginLeft:"auto",color:"var(--gold)",borderColor:"rgba(212,168,83,0.3)"}}
+                  onClick={()=>{setEditingChampion(true);setChampionInput("");}}>
+                  🏆 Set Champion
+                </button>
+              )}
+            </div>
+            <div className="section-divider" style={{margin:"0.75rem 0 0"}} />
+
+            {/* ── LEADERBOARD TAB ── */}
+            {activeTab === "leaderboard" && (
+              <div>
+                {/* Podium - Cumulative */}
+                <div style={{padding:"1rem 1.25rem 0.5rem",borderBottom:"1px solid var(--border)"}}>
+                  <div style={{fontSize:"0.65rem",textTransform:"uppercase",letterSpacing:"2px",color:"var(--muted)",marginBottom:"0.75rem"}}>Cumulative Score (Top 3 golfers · 50% pot · ${cumPayout})</div>
+                  <div className="podium">
+                    {cumRanked.slice(0,3).map((team, i) => (
+                      <div key={team.name} className={`podium-card ${["first","second","third"][i]}`}>
+                        <div className="podium-rank">{i+1}</div>
+                        <div className="podium-label">{i+1}{rankSuffix(i+1)} place</div>
+                        <div className="podium-name" style={{color: team.color.text}}>{team.name}</div>
+                        <div className="podium-score">
+                          <ScoreDisplay val={team.cumScore} />
+                        </div>
+                        {i === 0 && team.cumScore !== null && (
+                          <div className="podium-payout" style={{background:"rgba(34,197,94,0.12)",color:"#86efac"}}>
+                            Leads for ${cumPayout}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Full standings table */}
+                <table className="standings-table">
+                  <thead>
+                    <tr>
+                      <th style={{width:40}}>Pos</th>
+                      <th>Team</th>
+                      <th className="right">Score at Cut <span style={{fontWeight:400,opacity:0.6}}>(top 4)</span></th>
+                      <th className="right">Cumulative <span style={{fontWeight:400,opacity:0.6}}>(top 3)</span></th>
+                      <th className="right hide-mobile">🏆</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {cumRanked.map((team, i) => {
+                      const cutPos = cutRanked.findIndex(t => t.name === team.name);
+                      return (
+                        <tr key={team.name} style={{background: i===0 && team.cumScore !== null ? `${team.color.bg}` : ""}}>
+                          <td>
+                            <span className={`rank-badge rank-${Math.min(i+1,4) <= 3 ? i+1 : "other"}`}>{i+1}</span>
+                          </td>
+                          <td>
+                            <span style={{fontWeight:600,color:team.color.text}}>{team.name}</span>
+                            <span style={{fontSize:"0.72rem",color:"var(--muted)",marginLeft:6}}>{team.totalPicks} picks</span>
+                          </td>
+                          <td className="right">
+                            <ScoreDisplay val={team.cutScore} />
+                            {cutPos === 0 && team.cutScore !== null && (
+                              <span className="status-pill status-active" style={{marginLeft:6}}>Leads</span>
+                            )}
+                          </td>
+                          <td className="right">
+                            <ScoreDisplay val={team.cumScore} />
+                          </td>
+                          <td className="right hide-mobile">
+                            {team.hasChampion
+                              ? <span title={champion} style={{fontSize:"0.9rem"}}>🏆</span>
+                              : <span style={{color:"var(--muted)",fontSize:"0.8rem"}}>—</span>
+                            }
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+
+                {/* Team breakdowns */}
+                <div style={{padding:"1rem 1.25rem",borderTop:"1px solid var(--border)"}}>
+                  <div style={{fontSize:"0.65rem",textTransform:"uppercase",letterSpacing:"2px",color:"var(--muted)",marginBottom:"0.75rem"}}>Team Breakdowns</div>
+                  <div className="team-breakdown-grid" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(260px,1fr))",gap:"0.75rem"}}>
+                    {teamStats.map(team => (
+                      <div key={team.name} style={{background:"var(--surface2)",border:`1px solid ${team.color.border}`,borderRadius:10,overflow:"hidden"}}>
+                        <div style={{padding:"0.5rem 0.75rem",background:team.color.bg,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                          <span style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"1rem",letterSpacing:"2px",color:team.color.text}}>{team.name}</span>
+                          <span style={{fontSize:"0.72rem",color:team.color.text,opacity:0.7}}>
+                            Cut: <ScoreDisplay val={team.cutScore} /> · Cum: <ScoreDisplay val={team.cumScore} />
+                          </span>
+                        </div>
+                        {team.players.map(p => {
+                          const isCumCount = team.cumCounters.has(p.name);
+                          const isCutCount = team.cutCounters.has(p.name);
+                          return (
+                            <div key={p.name}
+                              className={`player-score-row${isCumCount?" counts":""}${p.status==="cut"?" missed-cut":""}`}
+                              style={{cursor:"pointer"}} onClick={()=>openEdit(p.name)}>
+                              <div style={{display:"flex",alignItems:"center"}}>
+                                <span className={isCumCount?"counting-dot":"non-counting-dot"} />
+                                <span style={{fontSize:"0.82rem"}}>{p.name}</span>
+                                {p.status==="cut" && <span className="status-pill status-cut" style={{marginLeft:5}}>Cut</span>}
+                              </div>
+                              <ScoreDisplay val={p.score} />
+                            </div>
+                          );
+                        })}
+                      </div>
+                    ))}
+                  </div>
+                  <div style={{fontSize:"0.65rem",color:"var(--muted)",marginTop:"0.75rem"}}>
+                    🟢 Green dot = counts toward Cumulative Score (top 3) · Click any player to update score
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ── PLAYERS TAB ── */}
+            {activeTab === "players" && (
+              <div>
+                <div style={{padding:"0.75rem 1.25rem",borderBottom:"1px solid var(--border)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+                  <span style={{fontSize:"0.72rem",color:"var(--muted)"}}>Click any player to update their score</span>
+                  <span style={{fontSize:"0.72rem",color:"var(--muted)"}}>{allPlayersSorted.length} players</span>
+                </div>
+                <div className="scroll-table">
+                  <table className="standings-table">
+                    <thead>
+                      <tr>
+                        <th>Player</th>
+                        <th>Team</th>
+                        <th className="right">Score</th>
+                        <th className="right">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {allPlayersSorted.map(player => {
+                        const s = getScore(player);
+                        const t = teamOf[player];
+                        const c = t ? TEAM_COLORS[t.idx] : null;
+                        return (
+                          <tr key={player} style={{cursor:"pointer",opacity:s.status==="cut"?0.5:1}}
+                            onClick={()=>openEdit(player)}>
+                            <td style={{fontWeight:500}}>{player}</td>
+                            <td>
+                              {t && <span style={{fontSize:"0.72rem",padding:"2px 7px",borderRadius:4,background:c.bg,color:c.text,border:`1px solid ${c.border}`,fontWeight:600}}>{t.name}</span>}
+                            </td>
+                            <td className="right"><ScoreDisplay val={s.score} /></td>
+                            <td className="right">
+                              {s.status==="cut"
+                                ? <span className="status-pill status-cut">Missed Cut</span>
+                                : s.score !== null
+                                  ? <span className="status-pill status-active">Active</span>
+                                  : <span className="status-pill status-pending">Pending</span>
+                              }
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+
+            {/* ── PAYOUTS TAB ── */}
+            {activeTab === "payouts" && (
+              <div>
+                <div className="payout-row" style={{background:"rgba(59,130,246,0.05)"}}>
+                  <div>
+                    <div className="payout-label">Score at Cut — 25% of pot</div>
+                    <div className="payout-winner">
+                      {cutLeader && cutLeader.cutScore !== null ? cutLeader.name : "TBD"}
+                      {cutLeader && cutLeader.cutScore !== null && (
+                        <span style={{color:"var(--muted)",fontWeight:400,marginLeft:6,fontSize:"0.8rem"}}>
+                          (<ScoreDisplay val={cutLeader.cutScore} />)
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="payout-amount">${cutPayout}</div>
+                </div>
+                <div className="payout-row" style={{background:"rgba(34,197,94,0.04)"}}>
+                  <div>
+                    <div className="payout-label">Cumulative Score — 50% of pot</div>
+                    <div className="payout-winner">
+                      {cumLeader && cumLeader.cumScore !== null ? cumLeader.name : "TBD"}
+                      {cumLeader && cumLeader.cumScore !== null && (
+                        <span style={{color:"var(--muted)",fontWeight:400,marginLeft:6,fontSize:"0.8rem"}}>
+                          (<ScoreDisplay val={cumLeader.cumScore} />)
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="payout-amount">${cumPayout}</div>
+                </div>
+                <div className="payout-row" style={{background:"rgba(249,115,22,0.04)"}}>
+                  <div>
+                    <div className="payout-label">Champion Pick — 25% of pot</div>
+                    <div className="payout-winner">
+                      {champion ? (
+                        <>
+                          {champion}
+                          <span style={{color:"var(--muted)",fontWeight:400,marginLeft:6,fontSize:"0.8rem"}}>
+                            → {championTeam ? championTeam.name : `No team (goes to ${cumLeader?.name || "TBD"})`}
+                          </span>
+                        </>
+                      ) : (
+                        <span style={{color:"var(--muted)",cursor:"pointer"}} onClick={()=>setEditingChampion(true)}>
+                          Set champion →
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="payout-amount">${championPayout}</div>
+                </div>
+                <div className="payout-row" style={{borderTop:"2px solid var(--border2)",fontWeight:600}}>
+                  <div style={{fontSize:"0.9rem"}}>Total Pot</div>
+                  <div className="payout-amount" style={{fontSize:"1.3rem"}}>${TOTAL_POT}</div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Sidebar — hidden on mobile */}
+        <div className="sidebar-hide-mobile">
+          {/* Rules */}
+          <div className="panel">
+            <div className="panel-head"><h2>Rules</h2></div>
+            <div className="rules-list">
+              <div className="rule-row">
+                <span className="rule-icon">💵</span>
+                <div><span className="rule-amount">$50</span> entry fee per person · <strong>$300</strong> total pot</div>
+              </div>
+              <div className="rule-row">
+                <span className="rule-icon">⛳</span>
+                <div>Each person drafts <strong>7 golfers</strong> via snake draft</div>
+              </div>
+              <div className="rule-row">
+                <span className="rule-icon">✂️</span>
+                <div>
+                  <strong>Score at Cut</strong> — top <strong>4 golfers</strong> per team count.<br />
+                  <span style={{color:"var(--muted)",fontSize:"0.78rem"}}>Leader at the cut wins <span className="rule-amount">$75</span> (25% of pot)</span>
+                </div>
+              </div>
+              <div className="rule-row">
+                <span className="rule-icon">🏅</span>
+                <div>
+                  <strong>Cumulative Score</strong> — top <strong>3 golfers</strong> at tournament end count.<br />
+                  <span style={{color:"var(--muted)",fontSize:"0.78rem"}}>Leader wins <span className="rule-amount">$150</span> (50% of pot)</span>
+                </div>
+              </div>
+              <div className="rule-row">
+                <span className="rule-icon">🏆</span>
+                <div>
+                  <strong>Champion Pick</strong> — team with the tournament winner gets <span className="rule-amount">$75</span> (25%).<br />
+                  <span style={{color:"var(--muted)",fontSize:"0.78rem"}}>If undrafted, goes to best Cumulative Score</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick score entry */}
+          <div className="panel" style={{marginTop:"1rem"}}>
+            <div className="panel-head">
+              <h2>Quick Score Entry</h2>
+              <span style={{fontSize:"0.65rem",color:"var(--muted)"}}>Click any player above too</span>
+            </div>
+            <div style={{padding:"0.75rem"}}>
+              {TEAM_NAMES.map((tName, ti) => {
+                const team = teamStats[ti];
+                return (
+                  <div key={tName} style={{marginBottom:"0.5rem"}}>
+                    <div style={{fontSize:"0.65rem",textTransform:"uppercase",letterSpacing:"1.5px",color:team.color.text,padding:"3px 6px",marginBottom:3}}>{tName}</div>
+                    {(picks[tName]||[]).map(p => {
+                      const s = getScore(p);
+                      return (
+                        <div key={p} style={{display:"flex",alignItems:"center",justifyContent:"space-between",
+                          padding:"4px 6px",borderRadius:5,cursor:"pointer",marginBottom:1,
+                          background:s.score!==null?"rgba(255,255,255,0.03)":"transparent",
+                          opacity:s.status==="cut"?0.45:1}}
+                          onClick={()=>openEdit(p)}>
+                          <span style={{fontSize:"0.78rem",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",maxWidth:170}}>{p}</span>
+                          <span style={{display:"flex",alignItems:"center",gap:4,flexShrink:0}}>
+                            {s.status==="cut" && <span style={{fontSize:"0.6rem",color:"#fca5a5"}}>CUT</span>}
+                            <ScoreDisplay val={s.score} />
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+name: Update PGA Championship Scores
+
+on:
+  schedule:
+    # Run every 30 minutes during tournament days, UTC time.
+    # May 14–17, 2026, 12:00–23:30 UTC covers roughly 8am–7:30pm ET play hours.
+    - cron: '0,30 12-23 14-17 5 *'
+  workflow_dispatch: []
+
+concurrency:
+  group: update-pga-scores
+  cancel-in-progress: true
+
+jobs:
+  update-scores:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: python -m pip install requests
+
+      - name: Fetch latest scores
+        run: python fetch_scores.py
+
+      - name: Commit updated scores.json
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add scores.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Update scores.json from ESPN leaderboard"
+            git push
+          else
+            echo "No score changes to commit."
+          fi

@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 PGA Championship — Admin</title>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0a0e14; --surface: #111720; --surface2: #182030;
+    --border: rgba(255,255,255,0.08); --border2: rgba(255,255,255,0.14);
+    --gold: #d4a853; --gold2: #f0c870; --text: #e8ecf0; --muted: #6b7a90;
+    --green: #22c55e; --red: #ef4444;
+  }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+  #root { min-height: 100vh; }
+  .header { background: linear-gradient(180deg, #0f1a2e 0%, var(--bg) 100%); border-bottom: 1px solid var(--border); padding: 0 2rem; }
+  .header-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: flex-start; justify-content: space-between; padding: 1.25rem 0; }
+  .header-title { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 3px; color: var(--gold); line-height: 1; }
+  .header-sub { font-size: 0.72rem; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 2px; }
+  .layout { max-width: 900px; margin: 0 auto; padding: 2rem; display: flex; flex-direction: column; gap: 1.5rem; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .card-head { padding: 1rem 1.25rem; border-bottom: 1px solid var(--border); background: var(--surface2); display: flex; align-items: center; justify-content: space-between; }
+  .card-head h2 { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; letter-spacing: 2px; color: var(--text); }
+  .card-head .desc { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+  .card-body { padding: 1.25rem; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 0.55rem 1.1rem; border-radius: 8px; border: 1px solid var(--border2); background: none; color: var(--text); font-family: inherit; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: all 0.15s; }
+  .btn:hover { background: rgba(255,255,255,0.04); }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-gold { border-color: rgba(212,168,83,0.5); color: var(--gold); }
+  .btn-gold:hover { background: rgba(212,168,83,0.1); }
+  .btn-green { border-color: rgba(34,197,94,0.4); color: #86efac; }
+  .btn-green:hover { background: rgba(34,197,94,0.08); }
+  .btn-red { border-color: rgba(239,68,68,0.4); color: #fca5a5; }
+  .btn-red:hover { background: rgba(239,68,68,0.08); }
+  .btn-blue { border-color: rgba(59,130,246,0.4); color: #93c5fd; }
+  .btn-blue:hover { background: rgba(59,130,246,0.08); }
+  .input { background: var(--surface2); border: 1px solid var(--border2); border-radius: 8px; padding: 0.55rem 0.85rem; color: var(--text); font-family: inherit; font-size: 0.85rem; outline: none; width: 100%; }
+  .input:focus { border-color: var(--gold); }
+  .label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 6px; display: block; }
+  .log { font-size: 0.75rem; margin-top: 10px; padding: 0.5rem 0.75rem; border-radius: 6px; }
+  .log-ok { background: rgba(34,197,94,0.08); color: #86efac; }
+  .log-err { background: rgba(239,68,68,0.08); color: #fca5a5; }
+  .log-info { background: rgba(255,255,255,0.04); color: var(--muted); }
+  .log-warn { background: rgba(245,158,11,0.08); color: #fcd34d; }
+  .divider { height: 1px; background: var(--border); margin: 1rem 0; }
+  .row { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
+  .col { display: flex; flex-direction: column; flex: 1; min-width: 160px; }
+  .status-row { display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--border); font-size: 0.83rem; }
+  .status-row:last-child { border-bottom: none; }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .dot-ok { background: var(--green); }
+  .dot-empty { background: var(--muted); }
+  .dot-warn { background: #f59e0b; }
+  @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  @media (max-width: 768px) {
+    .header { padding: 0 1rem; }
+    .header-inner { flex-direction: column; align-items: flex-start; padding: 1rem 0; gap: 0.5rem; }
+    .header-title { font-size: 1.5rem; letter-spacing: 2px; }
+    .layout { padding: 0.75rem; gap: 1rem; }
+    .card { border-radius: 10px; }
+    .card-head { padding: 0.75rem 1rem; }
+    .card-head h2 { font-size: 1rem; }
+    .card-body { padding: 1rem; }
+    .row { flex-direction: column; gap: 8px; }
+    .col { min-width: 100%; }
+    .btn { width: 100%; justify-content: center; padding: 0.65rem 1rem; font-size: 0.9rem; }
+    .input { font-size: 0.9rem; padding: 0.65rem 0.85rem; }
+    .status-row { font-size: 0.8rem; }
+    .log { font-size: 0.78rem; }
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useMemo } = React;
+
+// ── Shared helpers ────────────────────────────────────────────────────────────
+function loadJSON(key) {
+  try { const s = localStorage.getItem(key); return s ? JSON.parse(s) : null; } catch(e) { return null; }
+}
+function saveJSON(key, val) {
+  try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) {}
+}
+function downloadFile(filename, data) {
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a"); a.href = url; a.download = filename; a.click();
+  URL.revokeObjectURL(url);
+}
+function timeAgo(isoStr) {
+  if (!isoStr) return "never";
+  const d = new Date(isoStr); const now = new Date();
+  const s = Math.floor((now - d) / 1000);
+  if (s < 60) return `${s}s ago`;
+  if (s < 3600) return `${Math.floor(s/60)}m ago`;
+  return d.toLocaleTimeString();
+}
+
+// ── Status overview ───────────────────────────────────────────────────────────
+function StatusCard() {
+  const teams = loadJSON('pga2026_teams') || [];
+  const scores = loadJSON('pga2026_scores') || {};
+  const odds = loadJSON('pga2026_odds') || {};
+  const champion = localStorage.getItem('pga2026_champion') || "";
+  const picksTs = localStorage.getItem('pga2026_teams_ts');
+  const scoresTs = localStorage.getItem('pga2026_scores_ts');
+  const totalPicks = teams.reduce((s,t) => s + (t.picks||[]).length, 0);
+  const scoredCount = Object.keys(scores).length;
+  const oddsCount = Object.keys(odds).length;
+
+  const items = [
+    { label: "Teams", value: `${teams.length} teams · ${totalPicks} picks`, dot: teams.length > 0 ? "ok" : "empty" },
+    { label: "Picks last saved", value: timeAgo(picksTs), dot: picksTs ? "ok" : "empty" },
+    { label: "Scores", value: scoredCount > 0 ? `${scoredCount} players scored` : "No scores yet", dot: scoredCount > 0 ? "ok" : "empty" },
+    { label: "Scores last updated", value: timeAgo(scoresTs), dot: scoresTs ? "ok" : "empty" },
+    { label: "Odds", value: oddsCount > 0 ? `${oddsCount} players` : "Using seed odds", dot: oddsCount > 0 ? "ok" : "warn" },
+    { label: "Champion", value: champion || "Not set", dot: champion ? "ok" : "empty" },
+  ];
+
+  return (
+    <div className="card">
+      <div className="card-head">
+        <div><h2>Status</h2><div className="desc">Current state of all data in localStorage</div></div>
+      </div>
+      <div className="card-body">
+        {items.map(item => (
+          <div className="status-row" key={item.label}>
+            <span style={{color:"var(--muted)",fontSize:"0.75rem"}}>{item.label}</span>
+            <span style={{display:"flex",alignItems:"center",gap:8}}>
+              <span>{item.value}</span>
+              <span className={`status-dot dot-${item.dot}`} />
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+
+
+// ── Score refresh ─────────────────────────────────────────────────────────────
+function ScoresCard() {
+  const [loading, setLoading] = useState(false);
+  const [log, setLog] = useState("");
+
+  function loadPicks() {
+    const teams = loadJSON('pga2026_teams') || [];
+    const seen = new Set(); const list = [];
+    teams.forEach(t => (t.picks||[]).forEach(p => { if(!seen.has(p)){seen.add(p);list.push(p);} }));
+    return list;
+  }
+
+  async function fetchScores() {
+    const players = loadPicks();
+    if (players.length === 0) { setLog("err:No picks found — make sure picks are saved"); return; }
+    setLoading(true); setLog("info:Searching ESPN for live scores…");
+    try {
+      const prompt = `Search ESPN for the current 2026 PGA Championship leaderboard AND the missed cut list.
+
+I need scores for: ${players.join(", ")}
+
+Step 1: Search the ESPN PGA Championship leaderboard for current scores.
+Step 2: Search specifically for players who missed the cut.
+
+Return ONLY valid JSON, no markdown:
+{
+  "players": [
+    {"name": "Scottie Scheffler", "score": -8, "status": "active"},
+    {"name": "Tiger Woods", "score": 4, "status": "cut"}
+  ],
+  "tournament_status": "round2",
+  "leader": "Scottie Scheffler"
+}
+
+Rules:
+- score: integer (negative=under, positive=over, 0=even). For cut players use their score at end of round 2. null if not started.
+- status: "active" if still playing, "cut" if missed cut or withdrew.
+- Include EVERY player from the list.
+- tournament_status: "pre","round1","round2","cut","round3","round4","final"`;
+
+      const res = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-20250514",
+          max_tokens: 2000,
+          tools: [{ type: "web_search_20250305", name: "web_search" }],
+          messages: [{ role: "user", content: prompt }]
+        })
+      });
+      const data = await res.json();
+      if (data.error) throw new Error(data.error.message);
+      const texts = (data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("");
+      const match = texts.match(/\{[\s\S]*\}/);
+      if (!match) throw new Error("No JSON in response");
+      const parsed = JSON.parse(match[0]);
+      const playerList = parsed.players || [];
+      if (playerList.length === 0) throw new Error("No player data returned");
+
+      const existing = loadJSON('pga2026_scores') || {};
+      const updated = {...existing};
+      let count = 0;
+      playerList.forEach(p => { if(p.name){ updated[p.name] = {score:p.score, status:p.status||"active"}; count++; } });
+
+      saveJSON('pga2026_scores', updated);
+      localStorage.setItem('pga2026_scores_ts', new Date().toISOString());
+
+      if (parsed.tournament_status === "final" && parsed.leader) {
+        localStorage.setItem('pga2026_champion', parsed.leader);
+      }
+
+      downloadFile('scores.json', {
+        scores: updated,
+        champion: parsed.tournament_status === "final" ? (parsed.leader||"") : (localStorage.getItem('pga2026_champion')||""),
+        exportedAt: new Date().toISOString()
+      });
+
+      setLog(`ok:Updated ${count} players · ${parsed.tournament_status||"live"} · ${new Date().toLocaleTimeString()} · scores.json downloaded`);
+    } catch(err) { setLog(`err:${err.message}`); }
+    setLoading(false);
+  }
+
+  function exportManual() {
+    const scores = loadJSON('pga2026_scores') || {};
+    const champion = localStorage.getItem('pga2026_champion') || "";
+    downloadFile('scores.json', { scores, champion, exportedAt: new Date().toISOString() });
+    setLog("ok:scores.json downloaded — push to GitHub");
+  }
+
+  const logType = log.startsWith("ok:") ? "ok" : log.startsWith("err:") ? "err" : log.startsWith("warn:") ? "warn" : "info";
+
+  return (
+    <div className="card">
+      <div className="card-head">
+        <div><h2>Refresh Scores</h2><div className="desc">Fetches live scores from ESPN via Anthropic API · only works on localhost</div></div>
+      </div>
+      <div className="card-body">
+        <div className="row">
+          <button className="btn btn-gold" onClick={fetchScores} disabled={loading}>
+            <span style={{animation:loading?"spin 1s linear infinite":"none",fontSize:"1rem"}}>⟳</span>
+            {loading ? "Fetching ESPN…" : "Refresh Scores"}
+          </button>
+          <button className="btn" onClick={exportManual}>
+            ↓ Export scores.json
+          </button>
+        </div>
+        <div style={{fontSize:"0.72rem",color:"var(--muted)",marginTop:8}}>
+          After refreshing, push <code style={{background:"var(--surface2)",padding:"1px 5px",borderRadius:3}}>scores.json</code> to GitHub so your group sees updated scores
+        </div>
+        {log && <div className={`log log-${logType}`}>{log.replace(/^(ok|err|info):/,"")}</div>}
+      </div>
+    </div>
+  );
+}
+
+// ── Picks export ──────────────────────────────────────────────────────────────
+function PicksCard() {
+  const [log, setLog] = useState("");
+
+  function exportPicks() {
+    const teams = loadJSON('pga2026_teams');
+    if (!teams) { setLog("err:No picks in localStorage — make picks on the Draft Board first"); return; }
+    downloadFile('picks.json', { teams, exportedAt: new Date().toISOString() });
+    setLog("ok:picks.json downloaded — push to GitHub");
+  }
+
+  function resetDraft() {
+    if (!window.confirm("Reset ALL picks? This cannot be undone.")) return;
+    localStorage.removeItem('pga2026_teams');
+    localStorage.removeItem('pga2026_teams_ts');
+    setLog("ok:Draft reset — reload the Draft Board");
+  }
+
+  const logType = log.startsWith("ok:") ? "ok" : log.startsWith("err:") ? "err" : log.startsWith("warn:") ? "warn" : "info";
+
+  return (
+    <div className="card">
+      <div className="card-head">
+        <div><h2>Draft Picks</h2><div className="desc">Export picks for GitHub or reset the draft</div></div>
+      </div>
+      <div className="card-body">
+        <div className="row">
+          <button className="btn btn-green" onClick={exportPicks}>↓ Export picks.json</button>
+          <button className="btn btn-red" onClick={resetDraft}>↺ Reset Draft</button>
+        </div>
+        {log && <div className={`log log-${logType}`}>{log.replace(/^(ok|err|info):/,"")}</div>}
+      </div>
+    </div>
+  );
+}
+
+// ── Champion ──────────────────────────────────────────────────────────────────
+function ChampionCard() {
+  const [champion, setChampion] = useState(() => localStorage.getItem('pga2026_champion') || "");
+  const [log, setLog] = useState("");
+
+  function save() {
+    localStorage.setItem('pga2026_champion', champion);
+    // Also update scores.json export
+    const scores = loadJSON('pga2026_scores') || {};
+    downloadFile('scores.json', { scores, champion, exportedAt: new Date().toISOString() });
+    setLog(`ok:Champion set to "${champion}" · scores.json downloaded`);
+  }
+
+  function clear() {
+    localStorage.removeItem('pga2026_champion');
+    setChampion("");
+    setLog("ok:Champion cleared");
+  }
+
+  const logType = log.startsWith("ok:") ? "ok" : log.startsWith("err:") ? "err" : log.startsWith("warn:") ? "warn" : "info";
+
+  return (
+    <div className="card">
+      <div className="card-head">
+        <div><h2>Tournament Champion</h2><div className="desc">Set once the winner is known · triggers 25% payout</div></div>
+      </div>
+      <div className="card-body">
+        <div className="row">
+          <div className="col">
+            <label className="label">Champion Name</label>
+            <input className="input" type="text" placeholder="e.g. Scottie Scheffler"
+              value={champion} onChange={e => setChampion(e.target.value)}
+              onKeyDown={e => e.key === "Enter" && save()} />
+          </div>
+          <button className="btn btn-gold" onClick={save} style={{flexShrink:0,height:38}}>Set Champion</button>
+          <button className="btn btn-red" onClick={clear} style={{flexShrink:0,height:38}}>Clear</button>
+        </div>
+        {log && <div className={`log log-${logType}`}>{log.replace(/^(ok|err|info):/,"")}</div>}
+      </div>
+    </div>
+  );
+}
+
+// ── Clear all data ─────────────────────────────────────────────────────────────
+function DangerCard() {
+  function clearAll() {
+    if (!window.confirm("Clear ALL localStorage data? Picks, scores, odds, and champion will all be wiped.")) return;
+    ['pga2026_teams','pga2026_teams_ts','pga2026_scores','pga2026_scores_ts',
+     'pga2026_odds','pga2026_champion','pga2026_odds_key'].forEach(k => localStorage.removeItem(k));
+    window.location.reload();
+  }
+  return (
+    <div className="card" style={{borderColor:"rgba(239,68,68,0.2)"}}>
+      <div className="card-head" style={{background:"rgba(239,68,68,0.05)"}}>
+        <div><h2 style={{color:"#fca5a5"}}>Danger Zone</h2><div className="desc">Irreversible actions</div></div>
+      </div>
+      <div className="card-body">
+        <button className="btn btn-red" onClick={clearAll}>🗑 Clear All Local Data</button>
+        <div style={{fontSize:"0.72rem",color:"var(--muted)",marginTop:8}}>Wipes everything from localStorage. Does not affect GitHub files.</div>
+      </div>
+    </div>
+  );
+}
+
+// ── App ───────────────────────────────────────────────────────────────────────
+function App() {
+  return (
+    <div>
+      <header className="header">
+        <div className="header-inner">
+          <div>
+            <div className="header-title">2026 PGA Championship</div>
+            <div className="header-sub">Aronimink Golf Club · Newtown Square, PA · May 14–17, 2026</div>
+            <div style={{marginTop:"8px",display:"flex",gap:"8px"}}>
+              <a href="index.html" style={{fontSize:"0.7rem",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:5,padding:"3px 10px",color:"#6b7a90",textDecoration:"none",fontWeight:500}}>📋 Draft Board</a>
+              <a href="scoreboard.html" style={{fontSize:"0.7rem",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:5,padding:"3px 10px",color:"#6b7a90",textDecoration:"none",fontWeight:500}}>🏆 Scoreboard</a>
+              <span style={{fontSize:"0.7rem",background:"rgba(212,168,83,0.15)",border:"1px solid rgba(212,168,83,0.4)",borderRadius:5,padding:"3px 10px",color:"#d4a853",fontWeight:600}}>⚙️ Admin</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div className="layout">
+        <StatusCard />
+        <ScoresCard />
+        <PicksCard />
+        <ChampionCard />
+        <DangerCard />
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
