@@ -362,21 +362,21 @@ function App() {
 
   const pickedBy = useMemo(() => {
     const m = {};
-    teams.forEach(t => t.picks.forEach(p => { m[p] = t.id; }));
+    (teams || []).forEach(t => (t.picks || []).forEach(p => { m[p] = t.id; }));
     return m;
   }, [teams]);
 
   const allPicked = useMemo(() => new Set(Object.keys(pickedBy)), [pickedBy]);
 
   // Total picks made = current snake position
-  const totalPicked = useMemo(() => teams.reduce((s,t) => s + t.picks.length, 0), [teams]);
+  const totalPicked = useMemo(() => (teams || []).reduce((s,t) => s + (t.picks||[]).length, 0), [teams]);
 
   // Who picks next
   const nextPickTeamIdx = SNAKE_ORDER[totalPicked] ?? null;
-  const nextPickTeam = nextPickTeamIdx !== null ? teams[nextPickTeamIdx] : null;
+  const nextPickTeam = nextPickTeamIdx !== null && teams ? teams[nextPickTeamIdx] : null;
   // Also show pick after that
   const onDeckTeamIdx = SNAKE_ORDER[totalPicked + 1] ?? null;
-  const onDeckTeam = onDeckTeamIdx !== null ? teams[onDeckTeamIdx] : null;
+  const onDeckTeam = onDeckTeamIdx !== null && teams ? teams[onDeckTeamIdx] : null;
 
   const currentRound = Math.floor(totalPicked / 6) + 1;
   const pickInRound = (totalPicked % 6) + 1;
@@ -703,7 +703,7 @@ function App() {
                 </tbody>
               </table>
             </div>
-            <div className="odds-source">📊 Odds come from DraftKings or Vegas Insider.  Always do your own research and don't solely depend on these</div>
+            <div className="odds-source">📊 DraftKings Sportsbook · Click Draft to assign to the team on the clock · Click Reassign to override</div>
           </div>
         </div>
 
