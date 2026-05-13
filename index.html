@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 PGA Championship — Draft Board</title>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0a0e14;
+    --surface: #111720;
+    --surface2: #182030;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --gold: #d4a853;
+    --gold2: #f0c870;
+    --text: #e8ecf0;
+    --muted: #6b7a90;
+    --green: #22c55e;
+    --red: #ef4444;
+    --accent: #3b82f6;
+  }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+  #root { min-height: 100vh; }
+
+  .header { background: linear-gradient(180deg, #0f1a2e 0%, var(--bg) 100%); border-bottom: 1px solid var(--border); padding: 0 2rem; }
+  .header-inner { max-width: 1400px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 0; }
+  .header-title { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 3px; color: var(--gold); line-height: 1; }
+  .header-sub { font-size: 0.72rem; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 2px; }
+  .header-meta { display: flex; gap: 2rem; align-items: center; }
+  .stat-pill { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 1rem; text-align: center; }
+  .stat-pill .val { font-size: 1.4rem; font-weight: 600; color: var(--gold); font-family: 'Bebas Neue', sans-serif; letter-spacing: 1px; }
+  .stat-pill .lbl { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+
+  .layout { max-width: 1400px; margin: 0 auto; padding: 1.5rem 2rem; display: grid; grid-template-columns: 1fr 340px; gap: 1.5rem; }
+
+  .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .panel-head { padding: 1rem 1.25rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: var(--surface2); }
+  .panel-head h2 { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); font-weight: 500; }
+
+  .search-bar { display: flex; align-items: center; gap: 0.5rem; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.45rem 0.75rem; }
+  .search-bar input { background: none; border: none; outline: none; color: var(--text); font-family: inherit; font-size: 0.85rem; width: 180px; }
+  .search-bar input::placeholder { color: var(--muted); }
+  .search-icon { color: var(--muted); font-size: 0.9rem; }
+
+  .filter-tabs { display: flex; gap: 4px; }
+  .filter-tab { padding: 0.3rem 0.7rem; border-radius: 6px; border: 1px solid transparent; font-size: 0.75rem; font-weight: 500; cursor: pointer; transition: all 0.15s; color: var(--muted); background: none; }
+  .filter-tab.active { background: var(--surface2); border-color: var(--border2); color: var(--text); }
+  .filter-tab:hover:not(.active) { color: var(--text); }
+
+  .players-table { width: 100%; border-collapse: collapse; }
+  .players-table th { padding: 0.6rem 1rem; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); font-weight: 500; text-align: left; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--surface2); z-index: 2; }
+  .players-table th.right, .players-table td.right { text-align: right; }
+  .players-table tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; cursor: pointer; }
+  .players-table tbody tr:hover { background: rgba(255,255,255,0.03); }
+  .players-table tbody tr.picked { background: rgba(212,168,83,0.07); }
+  .players-table tbody tr.picked:hover { background: rgba(212,168,83,0.12); }
+  .players-table td { padding: 0.7rem 1rem; font-size: 0.875rem; }
+
+  .rank { font-size: 0.75rem; color: var(--muted); width: 28px; }
+  .player-name { font-weight: 500; }
+  .player-name small { display: block; font-size: 0.7rem; font-weight: 400; color: var(--muted); margin-top: 1px; }
+
+  .odds-chip { display: inline-block; padding: 0.2rem 0.5rem; border-radius: 5px; font-size: 0.8rem; font-weight: 600; font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.5px; }
+  .odds-fav { background: rgba(212,168,83,0.15); color: var(--gold2); }
+  .odds-mid { background: rgba(59,130,246,0.15); color: #93c5fd; }
+  .odds-long { background: rgba(107,122,144,0.12); color: var(--muted); }
+  .odds-loading { background: var(--surface2); color: var(--muted); animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+  .pick-btn { padding: 0.3rem 0.8rem; border-radius: 6px; border: 1px solid var(--border2); background: none; color: var(--muted); font-size: 0.75rem; font-family: inherit; font-weight: 500; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+  .pick-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .pick-btn.picked { background: rgba(212,168,83,0.15); border-color: var(--gold); color: var(--gold); }
+  .pick-btn.picked:hover { background: rgba(239,68,68,0.15); border-color: var(--red); color: var(--red); }
+
+  .sidebar { display: flex; flex-direction: column; gap: 1rem; }
+
+  .entry-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .entry-head { padding: 0.75rem 1rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); background: var(--surface2); }
+  .entry-head span { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); }
+  .entry-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; letter-spacing: 2px; color: var(--gold); }
+  .entry-picks { padding: 0.5rem; }
+  .pick-row { display: flex; align-items: center; justify-content: space-between; padding: 0.4rem 0.5rem; border-radius: 6px; font-size: 0.82rem; }
+  .pick-row:hover { background: var(--surface2); }
+  .pick-row .pname { font-weight: 500; }
+  .pick-row .podds { font-size: 0.75rem; color: var(--muted); }
+  .pick-row .rem { color: var(--muted); font-size: 0.7rem; cursor: pointer; padding: 2px 6px; border-radius: 4px; }
+  .pick-row .rem:hover { background: rgba(239,68,68,0.15); color: var(--red); }
+  .empty-picks { padding: 1.5rem 1rem; text-align: center; color: var(--muted); font-size: 0.8rem; line-height: 1.6; }
+
+  .odds-legend { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  .table-scroll { max-height: calc(100vh - 260px); overflow-y: auto; }
+  .table-scroll::-webkit-scrollbar { width: 4px; }
+  .table-scroll::-webkit-scrollbar-track { background: transparent; }
+  .table-scroll::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+  .tee-badge { font-size: 0.7rem; color: var(--muted); background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 1px 5px; font-family: 'DM Sans', monospace; }
+
+  .odds-source { font-size: 0.65rem; color: var(--muted); padding: 0.5rem 1rem; border-top: 1px solid var(--border); }
+
+  .taken-badge { font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; background: rgba(212,168,83,0.12); color: var(--gold); font-weight: 500; }
+
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; padding: 1rem; }
+    .header-meta { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useMemo, useRef, useEffect } = React;
+
+// Official 2026 PGA Championship field — pgachampionship.com
+const ELITE = ["Scottie Scheffler","Rory McIlroy","Xander Schauffele","Bryson DeChambeau",
+  "Ludvig Åberg","Collin Morikawa","Tommy Fleetwood","Viktor Hovland","Jon Rahm","Cameron Young",
+  "Justin Thomas","Matt Fitzpatrick","Brooks Koepka","Jordan Spieth","Patrick Cantlay",
+  "Shane Lowry","Hideki Matsuyama","Si Woo Kim","Justin Rose","Wyndham Clark",
+  "Sam Burns","Keegan Bradley","Robert MacIntyre","Jason Day","Sahith Theegala",
+  "Joaquín Niemann","Adam Scott","Corey Conners","Tyrrell Hatton","Max Homa",
+  "Sungjae Im","Dustin Johnson","Min Woo Lee","Akshay Bhatia"];
+
+const FIELD_REST = [
+  "Angel Ayora","Derek Berg","Daniel Berger","Christiaan Bezuidenhout","Francisco Bidé",
+  "Chandler Blanchet","Michael Block","Michael Brennan","Jacob Bridgeman","Daniel Brown",
+  "Brian Campbell","Ricky Castillo","Bud Cauley","Stewart Cink","Tyler Collet",
+  "Pierceson Coody","Thomas Detry","Luke Donald","Jesse Droemer","Jason Dufner",
+  "Nico Echavarría","Harris English","Bryce Fisher","Steven Fisk","Alex Fitzpatrick",
+  "Rickie Fowler","Ryan Fox","Chris Gabriele","Mark Geddes","Ryan Gerard",
+  "Lucas Glover","Chris Gotterup","Max Greyserman","Ben Griffin","Emiliano Grillo",
+  "Jordan Gumberg","Harry Hall","Brian Harman","Padraig Harrington","Zach Haynes",
+  "Russell Henley","Kazuki Higa","Garrick Higgo","Joe Highsmith","Daniel Hillier",
+  "Ryo Hisatsune","Rico Hoey","Ian Holt","Billy Horschel","Austin Hurt",
+  "Nicolai Højgaard","Rasmus Højgaard","Stephan Jaeger","Casey Jarvis",
+  "Jared Jones","Kota Kaneko","Michael Kartrude","Martin Kaymer","John Keefer",
+  "Ben Kern","Michael Kim","Si Woo Kim","Chris Kirk","Kurt Kitayama",
+  "Jake Knapp","Ryan Lenahan","Haotong Li","Mikael Lindberg","David Lipsky",
+  "Denny McCarthy","Matt McCarty","Paul McClure","Max McGreevy","Tom McKibbin",
+  "Maverick McNealy","Shaun Micheel","Keith Mitchell","William Mouw",
+  "Rasmus Neergaard-Petersen","Alex Noren","Andrew Novak","John Parry","Taylor Pendrith",
+  "Marco Penge","Ben Polland","J.T. Poston","Aldrich Potgieter","David Puig",
+  "Andrew Putnam","Aaron Rai","Patrick Reed","Kristoffer Reitan","Davis Riley",
+  "Patrick Rodgers","Adrien Saddier","Garrett Sapp","Jayden Schaper","Adam Schenk",
+  "Matti Schmid","Braden Shattuck","Alex Smalley","Cameron Smith","Jordan Smith",
+  "Austin Smotherman","Elvis Smylie","Travis Smyth","Brandt Snedeker","J.J. Spaun",
+  "Sam Stevens","Sepp Straka","Andy Sullivan","Nick Taylor","Michael Thorbjornsen",
+  "Sami Välimäki","Jhonattan Vegas","Ryan Vermeer","Jimmy Walker","Matt Wallace",
+  "Bernd Wiesberger","Timothy Wiseman","Gary Woodland","Y.E. Yang","Sudarshan Yellamaraju"
+];
+
+const FIELD = [...new Set([...ELITE, ...FIELD_REST])].sort((a,b) => {
+  const ia = ELITE.indexOf(a); const ib = ELITE.indexOf(b);
+  if(ia>=0 && ib>=0) return ia-ib;
+  if(ia>=0) return -1; if(ib>=0) return 1;
+  return a.localeCompare(b);
+});
+
+const SEED_ODDS = {
+  "Scottie Scheffler":"+450","Rory McIlroy":"+700","Xander Schauffele":"+1200",
+  "Bryson DeChambeau":"+1400","Ludvig Åberg":"+1600","Collin Morikawa":"+1800",
+  "Jon Rahm":"+2000","Viktor Hovland":"+2200","Cameron Young":"+2500","Justin Thomas":"+2800",
+  "Brooks Koepka":"+3000","Jordan Spieth":"+3000","Tommy Fleetwood":"+3500",
+  "Patrick Cantlay":"+3500","Matt Fitzpatrick":"+4000","Shane Lowry":"+4000",
+  "Hideki Matsuyama":"+4500","Si Woo Kim":"+5000","Justin Rose":"+5500","Wyndham Clark":"+5500",
+  "Akshay Bhatia":"+5500","Max Homa":"+6000","Sam Burns":"+6000","Tyrrell Hatton":"+6500",
+  "Keegan Bradley":"+7000","Robert MacIntyre":"+7000","Sungjae Im":"+7500",
+  "Dustin Johnson":"+8000","Min Woo Lee":"+8000","Jason Day":"+8000",
+  "Brian Harman":"+8500","Sahith Theegala":"+9000","Joaquín Niemann":"+9000",
+  "Rasmus Højgaard":"+9500","Adam Scott":"+10000","Corey Conners":"+10000",
+  "Patrick Reed":"+12500","Chris Gotterup":"+12500","Sepp Straka":"+14000",
+  "Tom McKibbin":"+14000","Cameron Smith":"+15000","Harris English":"+15000",
+  "Rickie Fowler":"+18000","Russell Henley":"+18000","Keith Mitchell":"+20000",
+  "Daniel Berger":"+20000","Billy Horschel":"+25000","Emiliano Grillo":"+25000",
+};
+
+// Snake draft order — 6 teams, rounds snake back and forth
+// Minges=0, Curry=1, Tracy=2, Shumate=3, Hobie=4, Creelman=5
+const TEAM_NAMES = ["Minges","Curry","Tracy","Shumate","Hobie","Creelman"];
+function buildSnakeOrder(numTeams, numRounds) {
+  const order = [];
+  for(let r = 0; r < numRounds; r++) {
+    const round = r % 2 === 0
+      ? Array.from({length: numTeams}, (_,i) => i)
+      : Array.from({length: numTeams}, (_,i) => numTeams-1-i);
+    order.push(...round);
+  }
+  return order;
+}
+// Generate enough slots (10 rounds = 60 picks)
+const SNAKE_ORDER = buildSnakeOrder(6, 7);
+
+// Existing picks from the image — 27 picks made so far
+// Snake sequence positions 0-26
+const EXISTING_PICKS_LIST = [
+  // R1 fwd: Minges, Curry, Tracy, Shumate, Hobie, Creelman
+  {team:"Minges",  player:"Scottie Scheffler"},
+  {team:"Curry",   player:"Rory McIlroy"},
+  {team:"Tracy",   player:"Cameron Young"},
+  {team:"Shumate", player:"Bryson DeChambeau"},
+  {team:"Hobie",   player:"Xander Schauffele"},
+  {team:"Creelman",player:"Ludvig Åberg"},
+  // R2 rev: Creelman, Hobie, Shumate, Tracy, Curry, Minges
+  {team:"Creelman",player:"Jon Rahm"},
+  {team:"Hobie",   player:"Matt Fitzpatrick"},
+  {team:"Shumate", player:"Tommy Fleetwood"},
+  {team:"Tracy",   player:"Viktor Hovland"},
+  {team:"Curry",   player:"Brooks Koepka"},
+  {team:"Minges",  player:"Collin Morikawa"},
+  // R3 fwd: Minges, Curry, Tracy, Shumate, Hobie, Creelman
+  {team:"Minges",  player:"Russell Henley"},
+  {team:"Curry",   player:"Justin Rose"},
+  {team:"Tracy",   player:"Patrick Cantlay"},
+  {team:"Shumate", player:"Jordan Spieth"},
+  {team:"Hobie",   player:"Justin Thomas"},
+  {team:"Creelman",player:"Si Woo Kim"},
+  // R4 rev: Creelman, Hobie, Shumate, Tracy, Curry, Minges
+  {team:"Creelman",player:"Hideki Matsuyama"},
+  {team:"Hobie",   player:"Chris Gotterup"},
+  {team:"Shumate", player:"Sam Burns"},
+  {team:"Tracy",   player:"Tyrrell Hatton"},
+  {team:"Curry",   player:"Maverick McNealy"},
+  {team:"Minges",  player:"Rickie Fowler"},
+  // R5 fwd (partial): Minges, Curry, Tracy — remaining: Shumate, Hobie, Creelman, Creelman, Hobie...
+  {team:"Minges",  player:"Akshay Bhatia"},
+  {team:"Curry",   player:"Shane Lowry"},
+  {team:"Tracy",   player:"Min Woo Lee"},
+];
+
+const TEAM_COLORS = [
+  {bg:"rgba(212,168,83,0.15)",text:"#f0c870",border:"rgba(212,168,83,0.4)"},
+  {bg:"rgba(59,130,246,0.15)",text:"#93c5fd",border:"rgba(59,130,246,0.4)"},
+  {bg:"rgba(34,197,94,0.15)",text:"#86efac",border:"rgba(34,197,94,0.4)"},
+  {bg:"rgba(239,68,68,0.15)",text:"#fca5a5",border:"rgba(239,68,68,0.4)"},
+  {bg:"rgba(168,85,247,0.15)",text:"#d8b4fe",border:"rgba(168,85,247,0.4)"},
+  {bg:"rgba(249,115,22,0.15)",text:"#fdba74",border:"rgba(249,115,22,0.4)"},
+];
+
+function oddsClass(o) {
+  if(!o) return "odds-long";
+  const n = parseInt(o.replace("+","").replace("-",""));
+  if(n <= 2000) return "odds-fav";
+  if(n <= 8000) return "odds-mid";
+  return "odds-long";
+}
+
+let teamIdCounter = 1;
+function makeTeam(name, picks=[]) {
+  return { id: teamIdCounter++, name, picks };
+}
+
+// Build initial team state from existing picks
+function buildInitialTeams() {
+  const teamMap = {};
+  TEAM_NAMES.forEach(n => { teamMap[n] = []; });
+  EXISTING_PICKS_LIST.forEach(({team, player}) => {
+    if(teamMap[team]) teamMap[team].push(player);
+  });
+  return TEAM_NAMES.map(n => makeTeam(n, teamMap[n]));
+}
+
+function App() {
+  const [teams, setTeams] = useState(() => {
+    try {
+      const saved = localStorage.getItem('pga2026_teams');
+      if (saved) return JSON.parse(saved);
+    } catch(e) {}
+    return buildInitialTeams();
+  });
+  useEffect(() => {
+    try { localStorage.setItem('pga2026_teams', JSON.stringify(teams)); } catch(e) {}
+  }, [teams]);
+
+  const [odds] = useState(SEED_ODDS);
+  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState("all");
+  const [assigning, setAssigning] = useState(null);
+  const [editingTeam, setEditingTeam] = useState(null);
+  const [editVal, setEditVal] = useState("");
+  const [newTeamName, setNewTeamName] = useState("");
+  const [addingTeam, setAddingTeam] = useState(false);
+  const newTeamRef = useRef(null);
+
+  const pickedBy = useMemo(() => {
+    const m = {};
+    teams.forEach(t => t.picks.forEach(p => { m[p] = t.id; }));
+    return m;
+  }, [teams]);
+
+  const allPicked = useMemo(() => new Set(Object.keys(pickedBy)), [pickedBy]);
+
+  // Total picks made = current snake position
+  const totalPicked = useMemo(() => teams.reduce((s,t) => s + t.picks.length, 0), [teams]);
+
+  // Who picks next
+  const nextPickTeamIdx = SNAKE_ORDER[totalPicked] ?? null;
+  const nextPickTeam = nextPickTeamIdx !== null ? teams[nextPickTeamIdx] : null;
+  // Also show pick after that
+  const onDeckTeamIdx = SNAKE_ORDER[totalPicked + 1] ?? null;
+  const onDeckTeam = onDeckTeamIdx !== null ? teams[onDeckTeamIdx] : null;
+
+  const currentRound = Math.floor(totalPicked / 6) + 1;
+  const pickInRound = (totalPicked % 6) + 1;
+
+  const filtered = useMemo(() => {
+    let list = FIELD;
+    if(search) list = list.filter(p => p.toLowerCase().includes(search.toLowerCase()));
+    if(filter === "available") list = list.filter(p => !allPicked.has(p));
+    if(filter === "assigned") list = list.filter(p => allPicked.has(p));
+    if(filter === "favorites") list = list.filter(p => {
+      const o = odds[p]; if(!o) return false;
+      return parseInt(o.replace("+","")) <= 3500;
+    });
+    return list;
+  }, [search, filter, allPicked, odds]);
+
+  function assignPlayer(player, teamId) {
+    setTeams(prev => prev.map(t => ({
+      ...t,
+      picks: teamId === t.id
+        ? (t.picks.includes(player) ? t.picks : [...t.picks, player])
+        : t.picks.filter(p => p !== player)
+    })));
+    setAssigning(null);
+  }
+
+  function unassignPlayer(player) {
+    setTeams(prev => prev.map(t => ({...t, picks: t.picks.filter(p => p !== player)})));
+  }
+
+  // Quick-assign to the "on the clock" team
+  function quickAssign(player) {
+    if(!nextPickTeam) return;
+    assignPlayer(player, nextPickTeam.id);
+  }
+
+  function addTeam() {
+    const name = newTeamName.trim();
+    if(!name) return;
+    setTeams(prev => [...prev, makeTeam(name)]);
+    setNewTeamName("");
+    setAddingTeam(false);
+  }
+
+  function deleteTeam(id) {
+    setTeams(prev => prev.filter(t => t.id !== id));
+  }
+
+  function resetDraft() {
+    if(window.confirm('Reset the entire draft? This will clear all picks and cannot be undone.')) {
+      const fresh = buildInitialTeams();
+      setTeams(fresh);
+      try { localStorage.setItem('pga2026_teams', JSON.stringify(fresh)); } catch(e) {}
+    }
+  }
+
+  function renameTeam(id, name) {
+    setTeams(prev => prev.map(t => t.id===id ? {...t, name} : t));
+    setEditingTeam(null);
+  }
+
+  const teamColor = (idx) => TEAM_COLORS[idx % TEAM_COLORS.length];
+  const teamColorById = (id) => {
+    const idx = teams.findIndex(t => t.id === id);
+    return idx >= 0 ? teamColor(idx) : null;
+  };
+
+  return (
+    <div>
+      {/* Assign modal */}
+      {assigning && (
+        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.75)",zIndex:100,display:"flex",alignItems:"center",justifyContent:"center"}}
+          onClick={()=>setAssigning(null)}>
+          <div style={{background:"#182030",border:"1px solid rgba(255,255,255,0.15)",borderRadius:14,padding:"1.5rem",minWidth:300,maxWidth:360}}
+            onClick={e=>e.stopPropagation()}>
+            <div style={{fontSize:"0.65rem",textTransform:"uppercase",letterSpacing:"2px",color:"#6b7a90",marginBottom:"0.4rem"}}>Assign to team</div>
+            <div style={{fontSize:"1.05rem",fontWeight:600,color:"#e8ecf0",marginBottom:"0.35rem"}}>{assigning}</div>
+            {odds[assigning] && <div style={{fontSize:"0.75rem",color:"#6b7a90",marginBottom:"1.25rem"}}>Win odds: <span style={{color:"#d4a853"}}>{odds[assigning]}</span></div>}
+            {!odds[assigning] && <div style={{marginBottom:"1.25rem"}} />}
+            <div style={{display:"flex",flexDirection:"column",gap:8}}>
+              {teams.map((t,i) => {
+                const c = teamColor(i);
+                const alreadyOn = t.picks.includes(assigning);
+                const isOnClock = nextPickTeam && t.id === nextPickTeam.id;
+                return (
+                  <button key={t.id}
+                    style={{background: alreadyOn ? c.bg : "transparent",
+                      border:`1px solid ${alreadyOn ? c.border : isOnClock ? c.border : "rgba(255,255,255,0.12)"}`,
+                      borderRadius:8, padding:"0.6rem 1rem", color: alreadyOn ? c.text : isOnClock ? c.text : "#e8ecf0",
+                      fontFamily:"inherit", fontSize:"0.9rem", fontWeight: alreadyOn || isOnClock ? 600 : 400,
+                      cursor:"pointer", textAlign:"left", display:"flex", justifyContent:"space-between", alignItems:"center"}}
+                    onClick={() => assignPlayer(assigning, t.id)}>
+                    <span style={{display:"flex",alignItems:"center",gap:6}}>
+                      {isOnClock && <span style={{fontSize:"0.6rem",background:c.bg,color:c.text,border:`1px solid ${c.border}`,borderRadius:3,padding:"1px 5px",textTransform:"uppercase",letterSpacing:"1px"}}>On Clock</span>}
+                      {t.name}
+                    </span>
+                    <span style={{fontSize:"0.75rem",color: alreadyOn ? c.text : "#6b7a90"}}>
+                      {alreadyOn ? "✓ assigned" : `${t.picks.length} picks`}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+            {pickedBy[assigning] && (
+              <button style={{marginTop:12,width:"100%",background:"rgba(239,68,68,0.1)",border:"1px solid rgba(239,68,68,0.3)",
+                borderRadius:8,padding:"0.5rem",color:"#fca5a5",fontFamily:"inherit",fontSize:"0.85rem",cursor:"pointer"}}
+                onClick={()=>{unassignPlayer(assigning);setAssigning(null);}}>
+                Remove from team
+              </button>
+            )}
+            <button style={{marginTop:8,width:"100%",background:"transparent",border:"1px solid rgba(255,255,255,0.08)",
+              borderRadius:8,padding:"0.5rem",color:"#6b7a90",fontFamily:"inherit",fontSize:"0.85rem",cursor:"pointer"}}
+              onClick={()=>setAssigning(null)}>Cancel</button>
+          </div>
+        </div>
+      )}
+
+      <header className="header">
+        <div className="header-inner">
+          <div>
+            <div className="header-title">2026 PGA Championship</div>
+            <div className="header-sub">Aronimink Golf Club · Newtown Square, PA · May 14–17, 2026</div>
+            <div style={{marginTop:"8px",display:"flex",gap:"8px"}}>
+              <span style={{fontSize:"0.7rem",background:"rgba(212,168,83,0.15)",border:"1px solid rgba(212,168,83,0.4)",borderRadius:5,padding:"3px 10px",color:"#d4a853",fontWeight:600}}>📋 Draft Board</span>
+              <a href="scoreboard.html" style={{fontSize:"0.7rem",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:5,padding:"3px 10px",color:"#6b7a90",textDecoration:"none",fontWeight:500}}>🏆 Scoreboard</a>
+            </div>
+          </div>
+          <div className="header-meta">
+            <div className="stat-pill"><div className="val">{FIELD.length}</div><div className="lbl">Field Size</div></div>
+            <div className="stat-pill"><div className="val">{totalPicked}</div><div className="lbl">Picks Made</div></div>
+            <div className="stat-pill"><div className="val">Round {currentRound}, Pick {pickInRound}</div><div className="lbl">Draft Position</div></div>
+            <div className="stat-pill">
+              <div className="val" style={{color: nextPickTeam ? teamColor(teams.indexOf(nextPickTeam)).text : "var(--gold)"}}>
+                {nextPickTeam ? nextPickTeam.name : "Done"}
+              </div>
+              <div className="lbl">On The Clock</div>
+            </div>
+            <div className="stat-pill"><div className="val">{Math.max(0, 42 - totalPicked)}</div><div className="lbl">Picks Remaining</div></div>
+          </div>
+          <button onClick={resetDraft} style={{background:"rgba(239,68,68,0.1)",border:"1px solid rgba(239,68,68,0.3)",borderRadius:8,padding:"0.4rem 0.9rem",color:"#fca5a5",fontFamily:"inherit",fontSize:"0.75rem",cursor:"pointer",letterSpacing:"0.5px"}}>
+            ↺ Reset Draft
+          </button>
+        </div>
+      </header>
+
+      {/* On-the-clock banner */}
+      {nextPickTeam && (() => {
+        const idx = teams.indexOf(nextPickTeam);
+        const c = teamColor(idx);
+        return (
+          <div style={{background:c.bg, borderBottom:`1px solid ${c.border}`, padding:"0.6rem 2rem"}}>
+            <div style={{maxWidth:1400, margin:"0 auto", display:"flex", alignItems:"center", gap:"1.5rem", flexWrap:"wrap"}}>
+              <div style={{display:"flex",alignItems:"center",gap:"0.75rem"}}>
+                <span style={{fontSize:"0.65rem",textTransform:"uppercase",letterSpacing:"2px",color:c.text,opacity:0.7}}>On the clock</span>
+                <span style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"1.3rem",letterSpacing:"2px",color:c.text}}>{nextPickTeam.name}</span>
+                <span style={{fontSize:"0.72rem",color:c.text,opacity:0.6}}>· Round {currentRound}, Pick {pickInRound} of 6</span>
+              </div>
+              {onDeckTeam && (
+                <div style={{display:"flex",alignItems:"center",gap:"0.5rem"}}>
+                  <span style={{fontSize:"0.65rem",textTransform:"uppercase",letterSpacing:"1px",color:"#6b7a90"}}>On deck</span>
+                  <span style={{fontSize:"0.85rem",color:"#6b7a90",fontWeight:500}}>{onDeckTeam.name}</span>
+                </div>
+              )}
+              <div style={{marginLeft:"auto",fontSize:"0.75rem",color:c.text,opacity:0.7}}>
+                Click a player below to assign to <strong>{nextPickTeam.name}</strong>, or use the Assign button to pick a different team
+              </div>
+            </div>
+          </div>
+        );
+      })()}
+
+      <div className="layout">
+        {/* Player table */}
+        <div>
+          <div className="panel">
+            <div className="panel-head">
+              <h2>Player Field</h2>
+              <div style={{display:"flex",gap:"8px",alignItems:"center",flexWrap:"wrap"}}>
+                <div className="filter-tabs">
+                  {["all","available","assigned","favorites"].map(f => (
+                    <button key={f} className={`filter-tab${filter===f?" active":""}`} onClick={()=>setFilter(f)}>
+                      {f.charAt(0).toUpperCase()+f.slice(1)}
+                    </button>
+                  ))}
+                </div>
+                <div className="search-bar">
+                  <span className="search-icon">🔍</span>
+                  <input placeholder="Search player…" value={search} onChange={e=>setSearch(e.target.value)} />
+                </div>
+              </div>
+            </div>
+
+            <div className="table-scroll">
+              <table className="players-table">
+                <thead>
+                  <tr>
+                    <th style={{width:36}}>#</th>
+                    <th>Player</th>
+                    <th className="right">Win Odds</th>
+                    <th className="right">Team</th>
+                    <th className="right">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filtered.map((player, i) => {
+                    const ownerTeamId = pickedBy[player];
+                    const ownerTeam = ownerTeamId ? teams.find(t=>t.id===ownerTeamId) : null;
+                    const ownerIdx = ownerTeam ? teams.indexOf(ownerTeam) : -1;
+                    const c = ownerIdx >= 0 ? teamColor(ownerIdx) : null;
+                    const o = odds[player];
+                    const isAvailable = !ownerTeam;
+                    return (
+                      <tr key={player} style={ownerTeam ? {background: c.bg} : {}}
+                        onClick={() => isAvailable ? quickAssign(player) : setAssigning(player)}>
+                        <td className="rank">{i+1}</td>
+                        <td><div className="player-name">{player}</div></td>
+                        <td className="right">
+                          {o ? <span className={`odds-chip ${oddsClass(o)}`}>{o}</span>
+                             : <span className="odds-chip odds-long">—</span>}
+                        </td>
+                        <td className="right">
+                          {ownerTeam
+                            ? <span style={{fontSize:"0.7rem",padding:"2px 8px",borderRadius:4,background:c.bg,color:c.text,border:`1px solid ${c.border}`,fontWeight:600}}>{ownerTeam.name}</span>
+                            : nextPickTeam
+                              ? <span style={{fontSize:"0.7rem",color:"#6b7a90"}}>→ {nextPickTeam.name}</span>
+                              : <span style={{fontSize:"0.7rem",color:"#6b7a90"}}>—</span>
+                          }
+                        </td>
+                        <td className="right" onClick={e=>e.stopPropagation()}>
+                          {isAvailable
+                            ? <button className="pick-btn" style={{borderColor:"rgba(212,168,83,0.4)",color:"#d4a853"}}
+                                onClick={() => quickAssign(player)}>
+                                Draft
+                              </button>
+                            : <button className="pick-btn" onClick={()=>setAssigning(player)}>Reassign</button>
+                          }
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+            <div className="odds-source">📊 DraftKings Sportsbook · Click Draft to assign to the team on the clock · Click Reassign to override</div>
+          </div>
+        </div>
+
+        {/* Teams sidebar */}
+        <div className="sidebar">
+          {/* Draft order card */}
+          <div className="entry-card">
+            <div className="entry-head">
+              <span>Snake Draft Order</span>
+              <span style={{fontSize:"0.7rem",color:"#6b7a90"}}>Round {currentRound}</span>
+            </div>
+            <div style={{padding:"0.5rem 0.75rem"}}>
+              {TEAM_NAMES.map((name, i) => {
+                const team = teams.find(t=>t.name===name);
+                const idx = teams.indexOf(team);
+                const c = teamColor(idx);
+                const isOnClock = nextPickTeam && team && team.id === nextPickTeam.id;
+                const isOnDeck = onDeckTeam && team && team.id === onDeckTeam.id;
+                return (
+                  <div key={name} style={{display:"flex",alignItems:"center",justifyContent:"space-between",
+                    padding:"0.35rem 0.5rem",borderRadius:6,marginBottom:2,
+                    background: isOnClock ? c.bg : "transparent",
+                    border: isOnClock ? `1px solid ${c.border}` : "1px solid transparent"}}>
+                    <div style={{display:"flex",alignItems:"center",gap:8}}>
+                      <span style={{fontSize:"0.7rem",color:"#6b7a90",width:14,textAlign:"right"}}>{i+1}</span>
+                      <span style={{fontSize:"0.85rem",fontWeight: isOnClock ? 600 : 400,color: isOnClock ? c.text : "#e8ecf0"}}>{name}</span>
+                      {isOnClock && <span style={{fontSize:"0.6rem",background:c.bg,color:c.text,border:`1px solid ${c.border}`,borderRadius:3,padding:"1px 5px",textTransform:"uppercase",letterSpacing:"1px"}}>Clock</span>}
+                      {isOnDeck && <span style={{fontSize:"0.6rem",color:"#6b7a90",textTransform:"uppercase",letterSpacing:"1px"}}>On deck</span>}
+                    </div>
+                    <span style={{fontSize:"0.75rem",color: isOnClock ? c.text : "#6b7a90"}}>{team ? team.picks.length : 0} picks</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Add team */}
+          <div className="entry-card">
+            <div className="entry-head">
+              <span>Teams</span>
+              {!addingTeam
+                ? <button style={{background:"rgba(212,168,83,0.12)",border:"1px solid rgba(212,168,83,0.3)",borderRadius:6,
+                    padding:"3px 10px",color:"#d4a853",fontFamily:"inherit",fontSize:"0.75rem",cursor:"pointer"}}
+                    onClick={()=>{setAddingTeam(true); setTimeout(()=>newTeamRef.current?.focus(),50);}}>
+                    + Add Team
+                  </button>
+                : <div style={{display:"flex",gap:4}}>
+                    <input ref={newTeamRef} style={{background:"#0a0e14",border:"1px solid rgba(255,255,255,0.2)",borderRadius:5,
+                        color:"#e8ecf0",padding:"3px 8px",fontSize:"0.82rem",fontFamily:"inherit",width:110}}
+                      placeholder="Team name…" value={newTeamName}
+                      onChange={e=>setNewTeamName(e.target.value)}
+                      onKeyDown={e=>{if(e.key==="Enter")addTeam(); if(e.key==="Escape"){setAddingTeam(false);setNewTeamName("");}}}
+                    />
+                    <button style={{background:"rgba(34,197,94,0.15)",border:"1px solid rgba(34,197,94,0.3)",borderRadius:5,
+                        color:"#86efac",padding:"3px 8px",fontSize:"0.8rem",fontFamily:"inherit",cursor:"pointer"}}
+                      onClick={addTeam}>✓</button>
+                    <button style={{background:"transparent",border:"1px solid rgba(255,255,255,0.1)",borderRadius:5,
+                        color:"#6b7a90",padding:"3px 8px",fontSize:"0.8rem",fontFamily:"inherit",cursor:"pointer"}}
+                      onClick={()=>{setAddingTeam(false);setNewTeamName("");}}>✕</button>
+                  </div>
+              }
+            </div>
+          </div>
+
+          {teams.map((team, idx) => {
+            const c = teamColor(idx);
+            const isOnClock = nextPickTeam && team.id === nextPickTeam.id;
+            return (
+              <div className="entry-card" key={team.id} style={{borderColor: isOnClock ? c.border : "rgba(255,255,255,0.08)", borderWidth: isOnClock ? "2px" : "1px"}}>
+                <div className="entry-head" style={{background: c.bg}}>
+                  <span style={{fontSize:"0.65rem",textTransform:"uppercase",letterSpacing:"2px",color:c.text,opacity:0.7}}>
+                    {team.picks.length} pick{team.picks.length !== 1 ? "s" : ""}
+                    {isOnClock && <span style={{marginLeft:6,opacity:1,fontWeight:600}}>· ON THE CLOCK</span>}
+                  </span>
+                  {editingTeam === team.id
+                    ? <div style={{display:"flex",gap:4}}>
+                        <input style={{background:"#0a0e14",border:"1px solid rgba(255,255,255,0.2)",borderRadius:5,
+                            color:"#e8ecf0",padding:"2px 6px",fontSize:"0.85rem",fontFamily:"inherit",width:110}}
+                          value={editVal} onChange={e=>setEditVal(e.target.value)}
+                          onBlur={()=>renameTeam(team.id, editVal||team.name)}
+                          onKeyDown={e=>{if(e.key==="Enter")renameTeam(team.id,editVal||team.name); if(e.key==="Escape")setEditingTeam(null);}}
+                          autoFocus />
+                      </div>
+                    : <div style={{display:"flex",alignItems:"center",gap:6}}>
+                        <div className="entry-name" style={{color:c.text}}>{team.name}</div>
+                        <button title="Rename" style={{background:"none",border:"none",color:c.text,opacity:0.5,cursor:"pointer",fontSize:"0.75rem",padding:"0 2px"}}
+                          onClick={()=>{setEditingTeam(team.id);setEditVal(team.name);}}>✏️</button>
+                        <button title="Delete team" style={{background:"none",border:"none",color:"#ef4444",opacity:0.5,cursor:"pointer",fontSize:"0.75rem",padding:"0 2px"}}
+                          onClick={()=>deleteTeam(team.id)}>🗑</button>
+                      </div>
+                  }
+                </div>
+                <div className="entry-picks">
+                  {team.picks.length === 0
+                    ? <div className="empty-picks">No players assigned yet</div>
+                    : team.picks.map((p, pi) => (
+                        <div className="pick-row" key={p} style={{cursor:"pointer"}} onClick={()=>setAssigning(p)}>
+                          <div style={{display:"flex",alignItems:"center",gap:8}}>
+                            <span style={{fontSize:"0.65rem",color:"#6b7a90",minWidth:14,textAlign:"right"}}>{pi+1}</span>
+                            <div>
+                              <div className="pname">{p}</div>
+                              <div className="podds">{odds[p]||"—"}</div>
+                            </div>
+                          </div>
+                          <button style={{background:"none",border:"none",color:"#6b7a90",cursor:"pointer",fontSize:"0.75rem",padding:"2px 6px",borderRadius:4}}
+                            onClick={e=>{e.stopPropagation();unassignPlayer(p);}}>✕</button>
+                        </div>
+                      ))
+                  }
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
