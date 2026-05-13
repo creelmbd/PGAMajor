@@ -5,7 +5,7 @@ on:
     # Run every 30 minutes during tournament days, UTC time.
     # May 14–17, 2026, 12:00–23:30 UTC covers roughly 8am–7:30pm ET play hours.
     - cron: '0,30 12-23 14-17 5 *'
-  workflow_dispatch: []
+  workflow_dispatch:
 
 concurrency:
   group: update-pga-scores
