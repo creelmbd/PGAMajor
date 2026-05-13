@@ -259,7 +259,8 @@ function rankSuffix(n) {
 const IS_LOCAL = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
 
 function App() {
-  const [picks, setPicks] = useState(loadTeamsFromStorage);
+  const [picks, setPicks] = useState(() => IS_LOCAL ? loadTeamsFromStorage() : {});
+  const [picksLoading, setPicksLoading] = useState(!IS_LOCAL);
   const [scores, setScores] = useState(loadScoresFromStorage);
   const [champion, setChampion] = useState(loadChampionFromStorage);
   const [editingPlayer, setEditingPlayer] = useState(null);
@@ -276,16 +277,16 @@ function App() {
   // On localhost poll localStorage so scoreboard stays in sync with draft board
   useEffect(() => {
     if (!IS_LOCAL) {
-      // GitHub Pages: load picks.json once on mount
       fetchPicksJson().then(data => {
         if (data && data.teams) {
           const m = {};
           data.teams.forEach(t => { m[t.name] = t.picks || []; });
           setPicks(m);
         }
-      });
+        setPicksLoading(false);
+      }).catch(() => setPicksLoading(false));
     } else {
-      // Localhost: poll localStorage every 5s
+      setPicksLoading(false);
       const interval = setInterval(() => {
         const fresh = loadTeamsFromStorage();
         setPicks(fresh);
@@ -421,9 +422,9 @@ Rules:
 - tournament_status: "pre" (not started), "round1", "round2", "cut" (cut being made), "round3", "round4", "final"
 - leader: current overall tournament leader's name`;
 
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
+      const res = await fetch(PROXY_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json" }, // API key handled by proxy
         body: JSON.stringify({
           model: "claude-sonnet-4-20250514",
           max_tokens: 2000,
@@ -586,6 +587,13 @@ Rules:
     return m;
   }, [picks]);
 
+  if (picksLoading) return (
+    <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:"1rem"}}>
+      <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"2rem",letterSpacing:"3px",color:"var(--gold)"}}>2026 PGA Championship</div>
+      <div style={{color:"var(--muted)",fontSize:"0.85rem",animation:"pulse 1.5s infinite"}}>Loading scoreboard…</div>
+    </div>
+  );
+
   return (
     <div>
       {/* Edit score modal */}
@@ -634,6 +642,7 @@ Rules:
             <div style={{marginTop:"8px",display:"flex",gap:"8px"}}>
               <a href="index.html" style={{fontSize:"0.7rem",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:5,padding:"3px 10px",color:"#6b7a90",textDecoration:"none",fontWeight:500}}>📋 Draft Board</a>
               <span style={{fontSize:"0.7rem",background:"rgba(212,168,83,0.15)",border:"1px solid rgba(212,168,83,0.4)",borderRadius:5,padding:"3px 10px",color:"#d4a853",fontWeight:600}}>🏆 Scoreboard</span>
+              <a href="admin.html" style={{fontSize:"0.7rem",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:5,padding:"3px 10px",color:"#6b7a90",textDecoration:"none",fontWeight:500}}>⚙️ Admin</a>
             </div>
           </div>
           <div className="pot-pills">
@@ -653,37 +662,7 @@ Rules:
               <div className="pv" style={{color:"#fdba74"}}>${championPayout}</div>
               <div className="pl">Champion Pick</div>
             </div>
-            <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:6}}>
-              <div style={{display:"flex",gap:6}}>
-                <button
-                  onClick={fetchESPNScores}
-                  disabled={fetching}
-                  style={{display:"flex",alignItems:"center",gap:6,padding:"0.45rem 1rem",
-                    borderRadius:8,border:"1px solid rgba(212,168,83,0.4)",
-                    background: fetching ? "rgba(212,168,83,0.05)" : "rgba(212,168,83,0.12)",
-                    color: fetching ? "var(--muted)" : "var(--gold)",
-                    fontFamily:"inherit",fontSize:"0.8rem",fontWeight:600,cursor: fetching ? "not-allowed" : "pointer",
-                    letterSpacing:"0.5px",transition:"all 0.15s"}}>
-                  <span style={{fontSize:"1rem",animation: fetching ? "spin 1s linear infinite" : "none"}}>⟳</span>
-                  {fetching ? "Fetching ESPN…" : "Refresh Scores"}
-                </button>
-                <button
-                  onClick={exportScoresJson}
-                  title="Download scores.json to push to GitHub"
-                  style={{display:"flex",alignItems:"center",gap:5,padding:"0.45rem 0.8rem",
-                    borderRadius:8,border:"1px solid rgba(255,255,255,0.15)",
-                    background:"rgba(255,255,255,0.04)",color:"var(--muted)",
-                    fontFamily:"inherit",fontSize:"0.8rem",cursor:"pointer",
-                    letterSpacing:"0.5px",transition:"all 0.15s"}}>
-                  ↓ scores.json
-                </button>
-              </div>
-              {fetchLog && (
-                <div style={{fontSize:"0.65rem",color: fetchLog.startsWith("✓") ? "#86efac" : fetchLog.startsWith("⚠") ? "#fca5a5" : "var(--muted)",maxWidth:300,textAlign:"right"}}>
-                  {fetchLog}
-                </div>
-              )}
-            </div>
+
           </div>
         </div>
       </header>

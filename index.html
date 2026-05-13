@@ -107,6 +107,7 @@
 
   .taken-badge { font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; background: rgba(212,168,83,0.12); color: var(--gold); font-weight: 500; }
 
+  @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
   @media (max-width: 900px) {
     .layout { grid-template-columns: 1fr; padding: 1rem; }
     .header-meta { display: none; }
@@ -293,43 +294,63 @@ function exportPicksJson(teams) {
 const IS_LOCAL = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
 
 function App() {
+  // On GitHub Pages: start null (loading) until picks.json is fetched
+  // On localhost: load immediately from localStorage
   const [teams, setTeams] = useState(() => {
-    // On localhost: load from localStorage (drafter's machine)
-    // On GitHub Pages: start with built-in defaults, picks.json will overwrite on mount
     if (IS_LOCAL) {
       try {
         const saved = localStorage.getItem('pga2026_teams');
         if (saved) return JSON.parse(saved);
       } catch(e) {}
+      return buildInitialTeams();
     }
-    return buildInitialTeams();
+    return null; // will be set by picks.json fetch
   });
+  const [picksLoading, setPicksLoading] = useState(!IS_LOCAL);
 
-  // Save to localStorage on every change (local only — viewers don't need this)
+  // Save to localStorage on every change (localhost only)
   useEffect(() => {
-    if (!IS_LOCAL) return;
-    try {
-      localStorage.setItem('pga2026_teams', JSON.stringify(teams));
-    } catch(e) {}
+    if (!IS_LOCAL || !teams) return;
+    try { localStorage.setItem('pga2026_teams', JSON.stringify(teams)); } catch(e) {}
   }, [teams]);
 
-  // On mount: ALWAYS load picks.json when on GitHub Pages
-  // On localhost: also load it as a fallback if localStorage is empty
+  // On mount: load odds.json from GitHub Pages
+  useEffect(() => {
+    fetch('./odds.json?cb=' + Date.now())
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (data && data.odds && Object.keys(data.odds).length > 5) {
+          setOdds(prev => ({...SEED_ODDS, ...data.odds}));
+        }
+      }).catch(()=>{});
+  }, []);
+
+  // On mount: fetch picks.json — always on GitHub Pages, fallback on localhost
   useEffect(() => {
     fetchPicksJson().then(data => {
-      if (!data || !data.teams) return;
-      if (!IS_LOCAL) {
-        // GitHub Pages — always use the file, it's the source of truth
+      if (data && data.teams && data.teams.length > 0) {
         setTeams(data.teams);
-      } else {
-        // Localhost — only use if localStorage is empty
-        const saved = localStorage.getItem('pga2026_teams');
-        if (!saved) setTeams(data.teams);
+      } else if (!IS_LOCAL && !teams) {
+        // picks.json missing or empty on GitHub Pages — use defaults
+        setTeams(buildInitialTeams());
       }
+      setPicksLoading(false);
+    }).catch(() => {
+      if (!IS_LOCAL && !teams) setTeams(buildInitialTeams());
+      setPicksLoading(false);
     });
   }, []);
 
-  const [odds] = useState(SEED_ODDS);
+  const [odds, setOdds] = useState(() => {
+    try {
+      const saved = localStorage.getItem('pga2026_odds');
+      if (saved) return {...SEED_ODDS, ...JSON.parse(saved)};
+    } catch(e) {}
+    return SEED_ODDS;
+  });
+  const [oddsLoading, setOddsLoading] = useState(false);
+  const [oddsLog, setOddsLog] = useState("");
+  const [oddsApiKey, setOddsApiKey] = useState(() => { try { return localStorage.getItem("pga2026_odds_key") || ""; } catch(e) { return ""; } });
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
   const [assigning, setAssigning] = useState(null);
@@ -368,6 +389,14 @@ function App() {
     if(filter === "favorites") list = list.filter(p => {
       const o = odds[p]; if(!o) return false;
       return parseInt(o.replace("+","")) <= 3500;
+    });
+    // Sort by odds ascending (lowest = most favored), no odds go to bottom
+    list = [...list].sort((a, b) => {
+      const oa = odds[a], ob = odds[b];
+      if(!oa && !ob) return 0;
+      if(!oa) return 1;
+      if(!ob) return -1;
+      return parseInt(oa.replace("+","")) - parseInt(ob.replace("+",""));
     });
     return list;
   }, [search, filter, allPicked, odds]);
@@ -426,11 +455,78 @@ function App() {
     setEditingTeam(null);
   }
 
+  // ── Odds fetch via The Odds API (free, CORS-friendly, no proxy needed) ────────
+  async function fetchOdds() {
+    const apiKey = oddsApiKey.trim();
+    if (!apiKey) {
+      setOddsLog("⚠ Enter your Odds API key first");
+      return;
+    }
+    setOddsLoading(true);
+    setOddsLog("Fetching live odds…");
+    try {
+      const res = await fetch(
+        `https://api.the-odds-api.com/v4/sports/golf_pga_championship_winner/odds?regions=us&markets=outrights&oddsFormat=american&apiKey=${apiKey}`
+      );
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.message || `HTTP ${res.status}`);
+      }
+      const data = await res.json();
+      // data is an array of bookmakers, each with markets/outcomes
+      // Collect best (lowest absolute) odds per player across all bookmakers
+      const playerOdds = {};
+      (data || []).forEach(book => {
+        (book.markets || []).forEach(market => {
+          (market.outcomes || []).forEach(outcome => {
+            const name = outcome.name;
+            const price = outcome.price; // American odds integer
+            const fmt = price >= 0 ? `+${price}` : `${price}`;
+            // Keep whichever bookmaker has the best (smallest positive = most likely) odds
+            if (!playerOdds[name]) {
+              playerOdds[name] = fmt;
+            } else {
+              const existing = parseInt(playerOdds[name]);
+              if (Math.abs(price) < Math.abs(existing)) playerOdds[name] = fmt;
+            }
+          });
+        });
+      });
+      if (Object.keys(playerOdds).length === 0) throw new Error("No odds returned — tournament may not be listed yet");
+      const merged = {...SEED_ODDS, ...playerOdds};
+      setOdds(merged);
+      try { localStorage.setItem('pga2026_odds', JSON.stringify(merged)); } catch(e) {}
+      // Export odds.json for GitHub Pages
+      const blob = new Blob([JSON.stringify({
+        odds: merged,
+        exportedAt: new Date().toISOString(),
+        source: "The Odds API",
+        note: "Auto-generated. Upload to your GitHub repo root."
+      }, null, 2)], {type:"application/json"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url; a.download = "odds.json"; a.click();
+      URL.revokeObjectURL(url);
+      const remaining = res.headers.get('x-requests-remaining');
+      setOddsLog(`✓ Updated ${Object.keys(playerOdds).length} players · ${new Date().toLocaleTimeString()}${remaining ? ` · ${remaining} requests left` : ''} · push odds.json to GitHub`);
+    } catch(err) {
+      setOddsLog(`⚠ ${err.message}`);
+    }
+    setOddsLoading(false);
+  }
+
   const teamColor = (idx) => TEAM_COLORS[idx % TEAM_COLORS.length];
   const teamColorById = (id) => {
-    const idx = teams.findIndex(t => t.id === id);
+    const idx = teams ? teams.findIndex(t => t.id === id) : -1;
     return idx >= 0 ? teamColor(idx) : null;
   };
+
+  if (picksLoading || !teams) return (
+    <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:"1rem"}}>
+      <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"2rem",letterSpacing:"3px",color:"var(--gold)"}}>2026 PGA Championship</div>
+      <div style={{color:"var(--muted)",fontSize:"0.85rem",animation:"pulse 1.5s infinite"}}>Loading picks…</div>
+    </div>
+  );
 
   return (
     <div>
@@ -490,6 +586,7 @@ function App() {
             <div style={{marginTop:"8px",display:"flex",gap:"8px"}}>
               <span style={{fontSize:"0.7rem",background:"rgba(212,168,83,0.15)",border:"1px solid rgba(212,168,83,0.4)",borderRadius:5,padding:"3px 10px",color:"#d4a853",fontWeight:600}}>📋 Draft Board</span>
               <a href="scoreboard.html" style={{fontSize:"0.7rem",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:5,padding:"3px 10px",color:"#6b7a90",textDecoration:"none",fontWeight:500}}>🏆 Scoreboard</a>
+              <a href="admin.html" style={{fontSize:"0.7rem",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:5,padding:"3px 10px",color:"#6b7a90",textDecoration:"none",fontWeight:500}}>⚙️ Admin</a>
             </div>
           </div>
           <div className="header-meta">
@@ -504,14 +601,7 @@ function App() {
             </div>
             <div className="stat-pill"><div className="val">{Math.max(0, 42 - totalPicked)}</div><div className="lbl">Picks Remaining</div></div>
           </div>
-          <div style={{display:"flex",gap:6,alignItems:"center"}}>
-            <button onClick={()=>exportPicksJson(teams)} style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:8,padding:"0.4rem 0.9rem",color:"var(--muted)",fontFamily:"inherit",fontSize:"0.75rem",cursor:"pointer",letterSpacing:"0.5px"}}>
-              ↓ picks.json
-            </button>
-            <button onClick={resetDraft} style={{background:"rgba(239,68,68,0.1)",border:"1px solid rgba(239,68,68,0.3)",borderRadius:8,padding:"0.4rem 0.9rem",color:"#fca5a5",fontFamily:"inherit",fontSize:"0.75rem",cursor:"pointer",letterSpacing:"0.5px"}}>
-              ↺ Reset Draft
-            </button>
-          </div>
+
         </div>
       </header>
 
@@ -613,7 +703,7 @@ function App() {
                 </tbody>
               </table>
             </div>
-            <div className="odds-source">📊 DraftKings Sportsbook · Click Draft to assign to the team on the clock · Click Reassign to override</div>
+            <div className="odds-source">📊 Odds come from DraftKings or Vegas Insider.  Always do your own research and don't solely depend on these</div>
           </div>
         </div>
 
