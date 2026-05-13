@@ -7,6 +7,7 @@
 <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -105,7 +106,7 @@ function StatusCard() {
     { label: "Picks last saved", value: timeAgo(picksTs), dot: picksTs ? "ok" : "empty" },
     { label: "Scores", value: scoredCount > 0 ? `${scoredCount} players scored` : "No scores yet", dot: scoredCount > 0 ? "ok" : "empty" },
     { label: "Scores last updated", value: timeAgo(scoresTs), dot: scoresTs ? "ok" : "empty" },
-    { label: "Odds", value: oddsCount > 0 ? `${oddsCount} players${oddsTs ? ` · ${timeAgo(oddsTs)}` : ""}` : "Using seed odds", dot: oddsCount > 0 ? "ok" : "warn" },
+    { label: "Odds", value: oddsCount > 0 ? `${oddsCount} players` : "Using seed odds", dot: oddsCount > 0 ? "ok" : "warn" },
     { label: "Champion", value: champion || "Not set", dot: champion ? "ok" : "empty" },
   ];
 
