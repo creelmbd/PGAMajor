@@ -199,6 +199,15 @@ function loadScoresFromStorage() {
   return {};
 }
 
+// Fetch picks.json from same directory
+async function fetchPicksJson() {
+  try {
+    const res = await fetch('./picks.json?cb=' + Date.now());
+    if (!res.ok) return null;
+    return await res.json();
+  } catch(e) { return null; }
+}
+
 // Fetch scores.json from same directory (used on GitHub Pages)
 async function fetchScoresJson() {
   try {
@@ -247,6 +256,8 @@ function rankSuffix(n) {
 }
 
 // ── Main App ──────────────────────────────────────────────────────────────────
+const IS_LOCAL = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+
 function App() {
   const [picks, setPicks] = useState(loadTeamsFromStorage);
   const [scores, setScores] = useState(loadScoresFromStorage);
@@ -261,41 +272,51 @@ function App() {
   const [fetching, setFetching] = useState(false);
   const [fetchLog, setFetchLog] = useState(""); // status message from last fetch
 
-  // Reload picks from storage periodically (in case draft board updated)
+  // Load picks — on GitHub Pages always use picks.json (source of truth)
+  // On localhost poll localStorage so scoreboard stays in sync with draft board
   useEffect(() => {
-    const interval = setInterval(() => {
-      const fresh = loadTeamsFromStorage();
-      setPicks(fresh);
-    }, 5000);
-    return () => clearInterval(interval);
+    if (!IS_LOCAL) {
+      // GitHub Pages: load picks.json once on mount
+      fetchPicksJson().then(data => {
+        if (data && data.teams) {
+          const m = {};
+          data.teams.forEach(t => { m[t.name] = t.picks || []; });
+          setPicks(m);
+        }
+      });
+    } else {
+      // Localhost: poll localStorage every 5s
+      const interval = setInterval(() => {
+        const fresh = loadTeamsFromStorage();
+        setPicks(fresh);
+      }, 5000);
+      return () => clearInterval(interval);
+    }
   }, []);
 
-  // On mount: try to load scores.json (GitHub Pages mode)
-  // Only use it if localStorage is empty or scores.json is newer
+  // On mount: load scores.json
+  // GitHub Pages: always trust the file (source of truth for viewers)
+  // Localhost: only use if localStorage is empty (drafter may have fresher data)
   useEffect(() => {
     fetchScoresJson().then(data => {
       if (!data) return;
-      const scores = data.scores || {};
-      const champion = data.champion || "";
+      const fileScores = data.scores || {};
+      const fileChampion = data.champion || "";
       const ts = data.exportedAt ? new Date(data.exportedAt) : null;
 
-      // Check if scores.json is newer than what's in localStorage
-      const localTs = localStorage.getItem('pga2026_scores_ts');
-      const localTime = localTs ? new Date(localTs) : null;
-
-      if (!localTime || (ts && ts > localTime)) {
-        // scores.json is fresher — use it
-        setScores(scores);
-        saveScoresToStorage(scores);
-        if (champion) {
-          setChampion(champion);
-          setChampionInput(champion);
-          saveChampionToStorage(champion);
-        }
-        if (ts) {
-          localStorage.setItem('pga2026_scores_ts', ts.toISOString());
-          setLastUpdated(ts);
-          setFetchLog(`✓ Loaded from scores.json · ${ts.toLocaleTimeString()}`);
+      if (!IS_LOCAL) {
+        // GitHub Pages — always use the file
+        setScores(fileScores);
+        if (fileChampion) { setChampion(fileChampion); setChampionInput(fileChampion); }
+        if (ts) { setLastUpdated(ts); setFetchLog(`✓ Loaded from scores.json · ${ts.toLocaleTimeString()}`); }
+      } else {
+        // Localhost — only use if localStorage has nothing
+        const localSaved = localStorage.getItem('pga2026_scores');
+        if (!localSaved) {
+          setScores(fileScores);
+          saveScoresToStorage(fileScores);
+          if (fileChampion) { setChampion(fileChampion); setChampionInput(fileChampion); saveChampionToStorage(fileChampion); }
+          if (ts) { setLastUpdated(ts); setFetchLog(`✓ Loaded from scores.json · ${ts.toLocaleTimeString()}`); }
         }
       }
     });

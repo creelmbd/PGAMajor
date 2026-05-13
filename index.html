@@ -290,36 +290,41 @@ function exportPicksJson(teams) {
   URL.revokeObjectURL(url);
 }
 
+const IS_LOCAL = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+
 function App() {
   const [teams, setTeams] = useState(() => {
-    try {
-      const saved = localStorage.getItem('pga2026_teams');
-      if (saved) return JSON.parse(saved);
-    } catch(e) {}
+    // On localhost: load from localStorage (drafter's machine)
+    // On GitHub Pages: start with built-in defaults, picks.json will overwrite on mount
+    if (IS_LOCAL) {
+      try {
+        const saved = localStorage.getItem('pga2026_teams');
+        if (saved) return JSON.parse(saved);
+      } catch(e) {}
+    }
     return buildInitialTeams();
   });
 
-  // Save to localStorage on every change + auto-download picks.json
+  // Save to localStorage on every change (local only — viewers don't need this)
   useEffect(() => {
+    if (!IS_LOCAL) return;
     try {
       localStorage.setItem('pga2026_teams', JSON.stringify(teams));
-      localStorage.setItem('pga2026_teams_ts', new Date().toISOString());
     } catch(e) {}
   }, [teams]);
 
-  // On mount: load picks.json from GitHub if it's newer than localStorage
+  // On mount: ALWAYS load picks.json when on GitHub Pages
+  // On localhost: also load it as a fallback if localStorage is empty
   useEffect(() => {
     fetchPicksJson().then(data => {
       if (!data || !data.teams) return;
-      const ts = data.exportedAt ? new Date(data.exportedAt) : null;
-      const localTs = localStorage.getItem('pga2026_teams_ts');
-      const localTime = localTs ? new Date(localTs) : null;
-      if (!localTime || (ts && ts > localTime)) {
+      if (!IS_LOCAL) {
+        // GitHub Pages — always use the file, it's the source of truth
         setTeams(data.teams);
-        try {
-          localStorage.setItem('pga2026_teams', JSON.stringify(data.teams));
-          if (ts) localStorage.setItem('pga2026_teams_ts', ts.toISOString());
-        } catch(e) {}
+      } else {
+        // Localhost — only use if localStorage is empty
+        const saved = localStorage.getItem('pga2026_teams');
+        if (!saved) setTeams(data.teams);
       }
     });
   }, []);
