@@ -109,9 +109,66 @@
   .taken-badge { font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; background: rgba(212,168,83,0.12); color: var(--gold); font-weight: 500; }
 
   @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
-  @media (max-width: 900px) {
-    .layout { grid-template-columns: 1fr; padding: 1rem; }
-    .header-meta { display: none; }
+
+  /* ── Mobile ────────────────────────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    /* Header */
+    .header { padding: 0 1rem; }
+    .header-inner { flex-direction: column; align-items: flex-start; gap: 0.6rem; padding: 1rem 0; }
+    .header-title { font-size: 1.5rem; letter-spacing: 2px; }
+    .header-sub { font-size: 0.65rem; letter-spacing: 1px; }
+    .header-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; width: 100%; }
+    .stat-pill { padding: 0.35rem 0.6rem; flex: 1; min-width: 70px; }
+    .stat-pill .val { font-size: 1rem; }
+    .stat-pill .lbl { font-size: 0.55rem; }
+
+    /* Layout — single column */
+    .layout { grid-template-columns: 1fr; padding: 0.75rem; gap: 1rem; }
+
+    /* On-the-clock banner */
+    .clock-banner { padding: 0.5rem 1rem !important; }
+    .clock-banner-inner { flex-direction: column !important; gap: 4px !important; }
+    .clock-hint { display: none !important; }
+
+    /* Panel header — stack on mobile */
+    .panel-head { flex-direction: column; align-items: flex-start; gap: 0.5rem; padding: 0.75rem 1rem; }
+    .panel-head-controls { display: flex; flex-direction: column; gap: 0.4rem; width: 100%; }
+
+    /* Filter tabs — full width scrollable */
+    .filter-tabs { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; }
+    .filter-tab { flex-shrink: 0; font-size: 0.72rem; padding: 0.35rem 0.65rem; }
+
+    /* Search bar — full width */
+    .search-bar { width: 100%; }
+    .search-bar input { width: 100%; flex: 1; }
+
+    /* Table — hide # and Action columns, compress */
+    .players-table th:first-child,
+    .players-table td:first-child { display: none; }
+    .players-table th:last-child,
+    .players-table td:last-child { display: none; }
+    .players-table td { padding: 0.6rem 0.75rem; font-size: 0.82rem; }
+    .players-table th { padding: 0.5rem 0.75rem; font-size: 0.6rem; }
+
+    /* Player name cell — show team badge below name on mobile */
+    .mobile-sub { display: block !important; font-size: 0.68rem; color: var(--muted); margin-top: 2px; }
+
+    /* Table scroll height */
+    .table-scroll { max-height: 55vh; }
+
+    /* Sidebar — full width below table */
+    .sidebar { gap: 0.75rem; }
+    .entry-card { border-radius: 10px; }
+
+    /* Assign modal — full screen on mobile */
+    .modal-mobile { position: fixed !important; inset: 0 !important; border-radius: 0 !important;
+      max-width: 100% !important; min-width: 100% !important; overflow-y: auto;
+      display: flex; flex-direction: column; padding: 1.5rem 1.25rem !important; }
+    .modal-mobile-handle { width: 36px; height: 4px; background: var(--border2);
+      border-radius: 2px; margin: 0 auto 1.25rem; }
+
+    /* Odds source footer */
+    .odds-source { font-size: 0.6rem; }
   }
 </style>
 </head>
@@ -533,10 +590,11 @@ function App() {
     <div>
       {/* Assign modal */}
       {assigning && (
-        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.75)",zIndex:100,display:"flex",alignItems:"center",justifyContent:"center"}}
+        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.75)",zIndex:100,display:"flex",alignItems:"flex-end",justifyContent:"center"}}
           onClick={()=>setAssigning(null)}>
-          <div style={{background:"#182030",border:"1px solid rgba(255,255,255,0.15)",borderRadius:14,padding:"1.5rem",minWidth:300,maxWidth:360}}
+          <div className="modal-mobile" style={{background:"#182030",border:"1px solid rgba(255,255,255,0.15)",borderRadius:"14px 14px 0 0",padding:"1.5rem",width:"100%",maxWidth:480}}
             onClick={e=>e.stopPropagation()}>
+            <div className="modal-mobile-handle" />
             <div style={{fontSize:"0.65rem",textTransform:"uppercase",letterSpacing:"2px",color:"#6b7a90",marginBottom:"0.4rem"}}>Assign to team</div>
             <div style={{fontSize:"1.05rem",fontWeight:600,color:"#e8ecf0",marginBottom:"0.35rem"}}>{assigning}</div>
             {odds[assigning] && <div style={{fontSize:"0.75rem",color:"#6b7a90",marginBottom:"1.25rem"}}>Win odds: <span style={{color:"#d4a853"}}>{odds[assigning]}</span></div>}
@@ -638,7 +696,7 @@ function App() {
           <div className="panel">
             <div className="panel-head">
               <h2>Player Field</h2>
-              <div style={{display:"flex",gap:"8px",alignItems:"center",flexWrap:"wrap"}}>
+              <div className="panel-head-controls">
                 <div className="filter-tabs">
                   {["all","available","assigned","favorites"].map(f => (
                     <button key={f} className={`filter-tab${filter===f?" active":""}`} onClick={()=>setFilter(f)}>
@@ -676,7 +734,12 @@ function App() {
                       <tr key={player} style={ownerTeam ? {background: c.bg} : {}}
                         onClick={() => isAvailable ? quickAssign(player) : setAssigning(player)}>
                         <td className="rank">{i+1}</td>
-                        <td><div className="player-name">{player}</div></td>
+                        <td>
+                          <div className="player-name">
+                            {player}
+                            {ownerTeam && <span className="mobile-sub" style={{display:"none",color:c?.text}}>{ownerTeam.name}</span>}
+                          </div>
+                        </td>
                         <td className="right">
                           {o ? <span className={`odds-chip ${oddsClass(o)}`}>{o}</span>
                              : <span className="odds-chip odds-long">—</span>}

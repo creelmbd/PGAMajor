@@ -60,6 +60,22 @@
   .dot-warn { background: #f59e0b; }
   @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  @media (max-width: 768px) {
+    .header { padding: 0 1rem; }
+    .header-inner { flex-direction: column; align-items: flex-start; padding: 1rem 0; gap: 0.5rem; }
+    .header-title { font-size: 1.5rem; letter-spacing: 2px; }
+    .layout { padding: 0.75rem; gap: 1rem; }
+    .card { border-radius: 10px; }
+    .card-head { padding: 0.75rem 1rem; }
+    .card-head h2 { font-size: 1rem; }
+    .card-body { padding: 1rem; }
+    .row { flex-direction: column; gap: 8px; }
+    .col { min-width: 100%; }
+    .btn { width: 100%; justify-content: center; padding: 0.65rem 1rem; font-size: 0.9rem; }
+    .input { font-size: 0.9rem; padding: 0.65rem 0.85rem; }
+    .status-row { font-size: 0.8rem; }
+    .log { font-size: 0.78rem; }
+  }
 </style>
 </head>
 <body>

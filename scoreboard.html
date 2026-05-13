@@ -136,9 +136,57 @@
   .scroll-table::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
 
   @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-  @media (max-width: 900px) {
-    .layout { grid-template-columns: 1fr; padding: 1rem; }
-    .podium { grid-template-columns: 1fr; }
+  @media (max-width: 768px) {
+    /* Header */
+    .header { padding: 0 1rem; }
+    .header-inner { flex-direction: column; align-items: flex-start; gap: 0.75rem; padding: 1rem 0; }
+    .header-title { font-size: 1.5rem; letter-spacing: 2px; }
+    .header-sub { font-size: 0.65rem; }
+    .pot-pills { gap: 0.5rem; width: 100%; }
+    .pot-pill { flex: 1; min-width: 60px; padding: 0.4rem 0.5rem; }
+    .pot-pill .pv { font-size: 1rem; }
+    .pot-pill .pl { font-size: 0.55rem; letter-spacing: 0.5px; }
+
+    /* Layout — single column */
+    .layout { grid-template-columns: 1fr; padding: 0.75rem; gap: 0.75rem; }
+
+    /* Podium — single column stacked */
+    .podium { grid-template-columns: 1fr; gap: 0.6rem; padding: 0.75rem; }
+    .podium-name { font-size: 1.1rem; }
+    .podium-score { font-size: 1.5rem; }
+    .podium-rank { font-size: 2rem; }
+
+    /* Champion banner */
+    .champion-banner { flex-wrap: wrap; padding: 0.6rem 1rem; gap: 0.6rem; }
+
+    /* Tabs */
+    .tab-row { overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; padding: 0.6rem 0.75rem 0; gap: 4px; }
+    .tab { flex-shrink: 0; font-size: 0.72rem; padding: 0.35rem 0.75rem; }
+
+    /* Standings table — simplify on mobile */
+    .standings-table th, .standings-table td { padding: 0.5rem 0.6rem; font-size: 0.78rem; }
+    .standings-table .hide-mobile { display: none; }
+
+    /* Team breakdown grid — 1 col */
+    .team-breakdown-grid { grid-template-columns: 1fr !important; }
+
+    /* Scroll table */
+    .scroll-table { max-height: 60vh; }
+
+    /* Modal — slide up from bottom */
+    .modal { border-radius: 14px 14px 0 0 !important; max-width: 100% !important;
+      min-width: 100% !important; position: fixed !important; bottom: 0 !important;
+      left: 0 !important; right: 0 !important; margin: 0 !important; }
+
+    /* Panel */
+    .panel { border-radius: 10px; margin-bottom: 0.75rem; }
+    .panel-head { padding: 0.7rem 1rem; }
+
+    /* Payout rows */
+    .payout-row { padding: 0.5rem 0.75rem; font-size: 0.8rem; }
+
+    /* Quick score sidebar — hide on mobile (use leaderboard tab instead) */
+    .sidebar-hide-mobile { display: none; }
   }
 </style>
 </head>
@@ -599,8 +647,9 @@ Rules:
     <div>
       {/* Edit score modal */}
       {editingPlayer && (
-        <div className="modal-overlay" onClick={()=>setEditingPlayer(null)}>
+        <div className="modal-overlay" style={{alignItems:"flex-end"}} onClick={()=>setEditingPlayer(null)}>
           <div className="modal" onClick={e=>e.stopPropagation()}>
+            <div style={{width:36,height:4,background:"rgba(255,255,255,0.15)",borderRadius:2,margin:"0 auto 1rem"}} />
             <div style={{fontSize:"0.65rem",textTransform:"uppercase",letterSpacing:"2px",color:"var(--muted)",marginBottom:"0.4rem"}}>Update Score</div>
             <div style={{fontSize:"1.05rem",fontWeight:600,marginBottom:"1.25rem"}}>{editingPlayer}</div>
 
@@ -757,7 +806,7 @@ Rules:
                       <th>Team</th>
                       <th className="right">Score at Cut <span style={{fontWeight:400,opacity:0.6}}>(top 4)</span></th>
                       <th className="right">Cumulative <span style={{fontWeight:400,opacity:0.6}}>(top 3)</span></th>
-                      <th className="right">🏆</th>
+                      <th className="right hide-mobile">🏆</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -781,7 +830,7 @@ Rules:
                           <td className="right">
                             <ScoreDisplay val={team.cumScore} />
                           </td>
-                          <td className="right">
+                          <td className="right hide-mobile">
                             {team.hasChampion
                               ? <span title={champion} style={{fontSize:"0.9rem"}}>🏆</span>
                               : <span style={{color:"var(--muted)",fontSize:"0.8rem"}}>—</span>
@@ -796,7 +845,7 @@ Rules:
                 {/* Team breakdowns */}
                 <div style={{padding:"1rem 1.25rem",borderTop:"1px solid var(--border)"}}>
                   <div style={{fontSize:"0.65rem",textTransform:"uppercase",letterSpacing:"2px",color:"var(--muted)",marginBottom:"0.75rem"}}>Team Breakdowns</div>
-                  <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(260px,1fr))",gap:"0.75rem"}}>
+                  <div className="team-breakdown-grid" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(260px,1fr))",gap:"0.75rem"}}>
                     {teamStats.map(team => (
                       <div key={team.name} style={{background:"var(--surface2)",border:`1px solid ${team.color.border}`,borderRadius:10,overflow:"hidden"}}>
                         <div style={{padding:"0.5rem 0.75rem",background:team.color.bg,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
@@ -938,8 +987,8 @@ Rules:
           </div>
         </div>
 
-        {/* Sidebar */}
-        <div>
+        {/* Sidebar — hidden on mobile */}
+        <div className="sidebar-hide-mobile">
           {/* Rules */}
           <div className="panel">
             <div className="panel-head"><h2>Rules</h2></div>
