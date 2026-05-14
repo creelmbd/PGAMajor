@@ -7,7 +7,7 @@ on:
   schedule:
     # Run every 10 minutes during tournament days, UTC time.
     # May 14–17, 2026, 12:00–23:59 UTC covers roughly 8am–8pm ET play hours.
-    - cron: '0,10,20,30,40,50 12-23 14-17 5 *'
+    - cron: '*/5 * * * *'
   workflow_dispatch:
 
 jobs:
