@@ -20,13 +20,15 @@ ESPN_URL = "https://site.api.espn.com/apis/site/v2/sports/golf/leaderboard"
 USER_AGENT = "Mozilla/5.0 (compatible; GitHubActions/1.0; +https://github.com)"
 
 TOURNAMENT_START = datetime.datetime(2026, 5, 14, 12, 0, tzinfo=datetime.timezone.utc)
-TOURNAMENT_END = datetime.datetime(2026, 5, 17, 23, 59, tzinfo=datetime.timezone.utc)
+TOURNAMENT_END = datetime.datetime(2026, 5, 18, 4, 0, tzinfo=datetime.timezone.utc)  # midnight ET Sunday
 
 
 def is_within_play_window(now=None):
     if now is None:
         now = datetime.datetime.now(datetime.timezone.utc)
-    return TOURNAMENT_START <= now <= TOURNAMENT_END and 12 <= now.hour <= 23
+    # PGA tee times start ~7am ET = 11am UTC; rounds finish ~midnight UTC.
+    # Remove the hour restriction so early starters aren't missed.
+    return TOURNAMENT_START <= now <= TOURNAMENT_END
 
 
 def fetch_leaderboard_json():
@@ -36,6 +38,7 @@ def fetch_leaderboard_json():
 
 
 def parse_score_value(score_obj):
+    """Fallback: parse displayValue from raw score object."""
     if not score_obj:
         return None
     display = str(score_obj.get("displayValue", "")).strip()
@@ -50,6 +53,32 @@ def parse_score_value(score_obj):
             return int(float(score_obj.get("value")))
         except Exception:
             return None
+
+
+def parse_score_to_par(comp):
+    """
+    Read scoreToPar from the competitor's statistics array — this is the
+    correct to-par value. ESPN's comp['score'] holds raw stroke totals,
+    not to-par, so we must use statistics instead.
+    """
+    for stat in comp.get("statistics", []):
+        if stat.get("name") == "scoreToPar":
+            display = str(stat.get("displayValue", "")).strip()
+            if display in ("", "-", "--"):
+                return None
+            if display.upper() == "E":
+                return 0
+            try:
+                return int(float(display.replace("+", "").replace("−", "-")))
+            except Exception:
+                try:
+                    val = stat.get("value")
+                    if val is not None:
+                        return int(float(val))
+                except Exception:
+                    pass
+    # Fallback to raw score field if statistics missing
+    return parse_score_value(comp.get("score", {}))
 
 
 def has_cut_status(status_obj):
@@ -140,7 +169,7 @@ def main():
         name = athlete.get("displayName") or athlete.get("fullName")
         if not name:
             continue
-        score_value = parse_score_value(comp.get("score", {}))
+        score_value = parse_score_to_par(comp)
         status = "cut" if has_cut_status(comp.get("status", {})) else "active"
         if score_value is None and status == "active":
             # If event hasn't started yet, keep status active but no score.
