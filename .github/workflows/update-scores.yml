@@ -1,5 +1,8 @@
 name: Update PGA Championship Scores
 
+permissions:
+  contents: write
+
 on:
   schedule:
     # Run every 30 minutes during tournament days, UTC time.
