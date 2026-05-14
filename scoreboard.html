@@ -311,6 +311,7 @@ function App() {
   const [picks, setPicks] = useState(DEFAULT_PICKS);
   const [picksLoading, setPicksLoading] = useState(true);
   const [scores, setScores] = useState({});
+  const [topPlayers, setTopPlayers] = useState([]);
   const [champion, setChampion] = useState(loadChampionFromStorage);
   const [editingPlayer, setEditingPlayer] = useState(null);
   const [editScore, setEditScore] = useState("");
@@ -368,6 +369,7 @@ function App() {
       if (!IS_LOCAL) {
         // GitHub Pages — always use the file
         setScores(fileScores);
+        if (data.topPlayers) setTopPlayers(data.topPlayers);
         if (fileChampion) { setChampion(fileChampion); setChampionInput(fileChampion); }
         if (ts) { setLastUpdated(ts); setFetchLog(`✓ Loaded from scores.json · ${ts.toLocaleTimeString()}`); }
       } else {
@@ -376,6 +378,7 @@ function App() {
         const localIsNewer = localTs && ts && new Date(localTs) > ts;
         if (!localIsNewer) {
           setScores(fileScores);
+          if (data.topPlayers) setTopPlayers(data.topPlayers);
           saveScoresToStorage(fileScores);
           if (fileChampion) { setChampion(fileChampion); setChampionInput(fileChampion); saveChampionToStorage(fileChampion); }
           if (ts) { setLastUpdated(ts); setFetchLog(`✓ Loaded from scores.json · ${ts.toLocaleTimeString()}`); }
@@ -788,6 +791,32 @@ Rules:
             {/* ── LEADERBOARD TAB ── */}
             {activeTab === "leaderboard" && (
               <div>
+                {/* Podium - Tournament Leaderboard */}
+                {topPlayers.length > 0 && (
+                  <div style={{padding:"1rem 1.25rem 0.5rem",borderBottom:"1px solid var(--border)"}}>
+                    <div style={{fontSize:"0.65rem",textTransform:"uppercase",letterSpacing:"2px",color:"var(--muted)",marginBottom:"0.75rem"}}>Tournament Leaderboard · Round in Progress</div>
+                    <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(140px,1fr))",gap:"0.75rem"}}>
+                      {topPlayers.map((p, i) => (
+                        <div key={p.name} style={{
+                          borderRadius:10,
+                          padding:"0.85rem 1rem",
+                          border:`1px solid ${i===0?"rgba(212,168,83,0.5)":i===1?"rgba(180,180,200,0.3)":"rgba(180,120,60,0.3)"}`,
+                          background: i===0?"rgba(212,168,83,0.07)":i===1?"rgba(180,180,200,0.04)":"rgba(180,120,60,0.04)",
+                          position:"relative",overflow:"hidden"
+                        }}>
+                          <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"2.5rem",color:"rgba(255,255,255,0.06)",position:"absolute",top:0,right:10,lineHeight:1}}>{i+1}</div>
+                          <div style={{fontSize:"0.6rem",textTransform:"uppercase",letterSpacing:"1.5px",color:"var(--muted)",marginBottom:4}}>{p.position || `T${i+1}`}</div>
+                          <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"1.1rem",letterSpacing:"1.5px",marginBottom:2,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{p.name}</div>
+                          <div style={{display:"flex",alignItems:"baseline",gap:8}}>
+                            <ScoreDisplay val={p.score} />
+                            <span style={{fontSize:"0.7rem",color:"var(--muted)"}}>Thru {p.thru}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 {/* Podium - Score at Cut */}
                 <div style={{padding:"1rem 1.25rem 0.5rem",borderBottom:"1px solid var(--border)"}}>
                   <div style={{fontSize:"0.65rem",textTransform:"uppercase",letterSpacing:"2px",color:"var(--muted)",marginBottom:"0.75rem"}}>Score at Cut (Top 4 golfers · 25% pot · ${cutPayout})</div>

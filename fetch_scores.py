@@ -116,19 +116,50 @@ def format_tournament_status(event):
     return "unknown"
 
 
-def parse_leader(comps):
-    def rank_key(comp):
-        position = str(comp.get("status", {}).get("position", {}).get("displayName", ""))
-        match = re.match(r"^T?(\d+)$", position)
-        if match:
-            return int(match.group(1))
-        return 9999
+def rank_key(comp):
+    position = str(comp.get("status", {}).get("position", {}).get("displayName", ""))
+    match = re.match(r"^T?(\d+)$", position)
+    return int(match.group(1)) if match else 9999
 
+
+def parse_leader(comps):
     sorted_comps = sorted(comps, key=rank_key)
     if sorted_comps:
         athlete = sorted_comps[0].get("athlete", {})
         return athlete.get("displayName") or athlete.get("fullName") or ""
     return ""
+
+
+def parse_top_players(comps, n=5):
+    sorted_comps = sorted(comps, key=rank_key)
+    result = []
+    for comp in sorted_comps[:n]:
+        athlete = comp.get("athlete", {})
+        name = athlete.get("displayName") or athlete.get("fullName") or ""
+        if not name:
+            continue
+        status = comp.get("status", {}) or {}
+        position = status.get("position", {}).get("displayName", "")
+        display_thru = status.get("displayThru", "")
+        thru = status.get("thru")
+        state = str((status.get("type") or {}).get("state", "")).lower()
+        if state == "post":
+            thru_label = "F"
+        elif display_thru:
+            thru_label = str(display_thru)
+        elif thru:
+            thru_label = str(thru)
+        else:
+            thru_label = "-"
+        score = parse_score_to_par(comp)
+        result.append({
+            "name": name,
+            "position": position,
+            "score": score,
+            "thru": thru_label,
+        })
+    return result
+
 
 
 def load_existing_champion():
@@ -162,6 +193,7 @@ def main():
 
     tournament_status = format_tournament_status(event)
     leader = parse_leader(competitors)
+    top_players = parse_top_players(competitors, 5)
 
     scores = {}
     for comp in competitors:
@@ -185,6 +217,7 @@ def main():
         "scores": scores,
         "champion": champion,
         "leader": leader,
+        "topPlayers": top_players,
         "tournamentStatus": tournament_status,
         "exportedAt": datetime.datetime.utcnow().replace(microsecond=0).isoformat() + "Z",
         "source": "ESPN leaderboard",
