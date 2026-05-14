@@ -212,14 +212,14 @@ const ENTRY_FEE = 50;
 const NUM_TEAMS = 6;
 const TOTAL_POT = ENTRY_FEE * NUM_TEAMS; // $300
 
-// Default picks — loaded from localStorage if available (shared with draft board)
+// Default picks — full 7-player rosters matching picks.json
 const DEFAULT_PICKS = {
-  "Minges":   ["Scottie Scheffler","Collin Morikawa","Russell Henley","Rickie Fowler","Akshay Bhatia"],
-  "Curry":    ["Rory McIlroy","Brooks Koepka","Justin Rose","Maverick McNealy","Shane Lowry"],
-  "Tracy":    ["Cameron Young","Viktor Hovland","Patrick Cantlay","Tyrrell Hatton","Min Woo Lee"],
-  "Shumate":  ["Bryson DeChambeau","Tommy Fleetwood","Jordan Spieth","Sam Burns"],
-  "Hobie":    ["Xander Schauffele","Matt Fitzpatrick","Justin Thomas","Chris Gotterup"],
-  "Creelman": ["Ludvig Åberg","Jon Rahm","Si Woo Kim","Hideki Matsuyama"],
+  "Minges":   ["Scottie Scheffler","Collin Morikawa","Russell Henley","Rickie Fowler","Akshay Bhatia","Kurt Kitayama","J.J. Spaun"],
+  "Curry":    ["Rory McIlroy","Brooks Koepka","Justin Rose","Maverick McNealy","Shane Lowry","Jason Day","Harris English"],
+  "Tracy":    ["Cameron Young","Viktor Hovland","Patrick Cantlay","Tyrrell Hatton","Min Woo Lee","Nicolai Højgaard","Adam Scott"],
+  "Shumate":  ["Bryson DeChambeau","Tommy Fleetwood","Jordan Spieth","Sam Burns","Kristoffer Reitan","Gary Woodland","Matt McCarty"],
+  "Hobie":    ["Xander Schauffele","Matt Fitzpatrick","Justin Thomas","Chris Gotterup","Sepp Straka","Keegan Bradley","Alex Smalley"],
+  "Creelman": ["Ludvig Åberg","Jon Rahm","Si Woo Kim","Hideki Matsuyama","Patrick Reed","Joaquín Niemann","David Puig"],
 };
 
 // ── Scoring rules ─────────────────────────────────────────────────────────────
@@ -308,9 +308,9 @@ function rankSuffix(n) {
 const IS_LOCAL = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
 
 function App() {
-  const [picks, setPicks] = useState(() => IS_LOCAL ? loadTeamsFromStorage() : {});
-  const [picksLoading, setPicksLoading] = useState(!IS_LOCAL);
-  const [scores, setScores] = useState(loadScoresFromStorage);
+  const [picks, setPicks] = useState(DEFAULT_PICKS);
+  const [picksLoading, setPicksLoading] = useState(true);
+  const [scores, setScores] = useState({});
   const [champion, setChampion] = useState(loadChampionFromStorage);
   const [editingPlayer, setEditingPlayer] = useState(null);
   const [editScore, setEditScore] = useState("");
@@ -322,31 +322,42 @@ function App() {
   const [fetching, setFetching] = useState(false);
   const [fetchLog, setFetchLog] = useState(""); // status message from last fetch
 
-  // Load picks — on GitHub Pages always use picks.json (source of truth)
-  // On localhost poll localStorage so scoreboard stays in sync with draft board
+  // Load picks — always fetch picks.json first (source of truth everywhere)
+  // On localhost, fall back to localStorage if picks.json fails
   useEffect(() => {
-    if (!IS_LOCAL) {
-      fetchPicksJson().then(data => {
-        if (data && data.teams) {
-          const m = {};
-          data.teams.forEach(t => { m[t.name] = t.picks || []; });
-          setPicks(m);
-        }
+    fetchPicksJson().then(data => {
+      if (data && data.teams) {
+        const m = {};
+        data.teams.forEach(t => { m[t.name] = t.picks || []; });
+        setPicks(m);
         setPicksLoading(false);
-      }).catch(() => setPicksLoading(false));
-    } else {
+      } else {
+        if (IS_LOCAL) setPicks(loadTeamsFromStorage());
+        setPicksLoading(false);
+      }
+    }).catch(() => {
+      if (IS_LOCAL) setPicks(loadTeamsFromStorage());
       setPicksLoading(false);
+    });
+
+    // On localhost also poll every 5s so scoreboard stays in sync with draft board
+    if (IS_LOCAL) {
       const interval = setInterval(() => {
-        const fresh = loadTeamsFromStorage();
-        setPicks(fresh);
+        fetchPicksJson().then(data => {
+          if (data && data.teams) {
+            const m = {};
+            data.teams.forEach(t => { m[t.name] = t.picks || []; });
+            setPicks(m);
+          } else {
+            setPicks(loadTeamsFromStorage());
+          }
+        }).catch(() => setPicks(loadTeamsFromStorage()));
       }, 5000);
       return () => clearInterval(interval);
     }
   }, []);
 
-  // On mount: load scores.json
-  // GitHub Pages: always trust the file (source of truth for viewers)
-  // Localhost: only use if localStorage is empty (drafter may have fresher data)
+  // On mount: load scores.json — always trust the file if it's newer than localStorage
   useEffect(() => {
     fetchScoresJson().then(data => {
       if (!data) return;
@@ -360,9 +371,10 @@ function App() {
         if (fileChampion) { setChampion(fileChampion); setChampionInput(fileChampion); }
         if (ts) { setLastUpdated(ts); setFetchLog(`✓ Loaded from scores.json · ${ts.toLocaleTimeString()}`); }
       } else {
-        // Localhost — only use if localStorage has nothing
-        const localSaved = localStorage.getItem('pga2026_scores');
-        if (!localSaved) {
+        // Localhost — use scores.json unless localStorage is strictly newer
+        const localTs = localStorage.getItem('pga2026_scores_ts');
+        const localIsNewer = localTs && ts && new Date(localTs) > ts;
+        if (!localIsNewer) {
           setScores(fileScores);
           saveScoresToStorage(fileScores);
           if (fileChampion) { setChampion(fileChampion); setChampionInput(fileChampion); saveChampionToStorage(fileChampion); }
@@ -776,6 +788,28 @@ Rules:
             {/* ── LEADERBOARD TAB ── */}
             {activeTab === "leaderboard" && (
               <div>
+                {/* Podium - Score at Cut */}
+                <div style={{padding:"1rem 1.25rem 0.5rem",borderBottom:"1px solid var(--border)"}}>
+                  <div style={{fontSize:"0.65rem",textTransform:"uppercase",letterSpacing:"2px",color:"var(--muted)",marginBottom:"0.75rem"}}>Score at Cut (Top 4 golfers · 25% pot · ${cutPayout})</div>
+                  <div className="podium">
+                    {cutRanked.slice(0,3).map((team, i) => (
+                      <div key={team.name} className={`podium-card ${["first","second","third"][i]}`}>
+                        <div className="podium-rank">{i+1}</div>
+                        <div className="podium-label">{i+1}{rankSuffix(i+1)} place</div>
+                        <div className="podium-name" style={{color: team.color.text}}>{team.name}</div>
+                        <div className="podium-score">
+                          <ScoreDisplay val={team.cutScore} />
+                        </div>
+                        {i === 0 && team.cutScore !== null && (
+                          <div className="podium-payout" style={{background:"rgba(59,130,246,0.12)",color:"#93c5fd"}}>
+                            Leads for ${cutPayout}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
                 {/* Podium - Cumulative */}
                 <div style={{padding:"1rem 1.25rem 0.5rem",borderBottom:"1px solid var(--border)"}}>
                   <div style={{fontSize:"0.65rem",textTransform:"uppercase",letterSpacing:"2px",color:"var(--muted)",marginBottom:"0.75rem"}}>Cumulative Score (Top 3 golfers · 50% pot · ${cumPayout})</div>
@@ -822,10 +856,10 @@ Rules:
                             <span style={{fontSize:"0.72rem",color:"var(--muted)",marginLeft:6}}>{team.totalPicks} picks</span>
                           </td>
                           <td className="right">
-                            <ScoreDisplay val={team.cutScore} />
                             {cutPos === 0 && team.cutScore !== null && (
-                              <span className="status-pill status-active" style={{marginLeft:6}}>Leads</span>
+                              <span className="status-pill status-active" style={{marginRight:6}}>Leads</span>
                             )}
+                            <ScoreDisplay val={team.cutScore} />
                           </td>
                           <td className="right">
                             <ScoreDisplay val={team.cumScore} />
