@@ -21,7 +21,7 @@
       "status": "active"
     },
     "Ben Polland": {
-      "score": null,
+      "score": 0,
       "status": "active"
     },
     "Jhonattan Vegas": {
@@ -29,7 +29,7 @@
       "status": "active"
     },
     "Kurt Kitayama": {
-      "score": null,
+      "score": 0,
       "status": "active"
     },
     "Adam Schenk": {
@@ -77,19 +77,19 @@
       "status": "active"
     },
     "Jordan Gumberg": {
-      "score": null,
-      "status": "active"
-    },
-    "Nicolai H\u00f8jgaard": {
       "score": 0,
       "status": "active"
     },
+    "Nicolai H\u00f8jgaard": {
+      "score": -1,
+      "status": "active"
+    },
     "Rasmus H\u00f8jgaard": {
-      "score": null,
+      "score": 0,
       "status": "active"
     },
     "Andrew Novak": {
-      "score": null,
+      "score": 0,
       "status": "active"
     },
     "Travis Smyth": {
@@ -113,7 +113,7 @@
       "status": "active"
     },
     "Garrick Higgo": {
-      "score": 0,
+      "score": -1,
       "status": "active"
     },
     "Jesse Droemer": {
@@ -137,11 +137,11 @@
       "status": "active"
     },
     "Billy Horschel": {
-      "score": 0,
+      "score": 4,
       "status": "active"
     },
     "Jason Day": {
-      "score": 0,
+      "score": -1,
       "status": "active"
     },
     "Padraig Harrington": {
@@ -153,7 +153,7 @@
       "status": "active"
     },
     "Shaun Micheel": {
-      "score": 0,
+      "score": 7,
       "status": "active"
     },
     "Francisco Bid\u00e9": {
@@ -165,11 +165,11 @@
       "status": "active"
     },
     "Michael Block": {
-      "score": null,
+      "score": 0,
       "status": "active"
     },
     "Dustin Johnson": {
-      "score": null,
+      "score": 0,
       "status": "active"
     },
     "Chris Kirk": {
@@ -181,7 +181,7 @@
       "status": "active"
     },
     "Gary Woodland": {
-      "score": 0,
+      "score": 2,
       "status": "active"
     },
     "Martin Kaymer": {
@@ -245,11 +245,11 @@
       "status": "active"
     },
     "Nico Echavarria": {
-      "score": null,
+      "score": 0,
       "status": "active"
     },
     "Ian Holt": {
-      "score": 0,
+      "score": 4,
       "status": "active"
     },
     "Min Woo Lee": {
@@ -277,7 +277,7 @@
       "status": "active"
     },
     "Steven Fisk": {
-      "score": null,
+      "score": 0,
       "status": "active"
     },
     "Jimmy Walker": {
@@ -325,7 +325,7 @@
       "status": "active"
     },
     "John Parry": {
-      "score": null,
+      "score": 0,
       "status": "active"
     },
     "Chris Gotterup": {
@@ -361,7 +361,7 @@
       "status": "active"
     },
     "Mark Geddes": {
-      "score": null,
+      "score": 0,
       "status": "active"
     },
     "Justin Thomas": {
@@ -389,7 +389,7 @@
       "status": "active"
     },
     "Michael Brennan": {
-      "score": 0,
+      "score": 2,
       "status": "active"
     },
     "Jacob Bridgeman": {
@@ -429,7 +429,7 @@
       "status": "active"
     },
     "Johnny Keefer": {
-      "score": 0,
+      "score": 2,
       "status": "active"
     },
     "Kota Kaneko": {
@@ -517,7 +517,7 @@
       "status": "active"
     },
     "David Lipsky": {
-      "score": null,
+      "score": 0,
       "status": "active"
     },
     "Lucas Glover": {
@@ -549,7 +549,7 @@
       "status": "active"
     },
     "Keith Mitchell": {
-      "score": 0,
+      "score": 3,
       "status": "active"
     },
     "Sepp Straka": {
@@ -628,7 +628,7 @@
   "champion": "",
   "leader": "Min Woo Lee",
   "tournamentStatus": "round1",
-  "exportedAt": "2026-05-14T16:18:32Z",
+  "exportedAt": "2026-05-14T16:46:18Z",
   "source": "ESPN leaderboard",
   "url": "https://site.api.espn.com/apis/site/v2/sports/golf/leaderboard",
   "note": "Auto-updated by GitHub Actions schedule."
