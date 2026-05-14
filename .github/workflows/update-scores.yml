@@ -10,10 +10,6 @@ on:
     - cron: '0,10,20,30,40,50 12-23 14-17 5 *'
   workflow_dispatch:
 
-concurrency:
-  group: update-pga-scores
-  cancel-in-progress: true
-
 jobs:
   update-scores:
     runs-on: ubuntu-latest
