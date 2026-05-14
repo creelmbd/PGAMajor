@@ -137,7 +137,7 @@
       "status": "active"
     },
     "Billy Horschel": {
-      "score": 4,
+      "score": 0,
       "status": "active"
     },
     "Jason Day": {
@@ -169,7 +169,7 @@
       "status": "active"
     },
     "Dustin Johnson": {
-      "score": 0,
+      "score": null,
       "status": "active"
     },
     "Chris Kirk": {
@@ -249,7 +249,7 @@
       "status": "active"
     },
     "Ian Holt": {
-      "score": 4,
+      "score": 0,
       "status": "active"
     },
     "Min Woo Lee": {
@@ -628,7 +628,7 @@
   "champion": "",
   "leader": "Min Woo Lee",
   "tournamentStatus": "round1",
-  "exportedAt": "2026-05-14T16:26:12Z",
+  "exportedAt": "2026-05-14T16:18:32Z",
   "source": "ESPN leaderboard",
   "url": "https://site.api.espn.com/apis/site/v2/sports/golf/leaderboard",
   "note": "Auto-updated by GitHub Actions schedule."
