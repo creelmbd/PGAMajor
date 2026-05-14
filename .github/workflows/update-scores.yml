@@ -4,21 +4,12 @@ permissions:
   contents: write
 
 on:
-  push:
-    branches:
-      - master
-
   schedule:
-    # TEMP TESTING:
-    # Run every 5 minutes
-    - cron: '*/5 * * * *'
+    # TESTING SCHEDULE
+    - cron: '2,7,12,17,22,27,32,37,42,47,52,57 * * * *'
 
-    # ORIGINAL PGA TOURNAMENT SCHEDULE:
-    # Uncomment this and remove the */5 line after testing
-    # Runs every 10 minutes from 12:00–23:50 UTC
-    # on May 14–17
-    #
-    # - cron: '0,10,20,30,40,50 12-23 14-17 5 *'
+    # ORIGINAL TOURNAMENT SCHEDULE
+    # - cron: '2,12,22,32,42,52 12-23 14-17 5 *'
 
   workflow_dispatch:
 
@@ -42,9 +33,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
 
-      - name: Debug current time
+      - name: Show trigger type
         run: |
-          echo "Current UTC time:"
+          echo "Triggered by: ${{ github.event_name }}"
+          echo "UTC Time:"
           date -u
 
       - name: Fetch latest scores
