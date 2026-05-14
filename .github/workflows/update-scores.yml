@@ -5,11 +5,7 @@ permissions:
 
 on:
   schedule:
-    # TESTING SCHEDULE
-    - cron: '2,7,12,17,22,27,32,37,42,47,52,57 * * * *'
-
-    # ORIGINAL TOURNAMENT SCHEDULE
-    # - cron: '2,12,22,32,42,52 12-23 14-17 5 *'
+    - cron: '7,17,27,37,47,57 * * * *'
 
   workflow_dispatch:
 
@@ -20,8 +16,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          persist-credentials: true
+
+      - name: Show trigger type
+        run: |
+          echo "Triggered by: ${{ github.event_name }}"
+          date -u
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -33,19 +32,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
 
-      - name: Show trigger type
-        run: |
-          echo "Triggered by: ${{ github.event_name }}"
-          echo "UTC Time:"
-          date -u
-
       - name: Fetch latest scores
         run: python fetch_scores.py
-
-      - name: Check git status
-        run: |
-          git status
-          ls -la
 
       - name: Commit updated scores.json
         run: |
