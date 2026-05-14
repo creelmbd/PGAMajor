@@ -9,7 +9,7 @@
       "status": "active"
     },
     "Davis Riley": {
-      "score": 4,
+      "score": 5,
       "status": "active"
     },
     "Xander Schauffele": {
@@ -17,11 +17,11 @@
       "status": "active"
     },
     "J.J. Spaun": {
-      "score": 2,
+      "score": 3,
       "status": "active"
     },
     "Ben Polland": {
-      "score": 2,
+      "score": 3,
       "status": "active"
     },
     "Jhonattan Vegas": {
@@ -33,7 +33,7 @@
       "status": "active"
     },
     "Adam Schenk": {
-      "score": 6,
+      "score": 5,
       "status": "active"
     },
     "J.T. Poston": {
@@ -45,11 +45,11 @@
       "status": "active"
     },
     "Collin Morikawa": {
-      "score": 0,
+      "score": -1,
       "status": "active"
     },
     "Aaron Rai": {
-      "score": 0,
+      "score": -2,
       "status": "active"
     },
     "Sahith Theegala": {
@@ -93,11 +93,11 @@
       "status": "active"
     },
     "Travis Smyth": {
-      "score": 2,
+      "score": 1,
       "status": "active"
     },
     "Robert MacIntyre": {
-      "score": 0,
+      "score": -1,
       "status": "active"
     },
     "Sungjae Im": {
@@ -117,7 +117,7 @@
       "status": "active"
     },
     "Jesse Droemer": {
-      "score": 3,
+      "score": 4,
       "status": "active"
     },
     "Brandt Snedeker": {
@@ -193,7 +193,7 @@
       "status": "active"
     },
     "Nick Taylor": {
-      "score": 1,
+      "score": 0,
       "status": "active"
     },
     "Alex Noren": {
@@ -209,7 +209,7 @@
       "status": "active"
     },
     "Bernd Wiesberger": {
-      "score": 1,
+      "score": 0,
       "status": "active"
     },
     "Tom McKibbin": {
@@ -229,11 +229,11 @@
       "status": "active"
     },
     "Viktor Hovland": {
-      "score": 4,
+      "score": 3,
       "status": "active"
     },
     "Ben Kern": {
-      "score": 3,
+      "score": 2,
       "status": "active"
     },
     "Ludvig \u00c5berg": {
@@ -257,7 +257,7 @@
       "status": "active"
     },
     "Akshay Bhatia": {
-      "score": -3,
+      "score": -2,
       "status": "active"
     },
     "Daniel Hillier": {
@@ -269,11 +269,11 @@
       "status": "active"
     },
     "Cameron Young": {
-      "score": -1,
+      "score": 0,
       "status": "active"
     },
     "Sam Stevens": {
-      "score": 0,
+      "score": -1,
       "status": "active"
     },
     "Steven Fisk": {
@@ -281,7 +281,7 @@
       "status": "active"
     },
     "Jimmy Walker": {
-      "score": 0,
+      "score": -1,
       "status": "active"
     },
     "Keegan Bradley": {
@@ -317,7 +317,7 @@
       "status": "active"
     },
     "Casey Jarvis": {
-      "score": 1,
+      "score": 2,
       "status": "active"
     },
     "Chandler Blanchet": {
@@ -329,15 +329,15 @@
       "status": "active"
     },
     "Chris Gotterup": {
-      "score": 2,
+      "score": 1,
       "status": "active"
     },
     "Ricky Castillo": {
-      "score": 5,
+      "score": 4,
       "status": "active"
     },
     "Michael Kartrude": {
-      "score": 6,
+      "score": 7,
       "status": "active"
     },
     "Mikael Lindberg": {
@@ -345,7 +345,7 @@
       "status": "active"
     },
     "Elvis Smylie": {
-      "score": 1,
+      "score": 2,
       "status": "active"
     },
     "Tyler Collet": {
@@ -365,7 +365,7 @@
       "status": "active"
     },
     "Justin Thomas": {
-      "score": -2,
+      "score": -3,
       "status": "active"
     },
     "Ryo Hisatsune": {
@@ -397,7 +397,7 @@
       "status": "active"
     },
     "Austin Hurt": {
-      "score": 6,
+      "score": 8,
       "status": "active"
     },
     "Jared Jones": {
@@ -421,7 +421,7 @@
       "status": "active"
     },
     "Sudarshan Yellamaraju": {
-      "score": 1,
+      "score": 2,
       "status": "active"
     },
     "Braden Shattuck": {
@@ -461,7 +461,7 @@
       "status": "active"
     },
     "Russell Henley": {
-      "score": 1,
+      "score": 0,
       "status": "active"
     },
     "Jordan Spieth": {
@@ -469,11 +469,11 @@
       "status": "active"
     },
     "Andrew Putnam": {
-      "score": -2,
+      "score": -1,
       "status": "active"
     },
     "Tommy Fleetwood": {
-      "score": 2,
+      "score": 1,
       "status": "active"
     },
     "Tyrrell Hatton": {
@@ -632,7 +632,7 @@
       "name": "Martin Kaymer",
       "position": "T1",
       "score": -3,
-      "thru": "11"
+      "thru": "12"
     },
     {
       "name": "Min Woo Lee",
@@ -641,10 +641,10 @@
       "thru": "F"
     },
     {
-      "name": "Akshay Bhatia",
+      "name": "Justin Thomas",
       "position": "T1",
       "score": -3,
-      "thru": "12"
+      "thru": "8"
     },
     {
       "name": "Ryo Hisatsune",
@@ -660,7 +660,7 @@
     }
   ],
   "tournamentStatus": "round1",
-  "exportedAt": "2026-05-14T20:10:35Z",
+  "exportedAt": "2026-05-14T20:29:02Z",
   "source": "ESPN leaderboard",
   "url": "https://site.api.espn.com/apis/site/v2/sports/golf/leaderboard",
   "note": "Auto-updated by GitHub Actions schedule."
