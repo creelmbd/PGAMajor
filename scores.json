@@ -133,7 +133,7 @@
     "Max McGreevy": {
       "score": 6,
       "status": "active",
-      "thru": "16"
+      "thru": "17"
     },
     "Rico Hoey": {
       "score": 0,
@@ -151,9 +151,9 @@
       "thru": "F"
     },
     "Brandt Snedeker": {
-      "score": 8,
+      "score": 7,
       "status": "active",
-      "thru": "16"
+      "thru": "17"
     },
     "Brian Harman": {
       "score": 3,
@@ -201,9 +201,9 @@
       "thru": "F"
     },
     "Ryan Vermeer": {
-      "score": 15,
+      "score": 16,
       "status": "active",
-      "thru": "16"
+      "thru": "17"
     },
     "Michael Block": {
       "score": 5,
@@ -223,7 +223,7 @@
     "Rory McIlroy": {
       "score": 1,
       "status": "active",
-      "thru": "17"
+      "thru": "F"
     },
     "Gary Woodland": {
       "score": 6,
@@ -256,9 +256,9 @@
       "thru": "F"
     },
     "Ryan Fox": {
-      "score": 1,
+      "score": 0,
       "status": "active",
-      "thru": "17"
+      "thru": "F"
     },
     "Bernd Wiesberger": {
       "score": 8,
@@ -328,7 +328,7 @@
     "Daniel Hillier": {
       "score": -1,
       "status": "active",
-      "thru": "16"
+      "thru": "17"
     },
     "Michael Thorbjornsen": {
       "score": 11,
@@ -388,7 +388,7 @@
     "Kazuki Higa": {
       "score": 2,
       "status": "active",
-      "thru": "17"
+      "thru": "F"
     },
     "Jayden Schaper": {
       "score": 10,
@@ -426,9 +426,9 @@
       "thru": "F"
     },
     "Mikael Lindberg": {
-      "score": 0,
+      "score": 1,
       "status": "active",
-      "thru": "15"
+      "thru": "16"
     },
     "Elvis Smylie": {
       "score": 4,
@@ -438,7 +438,7 @@
     "Tyler Collet": {
       "score": 6,
       "status": "active",
-      "thru": "16"
+      "thru": "17"
     },
     "Thomas Detry": {
       "score": 5,
@@ -523,7 +523,7 @@
     "Angel Ayora": {
       "score": 4,
       "status": "active",
-      "thru": "15"
+      "thru": "16"
     },
     "Sudarshan Yellamaraju": {
       "score": 10,
@@ -541,9 +541,9 @@
       "thru": "F"
     },
     "Kota Kaneko": {
-      "score": 4,
+      "score": 5,
       "status": "active",
-      "thru": "16"
+      "thru": "17"
     },
     "Bud Cauley": {
       "score": 1,
@@ -563,7 +563,7 @@
     "Paul McClure": {
       "score": 9,
       "status": "active",
-      "thru": "15"
+      "thru": "16"
     },
     "Zach Haynes": {
       "score": 14,
@@ -583,7 +583,7 @@
     "Jordan Spieth": {
       "score": 1,
       "status": "active",
-      "thru": "17"
+      "thru": "F"
     },
     "Andrew Putnam": {
       "score": 0,
@@ -763,7 +763,7 @@
     "Ryan Lenahan": {
       "score": 15,
       "status": "active",
-      "thru": "17"
+      "thru": "F"
     },
     "Taylor Pendrith": {
       "score": 4,
@@ -816,7 +816,7 @@
     }
   ],
   "tournamentStatus": "round2",
-  "exportedAt": "2026-05-15T23:20:54Z",
+  "exportedAt": "2026-05-15T23:33:26Z",
   "source": "ESPN leaderboard",
   "url": "https://site.api.espn.com/apis/site/v2/sports/golf/leaderboard",
   "note": "Auto-updated by GitHub Actions schedule."
