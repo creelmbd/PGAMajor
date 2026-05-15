@@ -322,6 +322,7 @@ function App() {
   const [editingChampion, setEditingChampion] = useState(false);
   const [fetching, setFetching] = useState(false);
   const [fetchLog, setFetchLog] = useState(""); // status message from last fetch
+  const [tournamentStatus, setTournamentStatus] = useState("round1");
 
   // Load picks — always fetch picks.json first (source of truth everywhere)
   // On localhost, fall back to localStorage if picks.json fails
@@ -377,6 +378,7 @@ function App() {
         // GitHub Pages — always use the file
         setScores(fileScores);
         if (data.topPlayers) setTopPlayers(data.topPlayers);
+        if (data.tournamentStatus) setTournamentStatus(data.tournamentStatus);
         // Only apply champion from file if tournament is finished
         if (isFinal && fileChampion) { setChampion(fileChampion); setChampionInput(fileChampion); }
         if (ts) { setLastUpdated(ts); setFetchLog(`✓ Loaded from scores.json · ${ts.toLocaleTimeString()}`); }
@@ -387,6 +389,7 @@ function App() {
         if (!localIsNewer) {
           setScores(fileScores);
           if (data.topPlayers) setTopPlayers(data.topPlayers);
+          if (data.tournamentStatus) setTournamentStatus(data.tournamentStatus);
           saveScoresToStorage(fileScores);
           // Only apply champion from file if tournament is finished
           if (isFinal && fileChampion) { setChampion(fileChampion); setChampionInput(fileChampion); saveChampionToStorage(fileChampion); }
@@ -614,6 +617,9 @@ Rules:
   }, [picks, scores, champion]);
 
   // Rankings
+  // Sort standings by cut for R1/R2, by cumulative for R3/R4/final
+  const useCumSort = ["round3","round4","final"].includes(tournamentStatus);
+
   const cutRanked = useMemo(() => {
     const withScore = teamStats.filter(t => t.cutScore !== null);
     const without = teamStats.filter(t => t.cutScore === null);
@@ -627,6 +633,9 @@ Rules:
     const sorted = [...withScore].sort((a,b) => a.cumScore - b.cumScore);
     return [...sorted, ...without];
   }, [teamStats]);
+
+  // Primary sort used for the standings table
+  const primaryRanked = useCumSort ? cumRanked : cutRanked;
 
   // Payout logic
   const cutLeader = cutRanked[0];
@@ -882,10 +891,10 @@ Rules:
                     </tr>
                   </thead>
                   <tbody>
-                    {cumRanked.map((team, i) => {
+                    {primaryRanked.map((team, i) => {
                       const cutPos = cutRanked.findIndex(t => t.name === team.name);
                       return (
-                        <tr key={team.name} style={{background: i===0 && team.cumScore !== null ? `${team.color.bg}` : ""}}>
+                        <tr key={team.name} style={{background: i===0 && (useCumSort ? team.cumScore : team.cutScore) !== null ? `${team.color.bg}` : ""}}>
                           <td>
                             <span className={`rank-badge rank-${Math.min(i+1,4) <= 3 ? i+1 : "other"}`}>{i+1}</span>
                           </td>
