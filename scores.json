@@ -461,9 +461,9 @@
       "thru": "F"
     },
     "Ryo Hisatsune": {
-      "score": 1,
+      "score": 0,
       "status": "active",
-      "thru": "17"
+      "thru": "F"
     },
     "Rasmus Neergaard-Petersen": {
       "score": 4,
@@ -503,7 +503,7 @@
     "Jared Jones": {
       "score": 14,
       "status": "active",
-      "thru": "17"
+      "thru": "F"
     },
     "Ryan Gerard": {
       "score": 1,
@@ -701,9 +701,9 @@
       "thru": "F"
     },
     "Michael Kim": {
-      "score": 5,
+      "score": 3,
       "status": "active",
-      "thru": "17"
+      "thru": "F"
     },
     "Daniel Berger": {
       "score": 4,
@@ -773,7 +773,7 @@
     "Jon Rahm": {
       "score": -1,
       "status": "active",
-      "thru": "17"
+      "thru": "F"
     },
     "Sam Burns": {
       "score": 2,
@@ -816,7 +816,7 @@
     }
   ],
   "tournamentStatus": "round2",
-  "exportedAt": "2026-05-15T23:33:26Z",
+  "exportedAt": "2026-05-15T23:38:17Z",
   "source": "ESPN leaderboard",
   "url": "https://site.api.espn.com/apis/site/v2/sports/golf/leaderboard",
   "note": "Auto-updated by GitHub Actions schedule."
