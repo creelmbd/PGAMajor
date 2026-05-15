@@ -209,9 +209,11 @@ def main():
         else:
             scores[name] = {"score": score_value, "status": status}
 
-    champion = load_existing_champion()
+    # Only carry a champion when the tournament is finished
     if tournament_status == "final" and leader:
         champion = leader
+    else:
+        champion = ""
 
     output = {
         "scores": scores,

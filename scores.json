@@ -17,7 +17,7 @@
       "status": "active"
     },
     "J.J. Spaun": {
-      "score": 0,
+      "score": -1,
       "status": "active"
     },
     "Ben Polland": {
@@ -229,7 +229,7 @@
       "status": "active"
     },
     "Viktor Hovland": {
-      "score": 4,
+      "score": 5,
       "status": "active"
     },
     "Ben Kern": {
@@ -625,7 +625,11 @@
       "status": "active"
     }
   },
+<<<<<<< HEAD
   "champion": "Martin Kaymer",
+=======
+  "champion": "",
+>>>>>>> 2eeede0 (Updates)
   "leader": "Min Woo Lee",
   "topPlayers": [
     {
@@ -660,7 +664,11 @@
     }
   ],
   "tournamentStatus": "round2",
+<<<<<<< HEAD
   "exportedAt": "2026-05-15T12:24:57Z",
+=======
+  "exportedAt": "2026-05-15T12:27:31Z",
+>>>>>>> 2eeede0 (Updates)
   "source": "ESPN leaderboard",
   "url": "https://site.api.espn.com/apis/site/v2/sports/golf/leaderboard",
   "note": "Auto-updated by GitHub Actions schedule."

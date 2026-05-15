@@ -312,7 +312,7 @@ function App() {
   const [picksLoading, setPicksLoading] = useState(true);
   const [scores, setScores] = useState({});
   const [topPlayers, setTopPlayers] = useState([]);
-  const [champion, setChampion] = useState(loadChampionFromStorage);
+  const [champion, setChampion] = useState("");
   const [editingPlayer, setEditingPlayer] = useState(null);
   const [editScore, setEditScore] = useState("");
   const [editStatus, setEditStatus] = useState("active"); // active | cut
@@ -366,11 +366,19 @@ function App() {
       const fileChampion = data.champion || "";
       const ts = data.exportedAt ? new Date(data.exportedAt) : null;
 
+      const isFinal = data.tournamentStatus === "final";
+
+      // If tournament is not finished, clear any stale champion from localStorage
+      if (!isFinal) {
+        try { localStorage.removeItem('pga2026_champion'); } catch(e) {}
+      }
+
       if (!IS_LOCAL) {
         // GitHub Pages — always use the file
         setScores(fileScores);
         if (data.topPlayers) setTopPlayers(data.topPlayers);
-        if (fileChampion) { setChampion(fileChampion); setChampionInput(fileChampion); }
+        // Only apply champion from file if tournament is finished
+        if (isFinal && fileChampion) { setChampion(fileChampion); setChampionInput(fileChampion); }
         if (ts) { setLastUpdated(ts); setFetchLog(`✓ Loaded from scores.json · ${ts.toLocaleTimeString()}`); }
       } else {
         // Localhost — use scores.json unless localStorage is strictly newer
@@ -380,7 +388,8 @@ function App() {
           setScores(fileScores);
           if (data.topPlayers) setTopPlayers(data.topPlayers);
           saveScoresToStorage(fileScores);
-          if (fileChampion) { setChampion(fileChampion); setChampionInput(fileChampion); saveChampionToStorage(fileChampion); }
+          // Only apply champion from file if tournament is finished
+          if (isFinal && fileChampion) { setChampion(fileChampion); setChampionInput(fileChampion); saveChampionToStorage(fileChampion); }
           if (ts) { setLastUpdated(ts); setFetchLog(`✓ Loaded from scores.json · ${ts.toLocaleTimeString()}`); }
         }
       }
