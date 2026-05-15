@@ -61,7 +61,7 @@
       "status": "active"
     },
     "Austin Smotherman": {
-      "score": 3,
+      "score": 2,
       "status": "active"
     },
     "Joaqu\u00edn Niemann": {
@@ -209,7 +209,7 @@
       "status": "active"
     },
     "Bernd Wiesberger": {
-      "score": 1,
+      "score": 2,
       "status": "active"
     },
     "Tom McKibbin": {
@@ -273,7 +273,7 @@
       "status": "active"
     },
     "Sam Stevens": {
-      "score": 0,
+      "score": -1,
       "status": "active"
     },
     "Steven Fisk": {
@@ -421,7 +421,7 @@
       "status": "active"
     },
     "Sudarshan Yellamaraju": {
-      "score": 4,
+      "score": 5,
       "status": "active"
     },
     "Braden Shattuck": {
@@ -497,7 +497,7 @@
       "status": "active"
     },
     "Garrett Sapp": {
-      "score": 4,
+      "score": 5,
       "status": "active"
     },
     "Andy Sullivan": {
@@ -625,42 +625,42 @@
       "status": "active"
     }
   },
-  "champion": "",
+  "champion": "Martin Kaymer",
   "leader": "Martin Kaymer",
   "topPlayers": [
     {
       "name": "Martin Kaymer",
       "position": "T1",
       "score": -3,
-      "thru": "F"
+      "thru": "-"
     },
     {
       "name": "Min Woo Lee",
       "position": "T1",
       "score": -3,
-      "thru": "F"
+      "thru": "-"
     },
     {
       "name": "Ryo Hisatsune",
       "position": "T1",
       "score": -3,
-      "thru": "F"
+      "thru": "-"
     },
     {
       "name": "Aldrich Potgieter",
       "position": "T1",
       "score": -3,
-      "thru": "F"
+      "thru": "-"
     },
     {
       "name": "Stephan Jaeger",
       "position": "T1",
       "score": -3,
-      "thru": "F"
+      "thru": "-"
     }
   ],
-  "tournamentStatus": "round1",
-  "exportedAt": "2026-05-14T23:37:38Z",
+  "tournamentStatus": "final",
+  "exportedAt": "2026-05-15T01:30:32Z",
   "source": "ESPN leaderboard",
   "url": "https://site.api.espn.com/apis/site/v2/sports/golf/leaderboard",
   "note": "Auto-updated by GitHub Actions schedule."
