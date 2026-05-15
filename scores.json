@@ -301,7 +301,7 @@
       "status": "active"
     },
     "Shane Lowry": {
-      "score": -2,
+      "score": -1,
       "status": "active"
     },
     "Harry Hall": {
@@ -625,11 +625,7 @@
       "status": "active"
     }
   },
-<<<<<<< HEAD
-  "champion": "Martin Kaymer",
-=======
   "champion": "",
->>>>>>> 2eeede0 (Updates)
   "leader": "Min Woo Lee",
   "topPlayers": [
     {
@@ -664,11 +660,7 @@
     }
   ],
   "tournamentStatus": "round2",
-<<<<<<< HEAD
-  "exportedAt": "2026-05-15T12:24:57Z",
-=======
-  "exportedAt": "2026-05-15T12:27:31Z",
->>>>>>> 2eeede0 (Updates)
+  "exportedAt": "2026-05-15T12:30:07Z",
   "source": "ESPN leaderboard",
   "url": "https://site.api.espn.com/apis/site/v2/sports/golf/leaderboard",
   "note": "Auto-updated by GitHub Actions schedule."
