@@ -13,7 +13,7 @@
     "Davis Riley": {
       "score": 10,
       "status": "active",
-      "thru": "10"
+      "thru": "11"
     },
     "Xander Schauffele": {
       "score": -2,
@@ -76,9 +76,9 @@
       "thru": "10"
     },
     "Austin Smotherman": {
-      "score": 2,
+      "score": 3,
       "status": "active",
-      "thru": "5"
+      "thru": "6"
     },
     "Joaqu\u00edn Niemann": {
       "score": -1,
@@ -433,7 +433,7 @@
     "Elvis Smylie": {
       "score": 1,
       "status": "active",
-      "thru": "10"
+      "thru": "11"
     },
     "Tyler Collet": {
       "score": 5,
@@ -566,9 +566,9 @@
       "thru": null
     },
     "Zach Haynes": {
-      "score": 8,
+      "score": 9,
       "status": "active",
-      "thru": "4"
+      "thru": "5"
     },
     "Harris English": {
       "score": 1,
@@ -816,7 +816,7 @@
     }
   ],
   "tournamentStatus": "round2",
-  "exportedAt": "2026-05-15T14:43:37Z",
+  "exportedAt": "2026-05-15T14:44:37Z",
   "source": "ESPN leaderboard",
   "url": "https://site.api.espn.com/apis/site/v2/sports/golf/leaderboard",
   "note": "Auto-updated by GitHub Actions schedule."
