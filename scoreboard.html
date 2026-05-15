@@ -569,7 +569,7 @@ Rules:
       const teamPicks = picks[name] || [];
       const playerData = teamPicks.map(p => {
         const s = getScore(p);
-        return { name: p, score: s.score, status: s.status };
+        return { name: p, score: s.score, status: s.status, thru: s.thru || null };
       });
 
       // Sort by score (nulls last, cut players last)
@@ -938,7 +938,14 @@ Rules:
                                 <span style={{fontSize:"0.82rem"}}>{p.name}</span>
                                 {p.status==="cut" && <span className="status-pill status-cut" style={{marginLeft:5}}>Cut</span>}
                               </div>
-                              <ScoreDisplay val={p.score} />
+                              <div style={{display:"flex",alignItems:"baseline",gap:5}}>
+                                {p.thru && p.status !== "cut" && (
+                                  <span style={{fontSize:"0.65rem",color:"var(--muted)",whiteSpace:"nowrap"}}>
+                                    {p.thru === "F" ? "F" : `Thru ${p.thru}`}
+                                  </span>
+                                )}
+                                <ScoreDisplay val={p.score} />
+                              </div>
                             </div>
                           );
                         })}

@@ -203,11 +203,26 @@ def main():
             continue
         score_value = parse_score_to_par(comp)
         status = "cut" if has_cut_status(comp.get("status", {})) else "active"
-        if score_value is None and status == "active":
-            # If event hasn't started yet, keep status active but no score.
-            scores[name] = {"score": None, "status": status}
+
+        # Extract thru (holes completed)
+        comp_status = comp.get("status", {}) or {}
+        state = str((comp_status.get("type") or {}).get("state", "")).lower()
+        if state == "post":
+            thru = "F"
         else:
-            scores[name] = {"score": score_value, "status": status}
+            display_thru = comp_status.get("displayThru", "")
+            thru_raw = comp_status.get("thru")
+            if display_thru:
+                thru = str(display_thru)
+            elif thru_raw:
+                thru = str(thru_raw)
+            else:
+                thru = None
+
+        if score_value is None and status == "active":
+            scores[name] = {"score": None, "status": status, "thru": thru}
+        else:
+            scores[name] = {"score": score_value, "status": status, "thru": thru}
 
     # Only carry a champion when the tournament is finished
     if tournament_status == "final" and leader:
