@@ -86,9 +86,9 @@
       "thru": "F"
     },
     "Max Greyserman": {
-      "score": -3,
+      "score": -2,
       "status": "active",
-      "thru": "16"
+      "thru": "F"
     },
     "Wyndham Clark": {
       "score": 5,
@@ -316,9 +316,9 @@
       "thru": "F"
     },
     "Min Woo Lee": {
-      "score": -1,
+      "score": -2,
       "status": "active",
-      "thru": "16"
+      "thru": "F"
     },
     "Akshay Bhatia": {
       "score": 5,
@@ -336,9 +336,9 @@
       "thru": "F"
     },
     "Cameron Young": {
-      "score": -1,
+      "score": 0,
       "status": "active",
-      "thru": "17"
+      "thru": "F"
     },
     "Sam Stevens": {
       "score": 3,
@@ -411,9 +411,9 @@
       "thru": "F"
     },
     "Chris Gotterup": {
-      "score": -3,
+      "score": -2,
       "status": "active",
-      "thru": "14"
+      "thru": "F"
     },
     "Ricky Castillo": {
       "score": 7,
@@ -456,9 +456,9 @@
       "thru": "F"
     },
     "Justin Thomas": {
-      "score": -1,
+      "score": 0,
       "status": "active",
-      "thru": "17"
+      "thru": "F"
     },
     "Ryo Hisatsune": {
       "score": 3,
@@ -516,9 +516,9 @@
       "thru": "F"
     },
     "Aldrich Potgieter": {
-      "score": 1,
+      "score": 0,
       "status": "active",
-      "thru": "15"
+      "thru": "F"
     },
     "Angel Ayora": {
       "score": 6,
@@ -611,9 +611,9 @@
       "thru": "F"
     },
     "Hideki Matsuyama": {
-      "score": -1,
+      "score": -2,
       "status": "active",
-      "thru": "14"
+      "thru": "F"
     },
     "Emiliano Grillo": {
       "score": 8,
@@ -666,9 +666,9 @@
       "thru": "F"
     },
     "Stephan Jaeger": {
-      "score": 1,
+      "score": 0,
       "status": "active",
-      "thru": "15"
+      "thru": "F"
     },
     "Adrien Saddier": {
       "score": 12,
@@ -741,9 +741,9 @@
       "thru": "F"
     },
     "Alex Smalley": {
-      "score": -4,
+      "score": -6,
       "status": "active",
-      "thru": "14"
+      "thru": "F"
     },
     "Jordan Smith": {
       "score": 12,
@@ -756,9 +756,9 @@
       "thru": "F"
     },
     "Maverick McNealy": {
-      "score": -4,
+      "score": -3,
       "status": "active",
-      "thru": "14"
+      "thru": "F"
     },
     "Ryan Lenahan": {
       "score": 15,
@@ -825,42 +825,42 @@
     "Patrick Reed": 0,
     "Joaqu\u00edn Niemann": 2
   },
-  "champion": "",
-  "leader": "Aaron Rai",
+  "champion": "Alex Smalley",
+  "leader": "Alex Smalley",
   "topPlayers": [
     {
+      "name": "Alex Smalley",
+      "position": "1",
+      "score": -6,
+      "thru": "F"
+    },
+    {
       "name": "Aaron Rai",
-      "position": "T1",
+      "position": "T2",
       "score": -4,
       "thru": "F"
     },
     {
       "name": "Nick Taylor",
-      "position": "T1",
+      "position": "T2",
       "score": -4,
       "thru": "F"
     },
     {
       "name": "Ludvig \u00c5berg",
-      "position": "T1",
+      "position": "T2",
       "score": -4,
       "thru": "F"
     },
     {
       "name": "Matti Schmid",
-      "position": "T1",
+      "position": "T2",
       "score": -4,
       "thru": "F"
-    },
-    {
-      "name": "Alex Smalley",
-      "position": "T1",
-      "score": -4,
-      "thru": "14"
     }
   ],
-  "tournamentStatus": "round3",
-  "exportedAt": "2026-05-16T22:00:04Z",
+  "tournamentStatus": "final",
+  "exportedAt": "2026-05-16T22:57:45Z",
   "source": "ESPN leaderboard",
   "url": "https://site.api.espn.com/apis/site/v2/sports/golf/leaderboard",
   "note": "Auto-updated by GitHub Actions schedule."
