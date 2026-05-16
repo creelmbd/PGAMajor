@@ -726,9 +726,9 @@
       "thru": "15"
     },
     "Haotong Li": {
-      "score": -1,
+      "score": 0,
       "status": "active",
-      "thru": "14"
+      "thru": "15"
     },
     "Christiaan Bezuidenhout": {
       "score": 4,
@@ -860,7 +860,7 @@
     }
   ],
   "tournamentStatus": "round3",
-  "exportedAt": "2026-05-16T20:09:10Z",
+  "exportedAt": "2026-05-16T20:12:03Z",
   "source": "ESPN leaderboard",
   "url": "https://site.api.espn.com/apis/site/v2/sports/golf/leaderboard",
   "note": "Auto-updated by GitHub Actions schedule."

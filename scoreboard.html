@@ -872,8 +872,8 @@ Rules:
                           <ScoreDisplay val={team.cutScore} />
                         </div>
                         {i === 0 && team.cutScore !== null && (
-                          <div className="podium-payout" style={{background:"rgba(59,130,246,0.12)",color:"#93c5fd"}}>
-                            Leads for ${cutPayout}
+                          <div className="podium-payout" style={{background:"rgba(212,168,83,0.12)",color:"#f0c870"}}>
+                            🏆 Wins ${cutPayout}
                           </div>
                         )}
                       </div>
@@ -917,6 +917,7 @@ Rules:
                   <tbody>
                     {primaryRanked.map((team, i) => {
                       const cutPos = cutRanked.findIndex(t => t.name === team.name);
+                      const cumPos = cumRanked.findIndex(t => t.name === team.name);
                       return (
                         <tr key={team.name} style={{background: i===0 && (useCumSort ? team.cumScore : team.cutScore) !== null ? `${team.color.bg}` : ""}}>
                           <td>
@@ -928,11 +929,14 @@ Rules:
                           </td>
                           <td className="right">
                             {cutPos === 0 && team.cutScore !== null && (
-                              <span className="status-pill status-active" style={{marginRight:6}}>Leads</span>
+                              <span style={{marginRight:6,fontSize:"0.9rem"}} title="Score at Cut winner">🏆</span>
                             )}
                             <ScoreDisplay val={team.cutScore} />
                           </td>
                           <td className="right">
+                            {cumPos === 0 && team.cumScore !== null && (
+                              <span className="status-pill status-active" style={{marginRight:6}}>Leads</span>
+                            )}
                             <ScoreDisplay val={team.cumScore} />
                           </td>
                           <td className="right hide-mobile">
