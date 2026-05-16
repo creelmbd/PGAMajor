@@ -36,9 +36,9 @@
       "thru": "F"
     },
     "Kurt Kitayama": {
-      "score": 5,
+      "score": 4,
       "status": "active",
-      "thru": "12"
+      "thru": "15"
     },
     "Adam Schenk": {
       "score": 6,
@@ -63,7 +63,7 @@
     "Aaron Rai": {
       "score": -5,
       "status": "active",
-      "thru": "12"
+      "thru": "15"
     },
     "Sahith Theegala": {
       "score": 3,
@@ -88,7 +88,7 @@
     "Max Greyserman": {
       "score": -3,
       "status": "active",
-      "thru": "8"
+      "thru": "11"
     },
     "Wyndham Clark": {
       "score": 5,
@@ -111,9 +111,9 @@
       "thru": "F"
     },
     "Andrew Novak": {
-      "score": -1,
+      "score": 0,
       "status": "active",
-      "thru": "11"
+      "thru": "15"
     },
     "Travis Smyth": {
       "score": 7,
@@ -136,9 +136,9 @@
       "thru": "F"
     },
     "Rico Hoey": {
-      "score": 2,
+      "score": 1,
       "status": "active",
-      "thru": "15"
+      "thru": "F"
     },
     "Garrick Higgo": {
       "score": 5,
@@ -178,7 +178,7 @@
     "Jason Day": {
       "score": 1,
       "status": "active",
-      "thru": "13"
+      "thru": "16"
     },
     "Padraig Harrington": {
       "score": 0,
@@ -256,9 +256,9 @@
       "thru": "F"
     },
     "Ryan Fox": {
-      "score": 1,
+      "score": 2,
       "status": "active",
-      "thru": "17"
+      "thru": "F"
     },
     "Bernd Wiesberger": {
       "score": 8,
@@ -291,14 +291,14 @@
       "thru": "F"
     },
     "Ben Kern": {
-      "score": 7,
+      "score": 8,
       "status": "active",
-      "thru": "17"
+      "thru": "F"
     },
     "Ludvig \u00c5berg": {
-      "score": -4,
+      "score": -3,
       "status": "active",
-      "thru": "11"
+      "thru": "15"
     },
     "Ben Griffin": {
       "score": -2,
@@ -316,9 +316,9 @@
       "thru": "F"
     },
     "Min Woo Lee": {
-      "score": -3,
+      "score": -1,
       "status": "active",
-      "thru": "8"
+      "thru": "11"
     },
     "Akshay Bhatia": {
       "score": 5,
@@ -328,7 +328,7 @@
     "Daniel Hillier": {
       "score": 0,
       "status": "active",
-      "thru": "17"
+      "thru": "F"
     },
     "Michael Thorbjornsen": {
       "score": 11,
@@ -336,9 +336,9 @@
       "thru": "F"
     },
     "Cameron Young": {
-      "score": -1,
+      "score": 1,
       "status": "active",
-      "thru": "9"
+      "thru": "12"
     },
     "Sam Stevens": {
       "score": 3,
@@ -413,7 +413,7 @@
     "Chris Gotterup": {
       "score": -4,
       "status": "active",
-      "thru": "7"
+      "thru": "10"
     },
     "Ricky Castillo": {
       "score": 7,
@@ -456,14 +456,14 @@
       "thru": "F"
     },
     "Justin Thomas": {
-      "score": -1,
+      "score": 0,
       "status": "active",
-      "thru": "9"
+      "thru": "12"
     },
     "Ryo Hisatsune": {
-      "score": 2,
+      "score": 3,
       "status": "active",
-      "thru": "17"
+      "thru": "F"
     },
     "Rasmus Neergaard-Petersen": {
       "score": 5,
@@ -476,9 +476,9 @@
       "thru": "F"
     },
     "David Puig": {
-      "score": -2,
+      "score": -1,
       "status": "active",
-      "thru": "10"
+      "thru": "13"
     },
     "Matt McCarty": {
       "score": 11,
@@ -516,9 +516,9 @@
       "thru": "F"
     },
     "Aldrich Potgieter": {
-      "score": 0,
+      "score": 2,
       "status": "active",
-      "thru": "8"
+      "thru": "11"
     },
     "Angel Ayora": {
       "score": 6,
@@ -573,7 +573,7 @@
     "Harris English": {
       "score": -1,
       "status": "active",
-      "thru": "11"
+      "thru": "14"
     },
     "Russell Henley": {
       "score": 5,
@@ -586,9 +586,9 @@
       "thru": "F"
     },
     "Andrew Putnam": {
-      "score": 1,
+      "score": 0,
       "status": "active",
-      "thru": "14"
+      "thru": "F"
     },
     "Tommy Fleetwood": {
       "score": 5,
@@ -601,9 +601,9 @@
       "thru": "F"
     },
     "Patrick Reed": {
-      "score": -2,
+      "score": -3,
       "status": "active",
-      "thru": "15"
+      "thru": "F"
     },
     "Justin Rose": {
       "score": -2,
@@ -611,9 +611,9 @@
       "thru": "F"
     },
     "Hideki Matsuyama": {
-      "score": -1,
+      "score": 0,
       "status": "active",
-      "thru": "7"
+      "thru": "10"
     },
     "Emiliano Grillo": {
       "score": 8,
@@ -631,9 +631,9 @@
       "thru": "F"
     },
     "Patrick Cantlay": {
-      "score": 0,
+      "score": 2,
       "status": "active",
-      "thru": "13"
+      "thru": "16"
     },
     "Luke Donald": {
       "score": 8,
@@ -666,9 +666,9 @@
       "thru": "F"
     },
     "Stephan Jaeger": {
-      "score": -2,
+      "score": -1,
       "status": "active",
-      "thru": "8"
+      "thru": "11"
     },
     "Adrien Saddier": {
       "score": 12,
@@ -676,9 +676,9 @@
       "thru": "F"
     },
     "Si Woo Kim": {
-      "score": -2,
+      "score": -1,
       "status": "active",
-      "thru": "11"
+      "thru": "14"
     },
     "Stewart Cink": {
       "score": 6,
@@ -723,12 +723,12 @@
     "Cameron Smith": {
       "score": -2,
       "status": "active",
-      "thru": "15"
+      "thru": "F"
     },
     "Haotong Li": {
-      "score": 0,
+      "score": 1,
       "status": "active",
-      "thru": "15"
+      "thru": "F"
     },
     "Christiaan Bezuidenhout": {
       "score": 4,
@@ -736,14 +736,14 @@
       "thru": "F"
     },
     "Scottie Scheffler": {
-      "score": -1,
+      "score": -2,
       "status": "active",
-      "thru": "10"
+      "thru": "13"
     },
     "Alex Smalley": {
-      "score": -1,
+      "score": -2,
       "status": "active",
-      "thru": "6"
+      "thru": "9"
     },
     "Jordan Smith": {
       "score": 12,
@@ -756,9 +756,9 @@
       "thru": "F"
     },
     "Maverick McNealy": {
-      "score": -4,
+      "score": -3,
       "status": "active",
-      "thru": "6"
+      "thru": "9"
     },
     "Ryan Lenahan": {
       "score": 15,
@@ -771,9 +771,9 @@
       "thru": "F"
     },
     "Jon Rahm": {
-      "score": -4,
+      "score": -5,
       "status": "active",
-      "thru": "14"
+      "thru": "17"
     },
     "Sam Burns": {
       "score": -1,
@@ -830,37 +830,37 @@
   "topPlayers": [
     {
       "name": "Aaron Rai",
-      "position": "1",
+      "position": "T1",
       "score": -5,
-      "thru": "12"
+      "thru": "15"
+    },
+    {
+      "name": "Jon Rahm",
+      "position": "T1",
+      "score": -5,
+      "thru": "17"
     },
     {
       "name": "Nick Taylor",
-      "position": "T2",
+      "position": "T3",
       "score": -4,
       "thru": "F"
     },
     {
-      "name": "Ludvig \u00c5berg",
-      "position": "T2",
-      "score": -4,
-      "thru": "11"
-    },
-    {
       "name": "Matti Schmid",
-      "position": "T2",
+      "position": "T3",
       "score": -4,
       "thru": "F"
     },
     {
       "name": "Chris Gotterup",
-      "position": "T2",
+      "position": "T3",
       "score": -4,
-      "thru": "7"
+      "thru": "10"
     }
   ],
   "tournamentStatus": "round3",
-  "exportedAt": "2026-05-16T20:12:03Z",
+  "exportedAt": "2026-05-16T20:58:12Z",
   "source": "ESPN leaderboard",
   "url": "https://site.api.espn.com/apis/site/v2/sports/golf/leaderboard",
   "note": "Auto-updated by GitHub Actions schedule."
