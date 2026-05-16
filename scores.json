@@ -36,9 +36,9 @@
       "thru": "F"
     },
     "Kurt Kitayama": {
-      "score": 3,
+      "score": 5,
       "status": "active",
-      "thru": "11"
+      "thru": "12"
     },
     "Adam Schenk": {
       "score": 6,
@@ -63,7 +63,7 @@
     "Aaron Rai": {
       "score": -5,
       "status": "active",
-      "thru": "11"
+      "thru": "12"
     },
     "Sahith Theegala": {
       "score": 3,
@@ -178,7 +178,7 @@
     "Jason Day": {
       "score": 1,
       "status": "active",
-      "thru": "12"
+      "thru": "13"
     },
     "Padraig Harrington": {
       "score": 0,
@@ -476,9 +476,9 @@
       "thru": "F"
     },
     "David Puig": {
-      "score": -3,
+      "score": -2,
       "status": "active",
-      "thru": "9"
+      "thru": "10"
     },
     "Matt McCarty": {
       "score": 11,
@@ -516,9 +516,9 @@
       "thru": "F"
     },
     "Aldrich Potgieter": {
-      "score": -2,
+      "score": 0,
       "status": "active",
-      "thru": "7"
+      "thru": "8"
     },
     "Angel Ayora": {
       "score": 6,
@@ -571,9 +571,9 @@
       "thru": "F"
     },
     "Harris English": {
-      "score": -2,
+      "score": -1,
       "status": "active",
-      "thru": "10"
+      "thru": "11"
     },
     "Russell Henley": {
       "score": 5,
@@ -588,7 +588,7 @@
     "Andrew Putnam": {
       "score": 1,
       "status": "active",
-      "thru": "13"
+      "thru": "14"
     },
     "Tommy Fleetwood": {
       "score": 5,
@@ -603,7 +603,7 @@
     "Patrick Reed": {
       "score": -2,
       "status": "active",
-      "thru": "14"
+      "thru": "15"
     },
     "Justin Rose": {
       "score": -2,
@@ -633,7 +633,7 @@
     "Patrick Cantlay": {
       "score": 0,
       "status": "active",
-      "thru": "12"
+      "thru": "13"
     },
     "Luke Donald": {
       "score": 8,
@@ -678,7 +678,7 @@
     "Si Woo Kim": {
       "score": -2,
       "status": "active",
-      "thru": "10"
+      "thru": "11"
     },
     "Stewart Cink": {
       "score": 6,
@@ -738,7 +738,7 @@
     "Scottie Scheffler": {
       "score": -1,
       "status": "active",
-      "thru": "9"
+      "thru": "10"
     },
     "Alex Smalley": {
       "score": -1,
@@ -832,7 +832,7 @@
       "name": "Aaron Rai",
       "position": "1",
       "score": -5,
-      "thru": "11"
+      "thru": "12"
     },
     {
       "name": "Nick Taylor",
@@ -860,7 +860,7 @@
     }
   ],
   "tournamentStatus": "round3",
-  "exportedAt": "2026-05-16T20:04:58Z",
+  "exportedAt": "2026-05-16T20:09:10Z",
   "source": "ESPN leaderboard",
   "url": "https://site.api.espn.com/apis/site/v2/sports/golf/leaderboard",
   "note": "Auto-updated by GitHub Actions schedule."
