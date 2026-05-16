@@ -36,9 +36,9 @@
       "thru": "F"
     },
     "Kurt Kitayama": {
-      "score": 4,
+      "score": 3,
       "status": "active",
-      "thru": "15"
+      "thru": "16"
     },
     "Adam Schenk": {
       "score": 6,
@@ -63,7 +63,7 @@
     "Aaron Rai": {
       "score": -5,
       "status": "active",
-      "thru": "15"
+      "thru": "16"
     },
     "Sahith Theegala": {
       "score": 3,
@@ -88,7 +88,7 @@
     "Max Greyserman": {
       "score": -3,
       "status": "active",
-      "thru": "11"
+      "thru": "12"
     },
     "Wyndham Clark": {
       "score": 5,
@@ -176,9 +176,9 @@
       "thru": "F"
     },
     "Jason Day": {
-      "score": 1,
+      "score": 3,
       "status": "active",
-      "thru": "16"
+      "thru": "17"
     },
     "Padraig Harrington": {
       "score": 0,
@@ -316,9 +316,9 @@
       "thru": "F"
     },
     "Min Woo Lee": {
-      "score": -1,
+      "score": 0,
       "status": "active",
-      "thru": "11"
+      "thru": "12"
     },
     "Akshay Bhatia": {
       "score": 5,
@@ -338,7 +338,7 @@
     "Cameron Young": {
       "score": 1,
       "status": "active",
-      "thru": "12"
+      "thru": "13"
     },
     "Sam Stevens": {
       "score": 3,
@@ -456,9 +456,9 @@
       "thru": "F"
     },
     "Justin Thomas": {
-      "score": 0,
+      "score": -1,
       "status": "active",
-      "thru": "12"
+      "thru": "13"
     },
     "Ryo Hisatsune": {
       "score": 3,
@@ -476,9 +476,9 @@
       "thru": "F"
     },
     "David Puig": {
-      "score": -1,
+      "score": 0,
       "status": "active",
-      "thru": "13"
+      "thru": "14"
     },
     "Matt McCarty": {
       "score": 11,
@@ -573,7 +573,7 @@
     "Harris English": {
       "score": -1,
       "status": "active",
-      "thru": "14"
+      "thru": "15"
     },
     "Russell Henley": {
       "score": 5,
@@ -631,9 +631,9 @@
       "thru": "F"
     },
     "Patrick Cantlay": {
-      "score": 2,
+      "score": 3,
       "status": "active",
-      "thru": "16"
+      "thru": "17"
     },
     "Luke Donald": {
       "score": 8,
@@ -676,9 +676,9 @@
       "thru": "F"
     },
     "Si Woo Kim": {
-      "score": -1,
+      "score": 0,
       "status": "active",
-      "thru": "14"
+      "thru": "15"
     },
     "Stewart Cink": {
       "score": 6,
@@ -738,12 +738,12 @@
     "Scottie Scheffler": {
       "score": -2,
       "status": "active",
-      "thru": "13"
+      "thru": "14"
     },
     "Alex Smalley": {
-      "score": -2,
+      "score": -3,
       "status": "active",
-      "thru": "9"
+      "thru": "10"
     },
     "Jordan Smith": {
       "score": 12,
@@ -758,7 +758,7 @@
     "Maverick McNealy": {
       "score": -3,
       "status": "active",
-      "thru": "9"
+      "thru": "10"
     },
     "Ryan Lenahan": {
       "score": 15,
@@ -771,9 +771,9 @@
       "thru": "F"
     },
     "Jon Rahm": {
-      "score": -5,
+      "score": -4,
       "status": "active",
-      "thru": "17"
+      "thru": "F"
     },
     "Sam Burns": {
       "score": -1,
@@ -830,37 +830,37 @@
   "topPlayers": [
     {
       "name": "Aaron Rai",
-      "position": "T1",
+      "position": "1",
       "score": -5,
-      "thru": "15"
-    },
-    {
-      "name": "Jon Rahm",
-      "position": "T1",
-      "score": -5,
-      "thru": "17"
+      "thru": "16"
     },
     {
       "name": "Nick Taylor",
-      "position": "T3",
+      "position": "T2",
       "score": -4,
       "thru": "F"
     },
     {
       "name": "Matti Schmid",
-      "position": "T3",
+      "position": "T2",
       "score": -4,
       "thru": "F"
     },
     {
       "name": "Chris Gotterup",
-      "position": "T3",
+      "position": "T2",
       "score": -4,
       "thru": "10"
+    },
+    {
+      "name": "Jon Rahm",
+      "position": "T2",
+      "score": -4,
+      "thru": "F"
     }
   ],
   "tournamentStatus": "round3",
-  "exportedAt": "2026-05-16T20:58:12Z",
+  "exportedAt": "2026-05-16T21:04:58Z",
   "source": "ESPN leaderboard",
   "url": "https://site.api.espn.com/apis/site/v2/sports/golf/leaderboard",
   "note": "Auto-updated by GitHub Actions schedule."
