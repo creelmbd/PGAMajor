@@ -31,9 +31,9 @@
       "thru": "F"
     },
     "Jhonattan Vegas": {
-      "score": 4,
+      "score": 5,
       "status": "active",
-      "thru": null
+      "thru": "2"
     },
     "Kurt Kitayama": {
       "score": -1,
@@ -103,7 +103,7 @@
     "Nicolai H\u00f8jgaard": {
       "score": 4,
       "status": "active",
-      "thru": null
+      "thru": "1"
     },
     "Rasmus H\u00f8jgaard": {
       "score": 3,
@@ -248,7 +248,7 @@
     "Alex Noren": {
       "score": 4,
       "status": "active",
-      "thru": null
+      "thru": "2"
     },
     "Adam Scott": {
       "score": 8,
@@ -486,9 +486,9 @@
       "thru": "F"
     },
     "Michael Brennan": {
-      "score": 4,
+      "score": 3,
       "status": "active",
-      "thru": null
+      "thru": "1"
     },
     "Jacob Bridgeman": {
       "score": 8,
@@ -781,7 +781,7 @@
       "thru": null
     }
   },
-  "champion": "Alex Smalley",
+  "champion": "",
   "leader": "Alex Smalley",
   "topPlayers": [
     {
@@ -815,8 +815,8 @@
       "thru": "-"
     }
   ],
-  "tournamentStatus": "final",
-  "exportedAt": "2026-05-16T11:17:52Z",
+  "tournamentStatus": "round3",
+  "exportedAt": "2026-05-16T12:11:21Z",
   "source": "ESPN leaderboard",
   "url": "https://site.api.espn.com/apis/site/v2/sports/golf/leaderboard",
   "note": "Auto-updated by GitHub Actions schedule."
