@@ -86,9 +86,9 @@
       "thru": "F"
     },
     "Max Greyserman": {
-      "score": -2,
+      "score": -3,
       "status": "active",
-      "thru": "15"
+      "thru": "16"
     },
     "Wyndham Clark": {
       "score": 5,
@@ -318,7 +318,7 @@
     "Min Woo Lee": {
       "score": -1,
       "status": "active",
-      "thru": "15"
+      "thru": "16"
     },
     "Akshay Bhatia": {
       "score": 5,
@@ -338,7 +338,7 @@
     "Cameron Young": {
       "score": -1,
       "status": "active",
-      "thru": "16"
+      "thru": "17"
     },
     "Sam Stevens": {
       "score": 3,
@@ -458,7 +458,7 @@
     "Justin Thomas": {
       "score": -1,
       "status": "active",
-      "thru": "16"
+      "thru": "17"
     },
     "Ryo Hisatsune": {
       "score": 3,
@@ -478,7 +478,7 @@
     "David Puig": {
       "score": -1,
       "status": "active",
-      "thru": "17"
+      "thru": "F"
     },
     "Matt McCarty": {
       "score": 11,
@@ -736,9 +736,9 @@
       "thru": "F"
     },
     "Scottie Scheffler": {
-      "score": -2,
+      "score": -1,
       "status": "active",
-      "thru": "17"
+      "thru": "F"
     },
     "Alex Smalley": {
       "score": -4,
@@ -860,7 +860,7 @@
     }
   ],
   "tournamentStatus": "round3",
-  "exportedAt": "2026-05-16T21:56:47Z",
+  "exportedAt": "2026-05-16T22:00:04Z",
   "source": "ESPN leaderboard",
   "url": "https://site.api.espn.com/apis/site/v2/sports/golf/leaderboard",
   "note": "Auto-updated by GitHub Actions schedule."
