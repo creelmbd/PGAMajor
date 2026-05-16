@@ -311,6 +311,7 @@ function App() {
   const [picks, setPicks] = useState(DEFAULT_PICKS);
   const [picksLoading, setPicksLoading] = useState(true);
   const [scores, setScores] = useState({});
+  const [cutScores, setCutScores] = useState({});
   const [topPlayers, setTopPlayers] = useState([]);
   const [champion, setChampion] = useState("");
   const [editingPlayer, setEditingPlayer] = useState(null);
@@ -377,6 +378,7 @@ function App() {
       if (!IS_LOCAL) {
         // GitHub Pages — always use the file
         setScores(fileScores);
+        if (data.cutScores) setCutScores(data.cutScores);
         if (data.topPlayers) setTopPlayers(data.topPlayers);
         if (data.tournamentStatus) setTournamentStatus(data.tournamentStatus);
         // Only apply champion from file if tournament is finished
@@ -388,6 +390,7 @@ function App() {
         const localIsNewer = localTs && ts && new Date(localTs) > ts;
         if (!localIsNewer) {
           setScores(fileScores);
+          if (data.cutScores) setCutScores(data.cutScores);
           if (data.topPlayers) setTopPlayers(data.topPlayers);
           if (data.tournamentStatus) setTournamentStatus(data.tournamentStatus);
           saveScoresToStorage(fileScores);
@@ -588,13 +591,34 @@ Rules:
       const activeSorted = sorted.filter(p => p.status !== "cut");
       const cutPlayers = sorted.filter(p => p.status === "cut");
 
-      // Score at cut: top 4 active scores
-      const cutCounters = activeSorted.slice(0, 4);
-      const cutScore = cutCounters.every(p => p.score !== null)
-        ? cutCounters.reduce((s, p) => s + p.score, 0)
-        : null;
+      // Score at Cut is FROZEN at end of R2. We use the per-player cutScores
+      // snapshot (stored in scores.json). If cutScores is populated (R3+), use it.
+      // Otherwise (R1/R2) compute live from active players only.
+      const isPostCut = ["round3", "round4", "final"].includes(tournamentStatus);
+      const hasFrozenCutScores = isPostCut && Object.keys(cutScores).length > 0;
 
-      // Cumulative: top 3 active scores
+      let cutCounters, cutScore;
+      if (hasFrozenCutScores) {
+        // Use frozen R2 per-player scores — top 4 of all 7 picks by their R2 score
+        const withFrozenScore = playerData
+          .map(p => ({ ...p, frozenScore: cutScores[p.name] ?? null }))
+          .filter(p => p.frozenScore !== null)
+          .sort((a, b) => a.frozenScore - b.frozenScore);
+        cutCounters = withFrozenScore.slice(0, 4).map(p => ({ ...p, score: p.frozenScore }));
+        cutScore = cutCounters.length >= 1
+          ? cutCounters.reduce((s, p) => s + p.frozenScore, 0)
+          : null;
+        // If fewer than 4 players have a frozen score, show null
+        if (cutCounters.length < 4) cutScore = null;
+      } else {
+        // R1/R2: top 4 active players by current score
+        cutCounters = activeSorted.slice(0, 4);
+        cutScore = cutCounters.every(p => p.score !== null)
+          ? cutCounters.reduce((s, p) => s + p.score, 0)
+          : null;
+      }
+
+      // Cumulative: top 3 active scores (continues updating through the tournament)
       const cumCounters = activeSorted.slice(0, 3);
       const cumScore = cumCounters.every(p => p.score !== null)
         ? cumCounters.reduce((s, p) => s + p.score, 0)
@@ -614,7 +638,7 @@ Rules:
         totalPicks: teamPicks.length,
       };
     });
-  }, [picks, scores, champion]);
+  }, [picks, scores, cutScores, champion, tournamentStatus]);
 
   // Rankings
   // Sort standings by cut for R1/R2, by cumulative for R3/R4/final

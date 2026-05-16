@@ -172,6 +172,16 @@ def load_existing_champion():
         return ""
 
 
+def load_existing_output():
+    """Load the full existing scores.json, returning empty dict on failure."""
+    if not OUTPUT_FILE.exists():
+        return {}
+    try:
+        return json.loads(OUTPUT_FILE.read_text())
+    except Exception:
+        return {}
+
+
 def main():
     now = datetime.datetime.now(datetime.timezone.utc)
     if not is_within_play_window(now):
@@ -230,8 +240,26 @@ def main():
     else:
         champion = ""
 
+    # Preserve or create cutScores: frozen R2 per-player scores used for Score at Cut.
+    # Once written (when transitioning to round3), cutScores is never overwritten.
+    existing = load_existing_output()
+    existing_cut_scores = existing.get("cutScores", {})
+    existing_status = existing.get("tournamentStatus", "")
+
+    # Write cutScores when we first reach round3 (freeze the R2 scores)
+    if tournament_status == "round3" and not existing_cut_scores:
+        # Snapshot current scores as the frozen cut scores
+        cut_scores = {name: info["score"] for name, info in scores.items() if info["score"] is not None}
+        print(f"Freezing cutScores for {len(cut_scores)} players at start of R3")
+    elif existing_cut_scores:
+        # Already frozen — preserve forever
+        cut_scores = existing_cut_scores
+    else:
+        cut_scores = {}
+
     output = {
         "scores": scores,
+        "cutScores": cut_scores,
         "champion": champion,
         "leader": leader,
         "topPlayers": top_players,
