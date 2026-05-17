@@ -110,7 +110,15 @@ def format_tournament_status(event):
         except Exception:
             return "round1"
     if state == "post":
-        return "final"
+        # ESPN sets state="post" between rounds too, not just after R4.
+        # Only call it "final" when period == 4 (all 4 rounds complete).
+        try:
+            if int(period) >= 4:
+                return "final"
+            else:
+                return f"round{int(period)}"
+        except Exception:
+            return "final"
     if state:
         return state
     return "unknown"

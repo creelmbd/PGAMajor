@@ -871,7 +871,7 @@ Rules:
                         <div className="podium-score">
                           <ScoreDisplay val={team.cutScore} />
                         </div>
-                        {i === 0 && team.cutScore !== null && (
+                        {team.cutScore !== null && team.cutScore === cutRanked[0]?.cutScore && (
                           <div className="podium-payout" style={{background:"rgba(212,168,83,0.12)",color:"#f0c870"}}>
                             🏆 Wins ${cutPayout}
                           </div>
@@ -893,7 +893,7 @@ Rules:
                         <div className="podium-score">
                           <ScoreDisplay val={team.cumScore} />
                         </div>
-                        {i === 0 && team.cumScore !== null && (
+                        {team.cumScore !== null && team.cumScore === cumRanked[0]?.cumScore && (
                           <div className="podium-payout" style={{background:"rgba(34,197,94,0.12)",color:"#86efac"}}>
                             Leads for ${cumPayout}
                           </div>
@@ -916,8 +916,10 @@ Rules:
                   </thead>
                   <tbody>
                     {primaryRanked.map((team, i) => {
-                      const cutPos = cutRanked.findIndex(t => t.name === team.name);
-                      const cumPos = cumRanked.findIndex(t => t.name === team.name);
+                      const bestCutScore = cutRanked[0]?.cutScore;
+                      const bestCumScore = cumRanked[0]?.cumScore;
+                      const isCutLeader = team.cutScore !== null && bestCutScore !== null && team.cutScore === bestCutScore;
+                      const isCumLeader = team.cumScore !== null && bestCumScore !== null && team.cumScore === bestCumScore;
                       return (
                         <tr key={team.name} style={{background: i===0 && (useCumSort ? team.cumScore : team.cutScore) !== null ? `${team.color.bg}` : ""}}>
                           <td>
@@ -928,13 +930,13 @@ Rules:
                             <span style={{fontSize:"0.72rem",color:"var(--muted)",marginLeft:6}}>{team.totalPicks} picks</span>
                           </td>
                           <td className="right">
-                            {cutPos === 0 && team.cutScore !== null && (
+                            {isCutLeader && (
                               <span style={{marginRight:6,fontSize:"0.9rem"}} title="Score at Cut winner">🏆</span>
                             )}
                             <ScoreDisplay val={team.cutScore} />
                           </td>
                           <td className="right">
-                            {cumPos === 0 && team.cumScore !== null && (
+                            {isCumLeader && (
                               <span className="status-pill status-active" style={{marginRight:6}}>Leads</span>
                             )}
                             <ScoreDisplay val={team.cumScore} />
