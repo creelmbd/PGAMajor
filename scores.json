@@ -860,7 +860,7 @@
     }
   ],
   "tournamentStatus": "final",
-  "exportedAt": "2026-05-17T23:32:52Z",
+  "exportedAt": "2026-05-18T00:01:34Z",
   "source": "ESPN leaderboard",
   "url": "https://site.api.espn.com/apis/site/v2/sports/golf/leaderboard",
   "note": "Auto-updated by GitHub Actions schedule."
