@@ -6,7 +6,7 @@
 <title>US Open 2026 — Scoreboard</title>
 <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.23.10/babel.min.js"></script>
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -196,7 +196,7 @@
 <script type="text/babel">
 const { useState, useMemo, useEffect, useCallback } = React;
 
-// ── Team & pick data (keep in sync with draft board) ──────────────────────────
+// -- Team & pick data (keep in sync with draft board) --
 const TEAM_NAMES = ["Hobie","Creelman","Shumate","Minges","Curry","Tracy"];
 
 const TEAM_COLORS = [
@@ -212,7 +212,7 @@ const ENTRY_FEE = 50;
 const NUM_TEAMS = 6;
 const TOTAL_POT = ENTRY_FEE * NUM_TEAMS; // $300
 
-// Default picks — empty rosters for a fresh draft start
+// Default picks - empty rosters for a fresh draft start
 const DEFAULT_PICKS = {
   "Minges":   [],
   "Curry":    [],
@@ -222,7 +222,7 @@ const DEFAULT_PICKS = {
   "Creelman": [],
 };
 
-// ── Scoring rules ─────────────────────────────────────────────────────────────
+// -- Scoring rules --
 // Score at Cut: top 4 per team count
 // Cumulative Score: top 3 per team count
 // Champion: team holding the winner gets 25%
@@ -288,13 +288,13 @@ function saveChampionToStorage(name) {
   try { localStorage.setItem('pga2026_champion', name); } catch(e) {}
 }
 
-// ── Score display helper ───────────────────────────────────────────────────────
+// -- Score display helper --
 function ScoreDisplay({ val, size = "normal" }) {
   if (val === null || val === undefined || val === "") {
-    return <span className="score-na">—</span>;
+    return <span className="score-na">-</span>;
   }
   const n = Number(val);
-  if (isNaN(n)) return <span className="score-na">—</span>;
+  if (isNaN(n)) return <span className="score-na">-</span>;
   const cls = n < 0 ? "score-neg" : n > 0 ? "score-pos" : "score-e";
   const label = n === 0 ? "E" : n > 0 ? `+${n}` : `${n}`;
   return <span className={`score-val ${cls}`}>{label}</span>;
@@ -304,7 +304,7 @@ function rankSuffix(n) {
   if(n===1) return "st"; if(n===2) return "nd"; if(n===3) return "rd"; return "th";
 }
 
-// ── Main App ──────────────────────────────────────────────────────────────────
+// -- Main App --
 const IS_LOCAL = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
 
 function App() {
@@ -325,7 +325,7 @@ function App() {
   const [fetchLog, setFetchLog] = useState(""); // status message from last fetch
   const [tournamentStatus, setTournamentStatus] = useState("round1");
 
-  // Load picks — always fetch picks.json first (source of truth everywhere)
+  // Load picks - always fetch picks.json first (source of truth everywhere)
   // On localhost, fall back to localStorage if picks.json fails
   useEffect(() => {
     fetchPicksJson().then(data => {
@@ -360,7 +360,7 @@ function App() {
     }
   }, []);
 
-  // On mount: load scores.json — always trust the file if it's newer than localStorage
+  // On mount: load scores.json - always trust the file if it's newer than localStorage
   useEffect(() => {
     fetchScoresJson().then(data => {
       if (!data) return;
@@ -376,7 +376,7 @@ function App() {
       }
 
       if (!IS_LOCAL) {
-        // GitHub Pages — always use the file
+        // GitHub Pages - always use the file
         setScores(fileScores);
         if (data.cutScores) setCutScores(data.cutScores);
         if (data.topPlayers) setTopPlayers(data.topPlayers);
@@ -385,7 +385,7 @@ function App() {
         if (isFinal && fileChampion) { setChampion(fileChampion); setChampionInput(fileChampion); }
         if (ts) { setLastUpdated(ts); setFetchLog(`✓ Loaded from scores.json · ${ts.toLocaleTimeString()}`); }
       } else {
-        // Localhost — use scores.json unless localStorage is strictly newer
+        // Localhost - use scores.json unless localStorage is strictly newer
         const localTs = localStorage.getItem('pga2026_scores_ts');
         const localIsNewer = localTs && ts && new Date(localTs) > ts;
         if (!localIsNewer) {
@@ -447,7 +447,7 @@ function App() {
     setChampionInput(name);
   }
 
-  // ── Export scores.json for GitHub Pages ─────────────────────────────────────
+  // -- Export scores.json for GitHub Pages --
   function exportScoresJson() {
     const data = {
       scores,
@@ -464,7 +464,7 @@ function App() {
     URL.revokeObjectURL(url);
   }
 
-  // ── ESPN score fetch via Anthropic API ───────────────────────────────────────
+  // -- ESPN score fetch via Anthropic API --
   async function fetchESPNScores() {
     setFetching(true);
     setFetchLog("Searching ESPN for live scores…");
@@ -483,7 +483,7 @@ I need scores for each of these players: ${playerList.join(", ")}.
 Step 1: Search the ESPN leaderboard for current scores.
 Step 2: Search specifically for the 2026 US Open cut list / missed cut players to identify which of my players did not make it to the weekend.
 
-Return ONLY a valid JSON object — no markdown, no explanation, no extra text:
+Return ONLY a valid JSON object - no markdown, no explanation, no extra text:
 {
   "players": [
     {"name": "Scottie Scheffler", "score": -8, "status": "active"},
@@ -496,7 +496,7 @@ Return ONLY a valid JSON object — no markdown, no explanation, no extra text:
 
 Rules:
 - score: integer, negative = under par, positive = over par, 0 = even. Use their score AT THE CUT (end of round 2) for players who missed the cut. null only if they haven't teed off yet.
-- status: "active" if still playing, "cut" if they missed the cut or withdrew. Be thorough — check the missed cut list explicitly, do not guess.
+- status: "active" if still playing, "cut" if they missed the cut or withdrew. Be thorough - check the missed cut list explicitly, do not guess.
 - Include EVERY player from my list, no exceptions.
 - tournament_status: "pre" (not started), "round1", "round2", "cut" (cut being made), "round3", "round4", "final"
 - leader: current overall tournament leader's name`;
@@ -546,7 +546,7 @@ Rules:
       saveScoresToStorage(updated);
       const now = new Date();
       setLastUpdated(now);
-      setFetchLog(`✓ Updated ${updatedCount} players · ${parsed.tournament_status || "live"} · ${now.toLocaleTimeString()} — push scores.json to GitHub`);
+      setFetchLog(`✓ Updated ${updatedCount} players · ${parsed.tournament_status || "live"} · ${now.toLocaleTimeString()} - push scores.json to GitHub`);
 
       // Auto-download scores.json so you can push to GitHub immediately
       const exportData = {
@@ -564,12 +564,12 @@ Rules:
       URL.revokeObjectURL(url);
     } catch(err) {
       console.error("ESPN fetch error:", err);
-      setFetchLog(`⚠ ${err.message} — scores unchanged`);
+      setFetchLog(`⚠ ${err.message} - scores unchanged`);
     }
     setFetching(false);
   }
 
-  // ── Team scoring calculations ─────────────────────────────────────────────
+  // -- Team scoring calculations --
   const teamStats = useMemo(() => {
     return TEAM_NAMES.map((name, idx) => {
       const teamPicks = picks[name] || [];
@@ -599,7 +599,7 @@ Rules:
 
       let cutCounters, cutScore;
       if (hasFrozenCutScores) {
-        // Use frozen R2 per-player scores — top 4 of all 7 picks by their R2 score
+        // Use frozen R2 per-player scores - top 4 of all 7 picks by their R2 score
         const withFrozenScore = playerData
           .map(p => ({ ...p, frozenScore: cutScores[p.name] ?? null }))
           .filter(p => p.frozenScore !== null)
@@ -788,7 +788,7 @@ Rules:
             </div>
           )}
           {!championTeam && (
-            <div style={{marginLeft:"1rem",fontSize:"0.75rem",color:"var(--muted)"}}>Not drafted — payout goes to Cumulative leader</div>
+            <div style={{marginLeft:"1rem",fontSize:"0.75rem",color:"var(--muted)"}}>Not drafted - payout goes to Cumulative leader</div>
           )}
           <button style={{marginLeft:"auto",background:"none",border:"1px solid var(--border2)",borderRadius:6,color:"var(--muted)",fontFamily:"inherit",fontSize:"0.72rem",padding:"3px 8px",cursor:"pointer"}}
             onClick={()=>{setEditingChampion(true);setChampionInput(champion);}}>Edit</button>
@@ -830,7 +830,7 @@ Rules:
             </div>
             <div className="section-divider" style={{margin:"0.75rem 0 0"}} />
 
-            {/* ── LEADERBOARD TAB ── */}
+            {/* -- LEADERBOARD TAB -- */}
             {activeTab === "leaderboard" && (
               <div>
                 {/* Podium - Tournament Leaderboard */}
@@ -944,7 +944,7 @@ Rules:
                           <td className="right hide-mobile">
                             {team.hasChampion
                               ? <span title={champion} style={{fontSize:"0.9rem"}}>🏆</span>
-                              : <span style={{color:"var(--muted)",fontSize:"0.8rem"}}>—</span>
+                              : <span style={{color:"var(--muted)",fontSize:"0.8rem"}}>-</span>
                             }
                           </td>
                         </tr>
@@ -998,7 +998,7 @@ Rules:
               </div>
             )}
 
-            {/* ── PLAYERS TAB ── */}
+            {/* -- PLAYERS TAB -- */}
             {activeTab === "players" && (
               <div>
                 <div style={{padding:"0.75rem 1.25rem",borderBottom:"1px solid var(--border)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
@@ -1045,12 +1045,12 @@ Rules:
               </div>
             )}
 
-            {/* ── PAYOUTS TAB ── */}
+            {/* -- PAYOUTS TAB -- */}
             {activeTab === "payouts" && (
               <div>
                 <div className="payout-row" style={{background:"rgba(59,130,246,0.05)"}}>
                   <div>
-                    <div className="payout-label">Score at Cut — 25% of pot</div>
+                    <div className="payout-label">Score at Cut - 25% of pot</div>
                     <div className="payout-winner">
                       {cutLeader && cutLeader.cutScore !== null ? cutLeader.name : "TBD"}
                       {cutLeader && cutLeader.cutScore !== null && (
@@ -1064,7 +1064,7 @@ Rules:
                 </div>
                 <div className="payout-row" style={{background:"rgba(34,197,94,0.04)"}}>
                   <div>
-                    <div className="payout-label">Cumulative Score — 50% of pot</div>
+                    <div className="payout-label">Cumulative Score - 50% of pot</div>
                     <div className="payout-winner">
                       {cumLeader && cumLeader.cumScore !== null ? cumLeader.name : "TBD"}
                       {cumLeader && cumLeader.cumScore !== null && (
@@ -1078,7 +1078,7 @@ Rules:
                 </div>
                 <div className="payout-row" style={{background:"rgba(249,115,22,0.04)"}}>
                   <div>
-                    <div className="payout-label">Champion Pick — 25% of pot</div>
+                    <div className="payout-label">Champion Pick - 25% of pot</div>
                     <div className="payout-winner">
                       {champion ? (
                         <>
@@ -1105,7 +1105,7 @@ Rules:
           </div>
         </div>
 
-        {/* Sidebar — hidden on mobile */}
+        {/* Sidebar - hidden on mobile */}
         <div className="sidebar-hide-mobile">
           {/* Rules */}
           <div className="panel">
@@ -1122,21 +1122,21 @@ Rules:
               <div className="rule-row">
                 <span className="rule-icon">✂️</span>
                 <div>
-                  <strong>Score at Cut</strong> — top <strong>4 golfers</strong> per team count.<br />
+                  <strong>Score at Cut</strong> - top <strong>4 golfers</strong> per team count.<br />
                   <span style={{color:"var(--muted)",fontSize:"0.78rem"}}>Leader at the cut wins <span className="rule-amount">$75</span> (25% of pot)</span>
                 </div>
               </div>
               <div className="rule-row">
                 <span className="rule-icon">🏅</span>
                 <div>
-                  <strong>Cumulative Score</strong> — top <strong>3 golfers</strong> at tournament end count.<br />
+                  <strong>Cumulative Score</strong> - top <strong>3 golfers</strong> at tournament end count.<br />
                   <span style={{color:"var(--muted)",fontSize:"0.78rem"}}>Leader wins <span className="rule-amount">$150</span> (50% of pot)</span>
                 </div>
               </div>
               <div className="rule-row">
                 <span className="rule-icon">🏆</span>
                 <div>
-                  <strong>Champion Pick</strong> — team with the tournament winner gets <span className="rule-amount">$75</span> (25%).<br />
+                  <strong>Champion Pick</strong> - team with the tournament winner gets <span className="rule-amount">$75</span> (25%).<br />
                   <span style={{color:"var(--muted)",fontSize:"0.78rem"}}>If undrafted, goes to best Cumulative Score</span>
                 </div>
               </div>

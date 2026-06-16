@@ -6,7 +6,7 @@
 <title>US Open 2026 — Draft Board</title>
 <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.23.10/babel.min.js"></script>
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -240,7 +240,7 @@ const SEED_ODDS = {
   "Daniel Berger":"+20000","Billy Horschel":"+25000","Emiliano Grillo":"+25000",
 };
 
-// Snake draft order — 6 teams, rounds snake back and forth
+// Snake draft order - 6 teams, rounds snake back and forth
 // Minges=0, Curry=1, Tracy=2, Shumate=3, Hobie=4, Creelman=5
 const TEAM_NAMES = ["Hobie","Creelman","Shumate","Minges","Curry","Tracy"];
 function buildSnakeOrder(numTeams, numRounds) {
@@ -256,7 +256,7 @@ function buildSnakeOrder(numTeams, numRounds) {
 // Generate enough slots (10 rounds = 60 picks)
 const SNAKE_ORDER = buildSnakeOrder(6, 7);
 
-// Existing picks from the image — cleared for a fresh draft start
+// Existing picks from the image - cleared for a fresh draft start
 // No picks are preloaded; teams begin empty so the draft can start clean.
 const EXISTING_PICKS_LIST = [];
 
@@ -350,13 +350,13 @@ function App() {
       }).catch(()=>{});
   }, []);
 
-  // On mount: fetch picks.json — always on GitHub Pages, fallback on localhost
+  // On mount: fetch picks.json - always on GitHub Pages, fallback on localhost
   useEffect(() => {
     fetchPicksJson().then(data => {
       if (data && data.teams && data.teams.length > 0) {
         setTeams(data.teams);
       } else if (!IS_LOCAL && !teams) {
-        // picks.json missing or empty on GitHub Pages — use defaults
+        // picks.json missing or empty on GitHub Pages - use defaults
         setTeams(buildInitialTeams());
       }
       setPicksLoading(false);
@@ -480,7 +480,7 @@ function App() {
     setEditingTeam(null);
   }
 
-  // ── Odds fetch via The Odds API (free, CORS-friendly, no proxy needed) ────────
+  // -- Odds fetch via The Odds API (free, CORS-friendly, no proxy needed) --
   async function fetchOdds() {
     const apiKey = oddsApiKey.trim();
     if (!apiKey) {
@@ -488,7 +488,7 @@ function App() {
       return;
     }
     setOddsLoading(true);
-    setOddsLog("Fetching live odds…");
+    setOddsLog("Fetching live odds ");
     try {
       const res = await fetch(
         `https://api.the-odds-api.com/v4/sports/golf_pga_championship_winner/odds?regions=us&markets=outrights&oddsFormat=american&apiKey=${apiKey}`
@@ -517,7 +517,7 @@ function App() {
           });
         });
       });
-      if (Object.keys(playerOdds).length === 0) throw new Error("No odds returned — tournament may not be listed yet");
+      if (Object.keys(playerOdds).length === 0) throw new Error("No odds returned - tournament may not be listed yet");
       const merged = {...SEED_ODDS, ...playerOdds};
       setOdds(merged);
       try { localStorage.setItem('pga2026_odds', JSON.stringify(merged)); } catch(e) {}
@@ -549,7 +549,7 @@ function App() {
   if (picksLoading || !teams) return (
     <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:"1rem"}}>
       <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"2rem",letterSpacing:"3px",color:"var(--gold)"}}>US Open 2026</div>
-      <div style={{color:"var(--muted)",fontSize:"0.85rem",animation:"pulse 1.5s infinite"}}>Loading picks…</div>
+      <div style={{color:"var(--muted)",fontSize:"0.85rem",animation:"pulse 1.5s infinite"}}>Loading picks </div>
     </div>
   );
 
@@ -608,7 +608,7 @@ function App() {
         <div className="header-inner">
           <div>
             <div className="header-title">US Open 2026</div>
-            <div className="header-sub">Jun 18–21, 2026</div>
+            <div className="header-sub">Jun 18 21, 2026</div>
             <div style={{marginTop:"8px",display:"flex",gap:"8px"}}>
               <span style={{fontSize:"0.7rem",background:"rgba(212,168,83,0.15)",border:"1px solid rgba(212,168,83,0.4)",borderRadius:5,padding:"3px 10px",color:"#d4a853",fontWeight:600}}>📋 Draft Board</span>
               <a href="scoreboard.html" style={{fontSize:"0.7rem",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:5,padding:"3px 10px",color:"#6b7a90",textDecoration:"none",fontWeight:500}}>🏆 Scoreboard</a>
@@ -673,7 +673,7 @@ function App() {
                 </div>
                 <div className="search-bar">
                   <span className="search-icon">🔍</span>
-                  <input placeholder="Search player…" value={search} onChange={e=>setSearch(e.target.value)} />
+                  <input placeholder="Search player " value={search} onChange={e=>setSearch(e.target.value)} />
                 </div>
               </div>
             </div>
@@ -709,14 +709,14 @@ function App() {
                         </td>
                         <td className="right">
                           {o ? <span className={`odds-chip ${oddsClass(o)}`}>{o}</span>
-                             : <span className="odds-chip odds-long">—</span>}
+                             : <span className="odds-chip odds-long">-</span>}
                         </td>
                         <td className="right">
                           {ownerTeam
                             ? <span style={{fontSize:"0.7rem",padding:"2px 8px",borderRadius:4,background:c.bg,color:c.text,border:`1px solid ${c.border}`,fontWeight:600}}>{ownerTeam.name}</span>
                             : nextPickTeam
-                              ? <span style={{fontSize:"0.7rem",color:"#6b7a90"}}>→ {nextPickTeam.name}</span>
-                              : <span style={{fontSize:"0.7rem",color:"#6b7a90"}}>—</span>
+                              ? <span style={{fontSize:"0.7rem",color:"#6b7a90"}}> {nextPickTeam.name}</span>
+                              : <span style={{fontSize:"0.7rem",color:"#6b7a90"}}>-</span>
                           }
                         </td>
                         <td className="right" onClick={e=>e.stopPropagation()}>
@@ -784,7 +784,7 @@ function App() {
                 : <div style={{display:"flex",gap:4}}>
                     <input ref={newTeamRef} style={{background:"#0a0e14",border:"1px solid rgba(255,255,255,0.2)",borderRadius:5,
                         color:"#e8ecf0",padding:"3px 8px",fontSize:"0.82rem",fontFamily:"inherit",width:110}}
-                      placeholder="Team name…" value={newTeamName}
+                      placeholder="Team name " value={newTeamName}
                       onChange={e=>setNewTeamName(e.target.value)}
                       onKeyDown={e=>{if(e.key==="Enter")addTeam(); if(e.key==="Escape"){setAddingTeam(false);setNewTeamName("");}}}
                     />
@@ -836,7 +836,7 @@ function App() {
                             <span style={{fontSize:"0.65rem",color:"#6b7a90",minWidth:14,textAlign:"right"}}>{pi+1}</span>
                             <div>
                               <div className="pname">{p}</div>
-                              <div className="podds">{odds[p]||"—"}</div>
+                              <div className="podds">{odds[p]||"-"}</div>
                             </div>
                           </div>
                           <button style={{background:"none",border:"none",color:"#6b7a90",cursor:"pointer",fontSize:"0.75rem",padding:"2px 6px",borderRadius:4}}
