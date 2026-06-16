@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fetches PGA Championship leaderboard scores from ESPN and writes scores.json."""
+"""Fetches US Open leaderboard scores from ESPN and writes scores.json."""
 
 import datetime
 import json
@@ -19,14 +19,14 @@ OUTPUT_FILE = Path(__file__).parent / "scores.json"
 ESPN_URL = "https://site.api.espn.com/apis/site/v2/sports/golf/leaderboard"
 USER_AGENT = "Mozilla/5.0 (compatible; GitHubActions/1.0; +https://github.com)"
 
-TOURNAMENT_START = datetime.datetime(2026, 5, 14, 12, 0, tzinfo=datetime.timezone.utc)
-TOURNAMENT_END = datetime.datetime(2026, 5, 18, 4, 0, tzinfo=datetime.timezone.utc)  # midnight ET Sunday
+TOURNAMENT_START = datetime.datetime(2026, 6, 18, 12, 0, tzinfo=datetime.timezone.utc)
+TOURNAMENT_END = datetime.datetime(2026, 6, 22, 4, 0, tzinfo=datetime.timezone.utc)  # midnight ET Sunday (day after final)
 
 
 def is_within_play_window(now=None):
     if now is None:
         now = datetime.datetime.now(datetime.timezone.utc)
-    # PGA tee times start ~7am ET = 11am UTC; rounds finish ~midnight UTC.
+    # Typical US Open tee times start around 7am ET = 11am UTC; rounds finish ~midnight UTC.
     # Remove the hour restriction so early starters aren't missed.
     return TOURNAMENT_START <= now <= TOURNAMENT_END
 
@@ -196,7 +196,7 @@ def main():
         print(f"Outside tournament play window ({now.isoformat()}) — skipping update.")
         return
 
-    print("Fetching PGA Championship leaderboard from ESPN...")
+    print("Fetching US Open leaderboard from ESPN...")
     data = fetch_leaderboard_json()
     events = data.get("events", [])
     if not events:

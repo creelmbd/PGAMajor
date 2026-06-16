@@ -1,4 +1,4 @@
-name: Update PGA Championship Scores
+name: Update US Open Scores
 
 permissions:
   contents: write

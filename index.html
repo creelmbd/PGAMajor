@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2026 PGA Championship — Draft Board</title>
+<title>US Open 2026 — Draft Board</title>
 <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -178,7 +178,7 @@
 <script type="text/babel">
 const { useState, useMemo, useRef, useEffect } = React;
 
-// Official 2026 PGA Championship field — pgachampionship.com
+// Official 2026 US Open field
 const ELITE = ["Scottie Scheffler","Rory McIlroy","Xander Schauffele","Bryson DeChambeau",
   "Ludvig Åberg","Collin Morikawa","Tommy Fleetwood","Viktor Hovland","Jon Rahm","Cameron Young",
   "Justin Thomas","Matt Fitzpatrick","Brooks Koepka","Jordan Spieth","Patrick Cantlay",
@@ -242,7 +242,7 @@ const SEED_ODDS = {
 
 // Snake draft order — 6 teams, rounds snake back and forth
 // Minges=0, Curry=1, Tracy=2, Shumate=3, Hobie=4, Creelman=5
-const TEAM_NAMES = ["Minges","Curry","Tracy","Shumate","Hobie","Creelman"];
+const TEAM_NAMES = ["Hobie","Creelman","Shumate","Minges","Curry","Tracy"];
 function buildSnakeOrder(numTeams, numRounds) {
   const order = [];
   for(let r = 0; r < numRounds; r++) {
@@ -256,42 +256,9 @@ function buildSnakeOrder(numTeams, numRounds) {
 // Generate enough slots (10 rounds = 60 picks)
 const SNAKE_ORDER = buildSnakeOrder(6, 7);
 
-// Existing picks from the image — 27 picks made so far
-// Snake sequence positions 0-26
-const EXISTING_PICKS_LIST = [
-  // R1 fwd: Minges, Curry, Tracy, Shumate, Hobie, Creelman
-  {team:"Minges",  player:"Scottie Scheffler"},
-  {team:"Curry",   player:"Rory McIlroy"},
-  {team:"Tracy",   player:"Cameron Young"},
-  {team:"Shumate", player:"Bryson DeChambeau"},
-  {team:"Hobie",   player:"Xander Schauffele"},
-  {team:"Creelman",player:"Ludvig Åberg"},
-  // R2 rev: Creelman, Hobie, Shumate, Tracy, Curry, Minges
-  {team:"Creelman",player:"Jon Rahm"},
-  {team:"Hobie",   player:"Matt Fitzpatrick"},
-  {team:"Shumate", player:"Tommy Fleetwood"},
-  {team:"Tracy",   player:"Viktor Hovland"},
-  {team:"Curry",   player:"Brooks Koepka"},
-  {team:"Minges",  player:"Collin Morikawa"},
-  // R3 fwd: Minges, Curry, Tracy, Shumate, Hobie, Creelman
-  {team:"Minges",  player:"Russell Henley"},
-  {team:"Curry",   player:"Justin Rose"},
-  {team:"Tracy",   player:"Patrick Cantlay"},
-  {team:"Shumate", player:"Jordan Spieth"},
-  {team:"Hobie",   player:"Justin Thomas"},
-  {team:"Creelman",player:"Si Woo Kim"},
-  // R4 rev: Creelman, Hobie, Shumate, Tracy, Curry, Minges
-  {team:"Creelman",player:"Hideki Matsuyama"},
-  {team:"Hobie",   player:"Chris Gotterup"},
-  {team:"Shumate", player:"Sam Burns"},
-  {team:"Tracy",   player:"Tyrrell Hatton"},
-  {team:"Curry",   player:"Maverick McNealy"},
-  {team:"Minges",  player:"Rickie Fowler"},
-  // R5 fwd (partial): Minges, Curry, Tracy — remaining: Shumate, Hobie, Creelman, Creelman, Hobie...
-  {team:"Minges",  player:"Akshay Bhatia"},
-  {team:"Curry",   player:"Shane Lowry"},
-  {team:"Tracy",   player:"Min Woo Lee"},
-];
+// Existing picks from the image — cleared for a fresh draft start
+// No picks are preloaded; teams begin empty so the draft can start clean.
+const EXISTING_PICKS_LIST = [];
 
 const TEAM_COLORS = [
   {bg:"rgba(212,168,83,0.15)",text:"#f0c870",border:"rgba(212,168,83,0.4)"},
@@ -581,7 +548,7 @@ function App() {
 
   if (picksLoading || !teams) return (
     <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:"1rem"}}>
-      <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"2rem",letterSpacing:"3px",color:"var(--gold)"}}>2026 PGA Championship</div>
+      <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"2rem",letterSpacing:"3px",color:"var(--gold)"}}>US Open 2026</div>
       <div style={{color:"var(--muted)",fontSize:"0.85rem",animation:"pulse 1.5s infinite"}}>Loading picks…</div>
     </div>
   );
@@ -640,8 +607,8 @@ function App() {
       <header className="header">
         <div className="header-inner">
           <div>
-            <div className="header-title">2026 PGA Championship</div>
-            <div className="header-sub">Aronimink Golf Club · Newtown Square, PA · May 14–17, 2026</div>
+            <div className="header-title">US Open 2026</div>
+            <div className="header-sub">Jun 18–21, 2026</div>
             <div style={{marginTop:"8px",display:"flex",gap:"8px"}}>
               <span style={{fontSize:"0.7rem",background:"rgba(212,168,83,0.15)",border:"1px solid rgba(212,168,83,0.4)",borderRadius:5,padding:"3px 10px",color:"#d4a853",fontWeight:600}}>📋 Draft Board</span>
               <a href="scoreboard.html" style={{fontSize:"0.7rem",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:5,padding:"3px 10px",color:"#6b7a90",textDecoration:"none",fontWeight:500}}>🏆 Scoreboard</a>

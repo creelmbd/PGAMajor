@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-fetch_odds.py — Fetches 2026 PGA Championship odds and writes odds.json
+fetch_odds.py — Fetches 2026 US Open odds and writes odds.json
 
 Usage:
     python3 fetch_odds.py
@@ -138,8 +138,8 @@ def try_odds_api():
 def try_draftkings_network():
     print("  Trying DraftKings Network...")
     urls = [
-        "https://dknetwork.draftkings.com/2026/05/10/2026-pga-championship-odds-full-field/",
-        "https://dknetwork.draftkings.com/2026/05/2026-pga-championship-odds/",
+        "https://dknetwork.draftkings.com/2026/06/2026-us-open-odds/",
+        "https://dknetwork.draftkings.com/2026/06/2026-us-open-odds-full-field/",
     ]
     for url in urls:
         try:
@@ -160,8 +160,8 @@ def try_draftkings_network():
 def try_cbssports():
     print("  Trying CBS Sports...")
     urls = [
-        "https://www.cbssports.com/golf/news/2026-pga-championship-odds-picks-scottie-scheffler-rory-mcilroy-predictions/",
-        "https://www.cbssports.com/golf/news/2026-pga-championship-odds-date-field-course-picks-predictions-best-bets/",
+        "https://www.cbssports.com/golf/news/2026-us-open-odds-picks-scottie-scheffler-rory-mcilroy-predictions/",
+        "https://www.cbssports.com/golf/news/2026-us-open-odds-date-field-course-picks-predictions-best-bets/",
     ]
     for url in urls:
         try:
@@ -183,7 +183,7 @@ def try_vegasinsider():
     print("  Trying VegasInsider...")
     try:
         r = requests.get(
-            "https://www.vegasinsider.com/golf/odds/pga-championship/",
+            "https://www.vegasinsider.com/golf/odds/us-open/",
             headers=HEADERS, timeout=15, verify=False
         )
         if r.status_code != 200:
@@ -237,7 +237,7 @@ def parse_odds_from_text(text):
 # ── Main ──────────────────────────────────────────────────────────────────────
 def main():
     print("=" * 50)
-    print("PGA Championship Odds Fetcher")
+    print("US Open Odds Fetcher")
     print("=" * 50)
 
     existing = load_existing()
