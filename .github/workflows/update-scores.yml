@@ -3,7 +3,7 @@ name: Update US Open Scores
 permissions:
   contents: write
 
-"on":
+'on':
   schedule:
     - cron: '7,17,27,37,47,57 * * * *'
 
