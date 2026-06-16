@@ -8,10 +8,10 @@ Usage:
 Requires: pip install requests beautifulsoup4
 
 Tries these sources in order until one works:
-  1. The Odds API (if you have a key in ODDS_API_KEY env var or odds_api_key.txt)
-  2. DraftKings Network article (public, no key needed)
-  3. CBS Sports article (public, no key needed)
-  4. Manual fallback — uses last known odds already in odds.json
+  1. VegasInsider (most reliable)
+  2. The Odds API (if you have a key in ODDS_API_KEY env var or odds_api_key.txt)
+  3. DraftKings Network article (public, no key needed)
+  4. CBS Sports article (public, no key needed)
 """
 
 import json, re, sys, os, datetime, time
@@ -244,7 +244,7 @@ def main():
     print(f"Existing odds.json: {len(existing)} players\n")
 
     result = None
-    for source_fn in [try_odds_api, try_draftkings_network, try_cbssports, try_vegasinsider]:
+    for source_fn in [try_vegasinsider, try_odds_api, try_draftkings_network, try_cbssports]:
         result = source_fn()
         if result:
             break
