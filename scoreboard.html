@@ -643,6 +643,8 @@ Rules:
   // Rankings
   // Sort standings by cut for R1/R2, by cumulative for R3/R4/final
   const useCumSort = ["round3","round4","final"].includes(tournamentStatus);
+  // isPostCut: true once the actual cut has happened (R3+) — only then can Score at Cut have a winner
+  const isPostCut = ["round3", "round4", "final"].includes(tournamentStatus);
 
   const cutRanked = useMemo(() => {
     const withScore = teamStats.filter(t => t.cutScore !== null);
@@ -872,8 +874,8 @@ Rules:
                           <ScoreDisplay val={team.cutScore} />
                         </div>
                         {team.cutScore !== null && team.cutScore === cutRanked[0]?.cutScore && (
-                          <div className="podium-payout" style={{background:"rgba(212,168,83,0.12)",color:"#f0c870"}}>
-                            🏆 Wins ${cutPayout}
+                          <div className="podium-payout" style={{background: isPostCut ? "rgba(212,168,83,0.12)" : "rgba(34,197,94,0.12)", color: isPostCut ? "#f0c870" : "#86efac"}}>
+                            {isPostCut ? `🏆 Wins $${cutPayout}` : `Leads for $${cutPayout}`}
                           </div>
                         )}
                       </div>
@@ -931,7 +933,7 @@ Rules:
                           </td>
                           <td className="right">
                             {isCutLeader && (
-                              <span style={{marginRight:6,fontSize:"0.9rem"}} title="Score at Cut winner">🏆</span>
+                              <span style={{marginRight:6,fontSize:"0.9rem"}} title={isPostCut ? "Score at Cut winner" : "Currently leading Score at Cut"}>{isPostCut ? "🏆" : ""}</span>
                             )}
                             <ScoreDisplay val={team.cutScore} />
                           </td>
