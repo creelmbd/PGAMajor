@@ -16,9 +16,9 @@
       "thru": "F"
     },
     "Xander Schauffele": {
-      "score": -2,
+      "score": 1,
       "status": "active",
-      "thru": "8"
+      "thru": "13"
     },
     "J.J. Spaun": {
       "score": 8,
@@ -43,7 +43,7 @@
     "Collin Morikawa": {
       "score": 0,
       "status": "active",
-      "thru": "9"
+      "thru": "13"
     },
     "J.B. Holmes": {
       "score": 9,
@@ -51,9 +51,9 @@
       "thru": "F"
     },
     "Aaron Rai": {
-      "score": 2,
+      "score": 3,
       "status": "active",
-      "thru": "17"
+      "thru": "F"
     },
     "Nathan Kimsey": {
       "score": 6,
@@ -63,7 +63,7 @@
     "Sahith Theegala": {
       "score": 0,
       "status": "active",
-      "thru": "10"
+      "thru": "15"
     },
     "Jimmy Stanger": {
       "score": 7,
@@ -86,9 +86,9 @@
       "thru": "F"
     },
     "Wyndham Clark": {
-      "score": -7,
+      "score": -6,
       "status": "active",
-      "thru": "7"
+      "thru": "12"
     },
     "Nicolai H\u00f8jgaard": {
       "score": 9,
@@ -113,7 +113,7 @@
     "Max McGreevy": {
       "score": 4,
       "status": "active",
-      "thru": "16"
+      "thru": "F"
     },
     "Angel Hidalgo": {
       "score": 7,
@@ -123,7 +123,7 @@
     "Brian Harman": {
       "score": 3,
       "status": "active",
-      "thru": "15"
+      "thru": "F"
     },
     "Billy Horschel": {
       "score": 5,
@@ -166,14 +166,14 @@
       "thru": "F"
     },
     "Rory McIlroy": {
-      "score": 1,
+      "score": 3,
       "status": "active",
-      "thru": "14"
+      "thru": "F"
     },
     "Gary Woodland": {
-      "score": 2,
+      "score": 3,
       "status": "active",
-      "thru": "12"
+      "thru": "17"
     },
     "Rickie Fowler": {
       "score": 5,
@@ -216,9 +216,9 @@
       "thru": "F"
     },
     "Alex Fitzpatrick": {
-      "score": 1,
+      "score": 2,
       "status": "active",
-      "thru": "15"
+      "thru": "F"
     },
     "Viktor Hovland": {
       "score": 5,
@@ -238,7 +238,7 @@
     "Niklas N\u00f8rgaard": {
       "score": 4,
       "status": "active",
-      "thru": "15"
+      "thru": "F"
     },
     "Matthew Jordan": {
       "score": 5,
@@ -273,7 +273,7 @@
     "Akshay Bhatia": {
       "score": 2,
       "status": "active",
-      "thru": "13"
+      "thru": "17"
     },
     "Dylan Wu": {
       "score": 16,
@@ -291,9 +291,9 @@
       "thru": "F"
     },
     "Sam Stevens": {
-      "score": -4,
+      "score": -1,
       "status": "active",
-      "thru": "8"
+      "thru": "13"
     },
     "Keegan Bradley": {
       "score": 2,
@@ -331,9 +331,9 @@
       "thru": "F"
     },
     "Tom Kim": {
-      "score": -1,
+      "score": -2,
       "status": "active",
-      "thru": "9"
+      "thru": "13"
     },
     "Jayden Schaper": {
       "score": 10,
@@ -371,19 +371,19 @@
       "thru": "F"
     },
     "Harry Higgs": {
-      "score": 2,
+      "score": 6,
       "status": "active",
-      "thru": "9"
+      "thru": "14"
     },
     "Justin Thomas": {
-      "score": 0,
+      "score": 4,
       "status": "active",
-      "thru": "9"
+      "thru": "14"
     },
     "Ryo Hisatsune": {
-      "score": 3,
+      "score": 4,
       "status": "active",
-      "thru": "12"
+      "thru": "17"
     },
     "Filippo Celli": {
       "score": 5,
@@ -436,9 +436,9 @@
       "thru": "F"
     },
     "William Mouw": {
-      "score": 2,
+      "score": 4,
       "status": "active",
-      "thru": "11"
+      "thru": "16"
     },
     "Ben James": {
       "score": 8,
@@ -556,9 +556,9 @@
       "thru": "F"
     },
     "Ryder Cowan": {
-      "score": 1,
+      "score": 2,
       "status": "active",
-      "thru": "11"
+      "thru": "16"
     },
     "Marek Fleming": {
       "score": 8,
@@ -696,9 +696,9 @@
       "thru": "F"
     },
     "Keith Mitchell": {
-      "score": 1,
+      "score": 0,
       "status": "active",
-      "thru": "13"
+      "thru": "17"
     },
     "Ben Silverman": {
       "score": 8,
@@ -723,17 +723,17 @@
     "Matt Fitzpatrick": {
       "score": 0,
       "status": "active",
-      "thru": "7"
+      "thru": "12"
     },
     "Zac Blair": {
       "score": 3,
       "status": "active",
-      "thru": "16"
+      "thru": "F"
     },
     "Corey Conners": {
-      "score": 3,
+      "score": 2,
       "status": "active",
-      "thru": "17"
+      "thru": "F"
     },
     "Cameron Smith": {
       "score": 6,
@@ -743,7 +743,7 @@
     "Scottie Scheffler": {
       "score": -1,
       "status": "active",
-      "thru": "15"
+      "thru": "F"
     },
     "Alex Smalley": {
       "score": 9,
@@ -753,7 +753,7 @@
     "Maverick McNealy": {
       "score": 3,
       "status": "active",
-      "thru": "14"
+      "thru": "F"
     },
     "Jon Rahm": {
       "score": 6,
@@ -771,9 +771,9 @@
       "thru": "F"
     },
     "Sam Burns": {
-      "score": -1,
+      "score": 0,
       "status": "active",
-      "thru": "10"
+      "thru": "15"
     },
     "Carl Yuan": {
       "score": 9,
@@ -945,36 +945,36 @@
     {
       "name": "Wyndham Clark",
       "position": "1",
-      "score": -7,
-      "thru": "7"
-    },
-    {
-      "name": "Sam Stevens",
-      "position": "2",
-      "score": -4,
-      "thru": "8"
-    },
-    {
-      "name": "Xander Schauffele",
-      "position": "3",
-      "score": -2,
-      "thru": "8"
+      "score": -6,
+      "thru": "12"
     },
     {
       "name": "Tom Kim",
-      "position": "T4",
+      "position": "2",
+      "score": -2,
+      "thru": "13"
+    },
+    {
+      "name": "Sam Stevens",
+      "position": "T3",
       "score": -1,
-      "thru": "9"
+      "thru": "13"
     },
     {
       "name": "Scottie Scheffler",
-      "position": "T4",
+      "position": "T3",
       "score": -1,
-      "thru": "15"
+      "thru": "F"
+    },
+    {
+      "name": "Collin Morikawa",
+      "position": "T5",
+      "score": 0,
+      "thru": "13"
     }
   ],
   "tournamentStatus": "round3",
-  "exportedAt": "2026-06-20T21:38:34Z",
+  "exportedAt": "2026-06-20T22:52:21Z",
   "source": "ESPN leaderboard",
   "url": "https://site.api.espn.com/apis/site/v2/sports/golf/leaderboard",
   "note": "Auto-updated by GitHub Actions schedule."
