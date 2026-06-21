@@ -16,9 +16,9 @@
       "thru": "F"
     },
     "Xander Schauffele": {
-      "score": 1,
+      "score": 0,
       "status": "active",
-      "thru": "13"
+      "thru": "17"
     },
     "J.J. Spaun": {
       "score": 8,
@@ -41,9 +41,9 @@
       "thru": "F"
     },
     "Collin Morikawa": {
-      "score": 0,
+      "score": 1,
       "status": "active",
-      "thru": "13"
+      "thru": "F"
     },
     "J.B. Holmes": {
       "score": 9,
@@ -61,9 +61,9 @@
       "thru": "F"
     },
     "Sahith Theegala": {
-      "score": 0,
+      "score": -1,
       "status": "active",
-      "thru": "15"
+      "thru": "F"
     },
     "Jimmy Stanger": {
       "score": 7,
@@ -86,9 +86,9 @@
       "thru": "F"
     },
     "Wyndham Clark": {
-      "score": -6,
+      "score": -8,
       "status": "active",
-      "thru": "12"
+      "thru": "17"
     },
     "Nicolai H\u00f8jgaard": {
       "score": 9,
@@ -173,7 +173,7 @@
     "Gary Woodland": {
       "score": 3,
       "status": "active",
-      "thru": "17"
+      "thru": "F"
     },
     "Rickie Fowler": {
       "score": 5,
@@ -271,9 +271,9 @@
       "thru": "F"
     },
     "Akshay Bhatia": {
-      "score": 2,
+      "score": 3,
       "status": "active",
-      "thru": "17"
+      "thru": "F"
     },
     "Dylan Wu": {
       "score": 16,
@@ -293,7 +293,7 @@
     "Sam Stevens": {
       "score": -1,
       "status": "active",
-      "thru": "13"
+      "thru": "17"
     },
     "Keegan Bradley": {
       "score": 2,
@@ -331,9 +331,9 @@
       "thru": "F"
     },
     "Tom Kim": {
-      "score": -2,
+      "score": -1,
       "status": "active",
-      "thru": "13"
+      "thru": "F"
     },
     "Jayden Schaper": {
       "score": 10,
@@ -373,17 +373,17 @@
     "Harry Higgs": {
       "score": 6,
       "status": "active",
-      "thru": "14"
+      "thru": "F"
     },
     "Justin Thomas": {
       "score": 4,
       "status": "active",
-      "thru": "14"
+      "thru": "F"
     },
     "Ryo Hisatsune": {
-      "score": 4,
+      "score": 3,
       "status": "active",
-      "thru": "17"
+      "thru": "F"
     },
     "Filippo Celli": {
       "score": 5,
@@ -438,7 +438,7 @@
     "William Mouw": {
       "score": 4,
       "status": "active",
-      "thru": "16"
+      "thru": "F"
     },
     "Ben James": {
       "score": 8,
@@ -558,7 +558,7 @@
     "Ryder Cowan": {
       "score": 2,
       "status": "active",
-      "thru": "16"
+      "thru": "F"
     },
     "Marek Fleming": {
       "score": 8,
@@ -698,7 +698,7 @@
     "Keith Mitchell": {
       "score": 0,
       "status": "active",
-      "thru": "17"
+      "thru": "F"
     },
     "Ben Silverman": {
       "score": 8,
@@ -723,7 +723,7 @@
     "Matt Fitzpatrick": {
       "score": 0,
       "status": "active",
-      "thru": "12"
+      "thru": "17"
     },
     "Zac Blair": {
       "score": 3,
@@ -773,7 +773,7 @@
     "Sam Burns": {
       "score": 0,
       "status": "active",
-      "thru": "15"
+      "thru": "F"
     },
     "Carl Yuan": {
       "score": 9,
@@ -945,36 +945,36 @@
     {
       "name": "Wyndham Clark",
       "position": "1",
-      "score": -6,
-      "thru": "12"
+      "score": -8,
+      "thru": "17"
     },
     {
-      "name": "Tom Kim",
-      "position": "2",
-      "score": -2,
-      "thru": "13"
-    },
-    {
-      "name": "Sam Stevens",
-      "position": "T3",
-      "score": -1,
-      "thru": "13"
-    },
-    {
-      "name": "Scottie Scheffler",
-      "position": "T3",
+      "name": "Sahith Theegala",
+      "position": "T2",
       "score": -1,
       "thru": "F"
     },
     {
-      "name": "Collin Morikawa",
-      "position": "T5",
-      "score": 0,
-      "thru": "13"
+      "name": "Sam Stevens",
+      "position": "T2",
+      "score": -1,
+      "thru": "17"
+    },
+    {
+      "name": "Tom Kim",
+      "position": "T2",
+      "score": -1,
+      "thru": "F"
+    },
+    {
+      "name": "Scottie Scheffler",
+      "position": "T2",
+      "score": -1,
+      "thru": "F"
     }
   ],
   "tournamentStatus": "round3",
-  "exportedAt": "2026-06-20T22:52:21Z",
+  "exportedAt": "2026-06-21T00:04:44Z",
   "source": "ESPN leaderboard",
   "url": "https://site.api.espn.com/apis/site/v2/sports/golf/leaderboard",
   "note": "Auto-updated by GitHub Actions schedule."
