@@ -18,7 +18,7 @@
     "Xander Schauffele": {
       "score": 2,
       "status": "active",
-      "thru": "17"
+      "thru": "F"
     },
     "J.J. Spaun": {
       "score": 8,
@@ -43,7 +43,7 @@
     "Collin Morikawa": {
       "score": 3,
       "status": "active",
-      "thru": "17"
+      "thru": "F"
     },
     "J.B. Holmes": {
       "score": 9,
@@ -63,7 +63,7 @@
     "Sahith Theegala": {
       "score": 2,
       "status": "active",
-      "thru": "14"
+      "thru": "F"
     },
     "Jimmy Stanger": {
       "score": 7,
@@ -88,7 +88,7 @@
     "Wyndham Clark": {
       "score": -4,
       "status": "active",
-      "thru": "13"
+      "thru": "F"
     },
     "Nicolai H\u00f8jgaard": {
       "score": 9,
@@ -293,7 +293,7 @@
     "Sam Stevens": {
       "score": 1,
       "status": "active",
-      "thru": "15"
+      "thru": "F"
     },
     "Keegan Bradley": {
       "score": 6,
@@ -333,7 +333,7 @@
     "Tom Kim": {
       "score": -1,
       "status": "active",
-      "thru": "14"
+      "thru": "F"
     },
     "Jayden Schaper": {
       "score": 10,
@@ -626,9 +626,9 @@
       "thru": "F"
     },
     "Tommy Fleetwood": {
-      "score": 1,
+      "score": 2,
       "status": "active",
-      "thru": "17"
+      "thru": "F"
     },
     "Laurie Canter": {
       "score": 8,
@@ -656,9 +656,9 @@
       "thru": "F"
     },
     "Emiliano Grillo": {
-      "score": 4,
+      "score": 5,
       "status": "active",
-      "thru": "15"
+      "thru": "F"
     },
     "Patrick Cantlay": {
       "score": 6,
@@ -696,9 +696,9 @@
       "thru": "F"
     },
     "Keith Mitchell": {
-      "score": -1,
+      "score": 0,
       "status": "active",
-      "thru": "16"
+      "thru": "F"
     },
     "Ben Silverman": {
       "score": 8,
@@ -723,7 +723,7 @@
     "Matt Fitzpatrick": {
       "score": 4,
       "status": "active",
-      "thru": "17"
+      "thru": "F"
     },
     "Zac Blair": {
       "score": 6,
@@ -741,9 +741,9 @@
       "thru": "F"
     },
     "Scottie Scheffler": {
-      "score": -1,
+      "score": 0,
       "status": "active",
-      "thru": "13"
+      "thru": "F"
     },
     "Alex Smalley": {
       "score": 9,
@@ -773,7 +773,7 @@
     "Sam Burns": {
       "score": -3,
       "status": "active",
-      "thru": "16"
+      "thru": "F"
     },
     "Carl Yuan": {
       "score": 9,
@@ -939,42 +939,42 @@
     "Sam Burns": -1,
     "Carl Yuan": 9
   },
-  "champion": "",
+  "champion": "Wyndham Clark",
   "leader": "Wyndham Clark",
   "topPlayers": [
     {
       "name": "Wyndham Clark",
       "position": "1",
       "score": -4,
-      "thru": "13"
+      "thru": "F"
     },
     {
       "name": "Sam Burns",
       "position": "2",
       "score": -3,
-      "thru": "16"
+      "thru": "F"
     },
     {
       "name": "Tom Kim",
-      "position": "T3",
+      "position": "3",
       "score": -1,
-      "thru": "14"
+      "thru": "F"
+    },
+    {
+      "name": "J.T. Poston",
+      "position": "T4",
+      "score": 0,
+      "thru": "F"
     },
     {
       "name": "Keith Mitchell",
-      "position": "T3",
-      "score": -1,
-      "thru": "16"
-    },
-    {
-      "name": "Scottie Scheffler",
-      "position": "T3",
-      "score": -1,
-      "thru": "13"
+      "position": "T4",
+      "score": 0,
+      "thru": "F"
     }
   ],
-  "tournamentStatus": "round4",
-  "exportedAt": "2026-06-21T21:39:47Z",
+  "tournamentStatus": "final",
+  "exportedAt": "2026-06-21T22:51:37Z",
   "source": "ESPN leaderboard",
   "url": "https://site.api.espn.com/apis/site/v2/sports/golf/leaderboard",
   "note": "Auto-updated by GitHub Actions schedule."
