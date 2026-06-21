@@ -973,8 +973,8 @@
       "thru": "-"
     }
   ],
-  "tournamentStatus": "round3",
-  "exportedAt": "2026-06-21T09:05:32Z",
+  "tournamentStatus": "round4",
+  "exportedAt": "2026-06-21T11:53:24Z",
   "source": "ESPN leaderboard",
   "url": "https://site.api.espn.com/apis/site/v2/sports/golf/leaderboard",
   "note": "Auto-updated by GitHub Actions schedule."
