@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>US Open 2026 — Admin</title>
+<title>The Open 2026 — Admin</title>
 <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone@7.23.10/babel.min.js"></script>
@@ -82,6 +82,16 @@
 <div id="root"></div>
 <script type="text/babel">
 const { useState, useEffect, useMemo } = React;
+
+useEffect(() => {
+  try {
+    localStorage.removeItem('pga2026_teams');
+    localStorage.removeItem('pga2026_teams_ts');
+    localStorage.removeItem('pga2026_scores');
+    localStorage.removeItem('pga2026_scores_ts');
+    localStorage.removeItem('pga2026_champion');
+  } catch(e) {}
+}, []);
 
 // -- Shared helpers --
 function loadJSON(key) {
@@ -165,11 +175,11 @@ function ScoresCard() {
     if (players.length === 0) { setLog("err:No picks found - make sure picks are saved"); return; }
     setLoading(true); setLog("info:Searching ESPN for live scores…");
     try {
-      const prompt = `Search ESPN for the current 2026 US Open leaderboard AND the missed cut list.
+      const prompt = `Search ESPN for the current 2026 The Open leaderboard AND the missed cut list.
 
 I need scores for: ${players.join(", ")}
 
-Step 1: Search the ESPN US Open leaderboard for current scores.
+Step 1: Search the ESPN The Open leaderboard for current scores.
 Step 2: Search specifically for players who missed the cut.
 
 Return ONLY valid JSON, no markdown:
@@ -370,7 +380,7 @@ function App() {
       <header className="header">
         <div className="header-inner">
           <div>
-            <div className="header-title">US Open 2026</div>
+            <div className="header-title">The Open 2026</div>
             <div className="header-sub">Jun 18–21, 2026</div>
             <div style={{marginTop:"8px",display:"flex",gap:"8px"}}>
               <a href="index.html" style={{fontSize:"0.7rem",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:5,padding:"3px 10px",color:"#6b7a90",textDecoration:"none",fontWeight:500}}>📋 Draft Board</a>
