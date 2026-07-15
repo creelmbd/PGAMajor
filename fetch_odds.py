@@ -59,6 +59,7 @@ NAME_MAP = {
     "Matthew Fitzpatrick": "Matt Fitzpatrick",
     "Alex Fitzpatrick": "Alex Fitzpatrick",
     "Si Woo Kim": "Si Woo Kim",
+    "Tom Kim": "Tom Kim",
     "JT Poston": "J.T. Poston",
     "J.T. Poston": "J.T. Poston",
     "JJ Spaun": "J.J. Spaun",
@@ -82,6 +83,7 @@ SEED_ODDS = {
     "Wyndham Clark": "+3300",
     "Ludvig Åberg": "+3300",
     "Justin Rose": "+3300",
+    "Tom Kim": "+12000",
 }
 
 
