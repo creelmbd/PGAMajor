@@ -6,9 +6,9 @@
       "thru": "F"
     },
     "Xander Schauffele": {
-      "score": -1,
+      "score": 1,
       "status": "active",
-      "thru": "17"
+      "thru": "F"
     },
     "J.J. Spaun": {
       "score": 0,
@@ -138,7 +138,7 @@
     "Peter Uihlein": {
       "score": 3,
       "status": "active",
-      "thru": "16"
+      "thru": "F"
     },
     "Jason Day": {
       "score": 3,
@@ -211,9 +211,9 @@
       "thru": "F"
     },
     "Cameron John": {
-      "score": 1,
+      "score": 0,
       "status": "active",
-      "thru": "15"
+      "thru": "F"
     },
     "Ludvig \u00c5berg": {
       "score": 1,
@@ -238,7 +238,7 @@
     "Nico Echavarria": {
       "score": 1,
       "status": "active",
-      "thru": "16"
+      "thru": "F"
     },
     "Min Woo Lee": {
       "score": 0,
@@ -268,7 +268,7 @@
     "Alistair Docherty": {
       "score": 3,
       "status": "active",
-      "thru": "16"
+      "thru": "F"
     },
     "Sam Stevens": {
       "score": 1,
@@ -316,9 +316,9 @@
       "thru": "F"
     },
     "Kazuki Higa": {
-      "score": 3,
+      "score": 2,
       "status": "active",
-      "thru": "14"
+      "thru": "17"
     },
     "Tom Kim": {
       "score": 0,
@@ -378,7 +378,7 @@
     "Naoyuki Kataoka": {
       "score": 3,
       "status": "active",
-      "thru": "15"
+      "thru": "17"
     },
     "Pierceson Coody": {
       "score": -3,
@@ -396,14 +396,14 @@
       "thru": "F"
     },
     "Rasmus Neergaard-Petersen": {
-      "score": 1,
+      "score": 2,
       "status": "active",
-      "thru": "17"
+      "thru": "F"
     },
     "Sam Bairstow": {
-      "score": 3,
+      "score": 2,
       "status": "active",
-      "thru": "15"
+      "thru": "F"
     },
     "David Puig": {
       "score": 4,
@@ -428,7 +428,7 @@
     "Jacob Bridgeman": {
       "score": 0,
       "status": "active",
-      "thru": "17"
+      "thru": "F"
     },
     "Shaun Norris": {
       "score": -1,
@@ -441,9 +441,9 @@
       "thru": "F"
     },
     "Marcus Plunkett": {
-      "score": 1,
+      "score": 0,
       "status": "active",
-      "thru": "14"
+      "thru": "17"
     },
     "Ryan Gerard": {
       "score": -3,
@@ -476,9 +476,9 @@
       "thru": "F"
     },
     "Jiho Yang": {
-      "score": 6,
+      "score": 7,
       "status": "active",
-      "thru": "14"
+      "thru": "17"
     },
     "Tiger Christensen": {
       "score": 5,
@@ -488,7 +488,7 @@
     "Tim Wiedemeyer": {
       "score": 3,
       "status": "active",
-      "thru": "17"
+      "thru": "F"
     },
     "Josele Ballester": {
       "score": 1,
@@ -508,12 +508,12 @@
     "Bard Bjornevik Skogen": {
       "score": 3,
       "status": "active",
-      "thru": "14"
+      "thru": "17"
     },
     "Nevill Ruiter": {
-      "score": 5,
+      "score": 6,
       "status": "active",
-      "thru": "14"
+      "thru": "17"
     },
     "Mason Howell": {
       "score": 3,
@@ -601,9 +601,9 @@
       "thru": "F"
     },
     "Francesco Laporta": {
-      "score": 3,
+      "score": 4,
       "status": "active",
-      "thru": "16"
+      "thru": "F"
     },
     "Joakim Lagergren": {
       "score": -2,
@@ -638,7 +638,7 @@
     "Patrick Cantlay": {
       "score": 1,
       "status": "active",
-      "thru": "16"
+      "thru": "F"
     },
     "Brooks Koepka": {
       "score": 0,
@@ -706,9 +706,9 @@
       "thru": "F"
     },
     "Daniel Berger": {
-      "score": 4,
+      "score": 6,
       "status": "active",
-      "thru": "16"
+      "thru": "F"
     },
     "Matt Fitzpatrick": {
       "score": 2,
@@ -731,9 +731,9 @@
       "thru": "F"
     },
     "Austen Truslow": {
-      "score": 6,
+      "score": 8,
       "status": "active",
-      "thru": "15"
+      "thru": "17"
     },
     "Scottie Scheffler": {
       "score": -2,
@@ -817,7 +817,7 @@
     }
   ],
   "tournamentStatus": "round1",
-  "exportedAt": "2026-07-16T19:52:12Z",
+  "exportedAt": "2026-07-16T20:39:38Z",
   "source": "ESPN leaderboard",
   "url": "https://site.api.espn.com/apis/site/v2/sports/golf/leaderboard",
   "note": "Auto-updated by GitHub Actions schedule."
