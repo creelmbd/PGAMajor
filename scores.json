@@ -18,7 +18,7 @@
     "Lucas Herbert": {
       "score": -8,
       "status": "active",
-      "thru": "F"
+      "thru": null
     },
     "Kurt Kitayama": {
       "score": 0,
@@ -263,7 +263,7 @@
     "Cameron Young": {
       "score": -6,
       "status": "active",
-      "thru": "F"
+      "thru": null
     },
     "Alistair Docherty": {
       "score": 5,
@@ -423,7 +423,7 @@
     "Jackson Suber": {
       "score": -6,
       "status": "active",
-      "thru": "F"
+      "thru": null
     },
     "Jacob Bridgeman": {
       "score": -1,
@@ -448,7 +448,7 @@
     "Ryan Gerard": {
       "score": -6,
       "status": "active",
-      "thru": "F"
+      "thru": null
     },
     "Aldrich Potgieter": {
       "score": 1,
@@ -789,25 +789,25 @@
       "name": "Lucas Herbert",
       "position": "1",
       "score": -8,
-      "thru": "F"
+      "thru": "-"
     },
     {
       "name": "Cameron Young",
       "position": "T2",
       "score": -6,
-      "thru": "F"
+      "thru": "-"
     },
     {
       "name": "Jackson Suber",
       "position": "T2",
       "score": -6,
-      "thru": "F"
+      "thru": "-"
     },
     {
       "name": "Ryan Gerard",
       "position": "T2",
       "score": -6,
-      "thru": "F"
+      "thru": "-"
     },
     {
       "name": "Bryson DeChambeau",
@@ -817,7 +817,7 @@
     }
   ],
   "tournamentStatus": "round2",
-  "exportedAt": "2026-07-17T22:03:13Z",
+  "exportedAt": "2026-07-17T22:58:19Z",
   "source": "ESPN leaderboard",
   "url": "https://site.api.espn.com/apis/site/v2/sports/golf/leaderboard",
   "note": "Auto-updated by GitHub Actions schedule."
