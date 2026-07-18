@@ -138,7 +138,7 @@
     "Peter Uihlein": {
       "score": 1,
       "status": "active",
-      "thru": null
+      "thru": "1"
     },
     "Jason Day": {
       "score": 4,
@@ -243,7 +243,7 @@
     "Min Woo Lee": {
       "score": 1,
       "status": "active",
-      "thru": null
+      "thru": "3"
     },
     "Akshay Bhatia": {
       "score": 4,
@@ -318,7 +318,7 @@
     "Kazuki Higa": {
       "score": 1,
       "status": "active",
-      "thru": null
+      "thru": "2"
     },
     "Tom Kim": {
       "score": 3,
@@ -378,7 +378,7 @@
     "Naoyuki Kataoka": {
       "score": 1,
       "status": "active",
-      "thru": null
+      "thru": "1"
     },
     "Pierceson Coody": {
       "score": -3,
@@ -393,7 +393,7 @@
     "Ryo Hisatsune": {
       "score": 1,
       "status": "active",
-      "thru": null
+      "thru": "3"
     },
     "Rasmus Neergaard-Petersen": {
       "score": -2,
@@ -443,7 +443,7 @@
     "Marcus Plunkett": {
       "score": 1,
       "status": "active",
-      "thru": null
+      "thru": "1"
     },
     "Ryan Gerard": {
       "score": -6,
@@ -493,7 +493,7 @@
     "Josele Ballester": {
       "score": 1,
       "status": "active",
-      "thru": null
+      "thru": "2"
     },
     "Kazuma Kobori": {
       "score": -1,
@@ -568,7 +568,7 @@
     "Russell Henley": {
       "score": 1,
       "status": "active",
-      "thru": null
+      "thru": "4"
     },
     "Jordan Spieth": {
       "score": 10,
@@ -643,12 +643,12 @@
     "Brooks Koepka": {
       "score": 1,
       "status": "active",
-      "thru": null
+      "thru": "1"
     },
     "Jack McDonald": {
-      "score": 1,
+      "score": 2,
       "status": "active",
-      "thru": null
+      "thru": "4"
     },
     "Adrien Saddier": {
       "score": 6,
@@ -781,7 +781,164 @@
       "thru": "F"
     }
   },
-  "cutScores": {},
+  "cutScores": {
+    "Bryson DeChambeau": -5,
+    "Xander Schauffele": 0,
+    "J.J. Spaun": -3,
+    "Lucas Herbert": -8,
+    "Kurt Kitayama": 0,
+    "J.T. Poston": 2,
+    "Eric Cole": 0,
+    "Matt Wallace": -4,
+    "Collin Morikawa": -2,
+    "Aaron Rai": 2,
+    "Sahith Theegala": 0,
+    "Joaqu\u00edn Niemann": 4,
+    "Max Greyserman": 5,
+    "Wyndham Clark": 3,
+    "Nicolai H\u00f8jgaard": 2,
+    "Rasmus H\u00f8jgaard": 6,
+    "Thomas Sloman": 4,
+    "Andrew Novak": 2,
+    "Victor Perez": -3,
+    "Travis Smyth": 3,
+    "Robert MacIntyre": -4,
+    "Sungjae Im": -2,
+    "David Duval": 10,
+    "Brian Harman": 9,
+    "Daniel Brown": -3,
+    "Francesco Molinari": -4,
+    "Billy Horschel": 2,
+    "Peter Uihlein": 1,
+    "Jason Day": 4,
+    "Padraig Harrington": 9,
+    "Rory McIlroy": -1,
+    "Gary Woodland": 9,
+    "Rickie Fowler": 0,
+    "Nick Taylor": -1,
+    "Alex Noren": 0,
+    "Adam Scott": -2,
+    "Ryan Fox": 0,
+    "Bernd Wiesberger": 2,
+    "Tom McKibbin": 2,
+    "Kristoffer Reitan": 0,
+    "Alex Fitzpatrick": -4,
+    "Viktor Hovland": 4,
+    "Cameron John": -3,
+    "Ludvig \u00c5berg": -3,
+    "Matthew Jordan": 9,
+    "Ben Griffin": -1,
+    "Antoine Rozner": 2,
+    "Nico Echavarria": -2,
+    "Min Woo Lee": 1,
+    "Akshay Bhatia": 4,
+    "Daniel Hillier": 2,
+    "Michael Thorbjornsen": -2,
+    "Cameron Young": -6,
+    "Alistair Docherty": 5,
+    "Sam Stevens": 2,
+    "Keegan Bradley": 1,
+    "Eugenio Chacarra": 0,
+    "Sami V\u00e4lim\u00e4ki": 2,
+    "Marco Penge": 0,
+    "Shane Lowry": -3,
+    "Harry Hall": 4,
+    "Jeong-Woo Ham": 9,
+    "Frederic LaCroix": 4,
+    "Kazuki Higa": 1,
+    "Tom Kim": 3,
+    "Jayden Schaper": 2,
+    "Casey Jarvis": 0,
+    "John Parry": -1,
+    "James Nicholas": 5,
+    "Chris Gotterup": -2,
+    "Ren Yonezawa": 15,
+    "Jesper Svensson": -1,
+    "Ryutaro Nagano": 3,
+    "Keita Nakajima": 3,
+    "Thomas Detry": -4,
+    "Naoyuki Kataoka": 1,
+    "Pierceson Coody": -3,
+    "Justin Thomas": -1,
+    "Ryo Hisatsune": 1,
+    "Rasmus Neergaard-Petersen": -2,
+    "Sam Bairstow": 7,
+    "David Puig": 11,
+    "Matt McCarty": 2,
+    "Michael Brennan": 0,
+    "Jackson Suber": -6,
+    "Jacob Bridgeman": -1,
+    "Shaun Norris": -1,
+    "Lev Grinberg": 7,
+    "Marcus Plunkett": 1,
+    "Ryan Gerard": -6,
+    "Aldrich Potgieter": 1,
+    "Dan Bradbury": 9,
+    "Martin Couvra": 7,
+    "Angel Ayora": 3,
+    "Caleb Surratt": 7,
+    "Jiho Yang": 7,
+    "Tiger Christensen": 10,
+    "Tim Wiedemeyer": 6,
+    "Josele Ballester": 1,
+    "Kazuma Kobori": -1,
+    "Johnny Keefer": -2,
+    "Bard Bjornevik Skogen": 4,
+    "Nevill Ruiter": 4,
+    "Mason Howell": 2,
+    "Kota Kaneko": 9,
+    "Fifa Laopakdee": 15,
+    "Jack Buchanan": 5,
+    "Bud Cauley": -4,
+    "Mateo Pulcini": 4,
+    "Stuart Grehan": 6,
+    "Alejandro de Castro Piera": 6,
+    "David Howard": 3,
+    "Harris English": 2,
+    "Russell Henley": 1,
+    "Jordan Spieth": 10,
+    "Tommy Fleetwood": -4,
+    "Laurie Canter": 0,
+    "Tyrrell Hatton": -3,
+    "Patrick Reed": -2,
+    "Justin Rose": 3,
+    "Francesco Laporta": 9,
+    "Joakim Lagergren": 2,
+    "Henrik Stenson": 2,
+    "Matthew Baldwin": 7,
+    "Matthew Southgate": -2,
+    "Hideki Matsuyama": -1,
+    "Andy Sullivan": -1,
+    "Patrick Cantlay": -1,
+    "Brooks Koepka": 1,
+    "Jack McDonald": 2,
+    "Adrien Saddier": 6,
+    "Joe Dean": 4,
+    "Michael Hollick": 4,
+    "Si Woo Kim": -5,
+    "MJ Daffue": -1,
+    "Stewart Cink": 8,
+    "Darren Clarke": 7,
+    "Keith Mitchell": 3,
+    "Sepp Straka": -2,
+    "Max Homa": 0,
+    "Michael Kim": 5,
+    "Daniel Berger": 6,
+    "Matt Fitzpatrick": 4,
+    "Corey Conners": -2,
+    "Cameron Smith": 2,
+    "Haotong Li": 4,
+    "Austen Truslow": 13,
+    "Scottie Scheffler": -4,
+    "Alex Smalley": 0,
+    "Jordan Smith": -2,
+    "Maverick McNealy": 3,
+    "Jon Rahm": -4,
+    "Jake Knapp": 2,
+    "Hennie Du Plessis": -1,
+    "Sam Burns": -5,
+    "Scott Vincent": 8
+  },
   "champion": "",
   "leader": "Lucas Herbert",
   "topPlayers": [
@@ -816,8 +973,8 @@
       "thru": "-"
     }
   ],
-  "tournamentStatus": "round2",
-  "exportedAt": "2026-07-18T07:18:35Z",
+  "tournamentStatus": "round3",
+  "exportedAt": "2026-07-18T09:04:05Z",
   "source": "ESPN leaderboard",
   "url": "https://site.api.espn.com/apis/site/v2/sports/golf/leaderboard",
   "note": "Auto-updated by GitHub Actions schedule."
