@@ -423,7 +423,7 @@
     "Jackson Suber": {
       "score": -6,
       "status": "active",
-      "thru": "17"
+      "thru": "F"
     },
     "Jacob Bridgeman": {
       "score": -3,
@@ -974,7 +974,7 @@
     }
   ],
   "tournamentStatus": "round3",
-  "exportedAt": "2026-07-18T19:19:42Z",
+  "exportedAt": "2026-07-18T20:10:02Z",
   "source": "ESPN leaderboard",
   "url": "https://site.api.espn.com/apis/site/v2/sports/golf/leaderboard",
   "note": "Auto-updated by GitHub Actions schedule."
