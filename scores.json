@@ -939,7 +939,7 @@
     "Sam Burns": -5,
     "Scott Vincent": 8
   },
-  "champion": "",
+  "champion": "Ryan Fox",
   "leader": "Ryan Fox",
   "topPlayers": [
     {
@@ -973,8 +973,8 @@
       "thru": "F"
     }
   ],
-  "tournamentStatus": "round4",
-  "exportedAt": "2026-07-19T17:36:16Z",
+  "tournamentStatus": "final",
+  "exportedAt": "2026-07-19T18:33:05Z",
   "source": "ESPN leaderboard",
   "url": "https://site.api.espn.com/apis/site/v2/sports/golf/leaderboard",
   "note": "Auto-updated by GitHub Actions schedule."
